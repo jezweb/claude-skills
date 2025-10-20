@@ -14,22 +14,68 @@
 2. **Eliminate errors** from known issues and misconfigurations
 3. **Speed up project setup** from hours to minutes
 4. **Share knowledge** with the Claude Code community
-5. **Build reusable patterns** for Jezweb's tech stack
+5. **Build atomic, composable skills** following Claude Code philosophy
 
 ### Success Metrics:
-- ✅ 8+ production-ready skills
+- ✅ 12+ production-ready atomic skills
 - ✅ 50%+ token savings vs manual setup
 - ✅ Zero errors for covered use cases
 - ✅ Public GitHub repo with community contributions
 - ✅ Auto-discovery working reliably
+- ✅ Skills are composable and domain-focused
+
+---
+
+## 🧩 Atomic Skills Architecture
+
+**Philosophy**: Each skill is a focused **knowledge domain** that Claude discovers and composes automatically.
+
+### Why Atomic?
+- ✅ **Composability** - Claude combines multiple skills for complex tasks
+- ✅ **Reusability** - Same skill works across different frameworks
+- ✅ **Maintainability** - Update once, benefits all use cases
+- ✅ **Token efficiency** - Only load relevant knowledge
+- ✅ **Flexibility** - Users pick their own stack
+
+### Example Composition:
+```
+User: "Build a Cloudflare full-stack app with auth and database"
+↓
+Claude discovers and uses:
+- cloudflare-worker-base (Hono + Vite)
+- cloudflare-d1 (database)
+- clerk-auth (authentication)
+- tailwind-v4-shadcn (UI)
+↓
+Result: Integrated solution from atomic skills
+```
 
 ---
 
 ## 📊 Skill Priority Matrix
 
-### Batch 1 - Core Infrastructure (Week 1) ⭐⭐⭐
+### ✅ Completed Skills
 
-#### 1. cloudflare-worker-base
+#### tailwind-v4-shadcn
+**Status**: ✅ Complete (2025-10-20)
+**Priority**: High
+**Dependencies**: None
+**Actual Dev Time**: 6 hours
+**Token Savings**: ~70%
+**Errors Prevented**: 3
+
+**What It Does**:
+- Tailwind CSS v4 + shadcn/ui integration
+- Vite plugin setup
+- Dark mode with ThemeProvider
+- @theme inline pattern
+- Complete component library setup
+
+**Production Validated**: WordPress Auditor
+
+---
+
+#### cloudflare-worker-base
 **Status**: ✅ Complete (2025-10-20)
 **Priority**: Critical
 **Dependencies**: None
@@ -42,94 +88,94 @@
 - Hono routing framework
 - Workers Static Assets configuration
 - @cloudflare/vite-plugin setup
-- wrangler.jsonc template (JSON format preferred over TOML)
+- wrangler.jsonc template
 - Local dev + deployment workflow
-- Complete reference documentation
-
-**Auto-Trigger Keywords**:
-- `cloudflare worker`
-- `workers setup`
-- `hono routing`
-- `static assets`
-- `wrangler config`
-- Error messages: "Cannot read properties of undefined", "Static Assets 404", "A hanging Promise was canceled"
-
-**Known Issues Prevented** (with GitHub sources):
-1. Export syntax error (hono #3955)
-2. Static Assets routing conflicts (workers-sdk #8879)
-3. Scheduled handler not exported (vite-plugins #275)
-4. HMR race condition (workers-sdk #9518)
-5. Upload race condition (workers-sdk #7555)
-6. Service Worker format confusion (Cloudflare migration guide)
 
 **Production Validated**: https://cloudflare-worker-base-test.webfonts.workers.dev
 
 ---
 
-#### 2. cloudflare-react-full-stack
-**Status**: Planned
-**Priority**: Critical
-**Dependencies**: cloudflare-worker-base, tailwind-v4-shadcn
-**Estimated Dev Time**: 6 hours
-**Token Savings**: ~70%
+### 🚧 Incomplete Skills
 
-**What It Does**:
-- Complete CF Workers + Vite + React + Tailwind v4
-- Frontend + backend in single project
-- API routes with Hono
-- shadcn/ui components
-- Dark mode with ThemeProvider
-- Deployment workflow
+#### firecrawl-scraper
+**Status**: 🚧 Incomplete (has templates, missing SKILL.md/README.md)
+**Priority**: Medium
+**Dependencies**: None
+**Estimated Time to Complete**: 2 hours
 
-**Auto-Trigger Keywords**:
-- `cloudflare react`
-- `workers + vite`
-- `full stack cloudflare`
-- `cf workers react`
-
-**Known Issues Prevented**:
-- Wrong project structure
-- API/frontend port conflicts
-- Build configuration errors
-- Deployment issues
+**What It Needs**:
+- SKILL.md with YAML frontmatter
+- README.md with auto-trigger keywords
+- Documentation for existing templates
 
 ---
 
-#### 3. cloudflare-services
+### Batch 1 - Cloudflare Services (Week 1) ⭐⭐⭐
+
+#### 1. cloudflare-d1
 **Status**: Planned
-**Priority**: High
+**Priority**: Critical
 **Dependencies**: cloudflare-worker-base
-**Estimated Dev Time**: 8 hours
-**Token Savings**: ~65%
+**Estimated Dev Time**: 4 hours
+**Token Savings**: ~55%
 
 **What It Does**:
 - D1 database setup + migrations
-- R2 object storage integration
-- KV namespace configuration
-- Workers AI setup
-- Vectorize for embeddings
-- Queues for async processing
-- wrangler bindings
+- wrangler bindings configuration
+- SQL schema patterns
+- Query patterns and best practices
+- Drizzle ORM integration (optional)
+- Seeding and backup strategies
 
 **Auto-Trigger Keywords**:
-- `d1 database`
-- `r2 storage`
-- `workers ai`
-- `cloudflare kv`
-- `vectorize`
-- `cf queues`
-
-**Known Issues Prevented**:
-- Missing bindings in wrangler.toml
-- Incorrect D1 migration setup
-- R2 CORS configuration
-- Workers AI model selection
+- `d1 database`, `cloudflare d1`, `d1 migrations`
+- `d1 schema`, `sqlite cloudflare`, `sql workers`
 
 ---
 
-### Batch 2 - Auth & Data (Week 2) ⭐⭐
+#### 2. cloudflare-r2
+**Status**: Planned
+**Priority**: High
+**Dependencies**: cloudflare-worker-base
+**Estimated Dev Time**: 4 hours
+**Token Savings**: ~55%
 
-#### 4. clerk-auth-cloudflare
+**What It Does**:
+- R2 bucket configuration
+- File upload patterns
+- CORS setup
+- Presigned URLs
+- Image/asset handling
+- Multipart uploads
+
+**Auto-Trigger Keywords**:
+- `r2 storage`, `cloudflare r2`, `r2 upload`
+- `object storage`, `r2 cors`, `presigned urls`
+
+---
+
+#### 3. cloudflare-kv
+**Status**: Planned
+**Priority**: High
+**Dependencies**: cloudflare-worker-base
+**Estimated Dev Time**: 3 hours
+**Token Savings**: ~50%
+
+**What It Does**:
+- KV namespace setup
+- Caching patterns
+- TTL strategies
+- Bulk operations
+- List operations
+- Development vs production namespaces
+
+**Auto-Trigger Keywords**:
+- `kv storage`, `cloudflare kv`, `kv namespace`
+- `kv cache`, `workers kv`, `kv bindings`
+
+---
+
+#### 4. cloudflare-workers-ai
 **Status**: Planned
 **Priority**: High
 **Dependencies**: cloudflare-worker-base
@@ -137,29 +183,132 @@
 **Token Savings**: ~60%
 
 **What It Does**:
-- Clerk integration with CF Workers
-- @clerk/backend SDK setup
-- JWT verification middleware
-- Custom JWT templates
-- D1 user storage patterns
-- Session management
+- Workers AI binding setup
+- Model selection guide
+- Streaming responses
+- Text generation patterns
+- Image generation
+- Embeddings for RAG
 
 **Auto-Trigger Keywords**:
-- `clerk auth`
-- `clerk cloudflare`
-- `jwt verification`
-- `cloudflare auth`
-- `clerk workers`
-
-**Known Issues Prevented**:
-- Missing JWT template configuration
-- Incorrect token verification
-- CORS issues with Clerk
-- User metadata extraction
+- `workers ai`, `cloudflare ai`, `@cf/meta/llama`
+- `ai bindings`, `llm workers`, `ai streaming`
 
 ---
 
-#### 5. firecrawl-scraper
+#### 5. cloudflare-vectorize
+**Status**: Planned
+**Priority**: Medium
+**Dependencies**: cloudflare-worker-base
+**Estimated Dev Time**: 4 hours
+**Token Savings**: ~55%
+
+**What It Does**:
+- Vectorize index setup
+- Embedding storage
+- Vector search patterns
+- RAG implementation
+- Integration with Workers AI
+
+**Auto-Trigger Keywords**:
+- `vectorize`, `cloudflare vectorize`, `vector search`
+- `embeddings storage`, `rag cloudflare`, `semantic search`
+
+---
+
+#### 6. cloudflare-queues
+**Status**: Planned
+**Priority**: Medium
+**Dependencies**: cloudflare-worker-base
+**Estimated Dev Time**: 3 hours
+**Token Savings**: ~50%
+
+**What It Does**:
+- Queue setup
+- Producer/consumer patterns
+- Batch processing
+- Retry strategies
+- Dead letter queues
+- Queue monitoring
+
+**Auto-Trigger Keywords**:
+- `cloudflare queues`, `queues workers`, `async processing`
+- `queue bindings`, `message queues`, `batch jobs`
+
+---
+
+### Batch 2 - Auth & Frameworks (Week 2) ⭐⭐
+
+#### 7. clerk-auth
+**Status**: Planned
+**Priority**: Critical
+**Dependencies**: None (works across frameworks)
+**Estimated Dev Time**: 5 hours
+**Token Savings**: ~60%
+
+**What It Does**:
+- Complete Clerk knowledge domain
+- React integration patterns
+- Next.js integration
+- Cloudflare Workers JWT verification
+- Custom JWT templates
+- User metadata extraction
+- Session management
+- Works across all frameworks
+
+**Auto-Trigger Keywords**:
+- `clerk auth`, `clerk`, `clerk react`, `clerk nextjs`
+- `clerk cloudflare`, `jwt verification`, `clerk jwt`
+
+---
+
+#### 8. hono-routing
+**Status**: Planned
+**Priority**: High
+**Dependencies**: None
+**Estimated Dev Time**: 4 hours
+**Token Savings**: ~55%
+
+**What It Does**:
+- Hono routing patterns
+- Middleware composition
+- Request validation
+- Typed routes
+- RPC pattern
+- Error handling
+- Context sharing
+
+**Auto-Trigger Keywords**:
+- `hono`, `hono routing`, `hono middleware`
+- `hono validation`, `hono rpc`, `typed routes`
+
+---
+
+#### 9. react-hook-form-zod
+**Status**: Planned
+**Priority**: High
+**Dependencies**: None
+**Estimated Dev Time**: 4 hours
+**Token Savings**: ~60%
+
+**What It Does**:
+- React Hook Form setup
+- Zod schema validation
+- Client + server validation
+- Form components
+- Error handling
+- Accessibility patterns
+- shadcn/ui form integration
+
+**Auto-Trigger Keywords**:
+- `react hook form`, `zod validation`, `form validation`
+- `react forms`, `rhf`, `zod schema`
+
+---
+
+### Batch 3 - Data & Utilities (Week 3) ⭐
+
+#### 10. tanstack-query
 **Status**: Planned
 **Priority**: Medium
 **Dependencies**: None
@@ -167,113 +316,38 @@
 **Token Savings**: ~55%
 
 **What It Does**:
-- Firecrawl v2 API integration
-- Website scraping to markdown/JSON
-- Image cataloging and extraction
-- Content cleaning and formatting
-- Python and TypeScript templates
-- Batch scraping patterns
+- TanStack Query setup
+- Query patterns
+- Mutation patterns
+- Cache management
+- Optimistic updates
+- Infinite queries
+- SSR patterns
 
 **Auto-Trigger Keywords**:
-- `web scraping`
-- `firecrawl`
-- `content extraction`
-- `scrape website`
-- `firecrawl api`
-
-**Known Issues Prevented**:
-- API key configuration
-- Rate limiting handling
-- Markdown formatting issues
-- Image download failures
+- `tanstack query`, `react query`, `query cache`
+- `mutations`, `optimistic updates`, `server state`
 
 ---
 
-### Batch 3 - UI Patterns (Week 3) ⭐
-
-#### 6. react-vite-base
-**Status**: Planned
-**Priority**: Medium
-**Dependencies**: None
-**Estimated Dev Time**: 3 hours
-**Token Savings**: ~50%
-
-**What It Does**:
-- Standalone Vite + React + TypeScript
-- Path aliases configured
-- ESLint + Prettier setup
-- Build optimization
-- No Cloudflare (pure frontend)
-
-**Auto-Trigger Keywords**:
-- `vite react`
-- `react typescript`
-- `standalone react`
-- `vite setup`
-
-**Known Issues Prevented**:
-- Wrong TypeScript configuration
-- Missing path aliases
-- Build size issues
-- HMR problems
-
----
-
-#### 7. react-form-zod
-**Status**: Planned
-**Priority**: Medium
-**Dependencies**: react-vite-base
+#### 11. drizzle-orm-d1
+**Status**: Planned (Optional)
+**Priority**: Low
+**Dependencies**: cloudflare-d1
 **Estimated Dev Time**: 5 hours
 **Token Savings**: ~60%
 
 **What It Does**:
-- React Hook Form setup
-- Zod schema validation
-- Client + server validation
-- Common form components
-- Error handling patterns
-- Accessible form elements
+- Drizzle ORM setup for D1
+- Schema definition
+- Type-safe queries
+- Migrations
+- Relations
+- Query builder patterns
 
 **Auto-Trigger Keywords**:
-- `react form`
-- `zod validation`
-- `form validation`
-- `react hook form`
-
-**Known Issues Prevented**:
-- Schema duplication (client/server)
-- Validation timing issues
-- Accessibility problems
-- Error message formatting
-
----
-
-#### 8. ai-chat-ui
-**Status**: Planned
-**Priority**: Low
-**Dependencies**: react-vite-base, cloudflare-services
-**Estimated Dev Time**: 6 hours
-**Token Savings**: ~65%
-
-**What It Does**:
-- Chat interface components
-- Message streaming (SSE/WebSocket)
-- Conversation history with D1
-- Cloudflare AI / OpenAI integration
-- Markdown rendering
-- Code syntax highlighting
-
-**Auto-Trigger Keywords**:
-- `chat ui`
-- `ai chat interface`
-- `message streaming`
-- `chat components`
-
-**Known Issues Prevented**:
-- Streaming connection drops
-- Message ordering issues
-- History pagination
-- Markdown rendering bugs
+- `drizzle orm`, `drizzle d1`, `orm cloudflare`
+- `type-safe sql`, `drizzle schema`
 
 ---
 
@@ -392,23 +466,32 @@ Calculate:
 ## 📈 Progress Tracking
 
 ### Overall Progress:
-- [x] **Batch 1 - Core Infrastructure (1/3 complete)** ⚡
-- [ ] Batch 2 - Auth & Data (0/2 complete)
-- [ ] Batch 3 - UI Patterns (0/3 complete)
+- **Completed**: 2 skills ✅
+- **Incomplete**: 1 skill 🚧
+- **Batch 1 - Cloudflare Services**: 0/6 complete
+- **Batch 2 - Auth & Frameworks**: 0/3 complete
+- **Batch 3 - Data & Utilities**: 0/2 complete
 
-### Individual Skills:
+### Skills by Status:
 
-| Skill | Status | Dev Time | Test Time | Token Savings | Errors Prevented |
-|-------|--------|----------|-----------|---------------|------------------|
-| **cloudflare-worker-base** | **✅ Complete** | **2h** | **✅ Symlinked** | **~60%** | **6** |
-| cloudflare-react-full-stack | Planned | - | - | ~70% (est.) | - |
-| cloudflare-services | Planned | - | - | ~65% (est.) | - |
-| clerk-auth-cloudflare | Planned | - | - | ~60% (est.) | - |
-| firecrawl-scraper | Planned | - | - | ~55% (est.) | - |
-| react-vite-base | Planned | - | - | ~50% (est.) | - |
-| react-form-zod | Planned | - | - | ~60% (est.) | - |
-| ai-chat-ui | Planned | - | - | ~65% (est.) | - |
-| **tailwind-v4-shadcn** | **✅ Complete** | **6h** | **1h** | **~70%** | **3** |
+| Skill | Status | Dev Time | Token Savings | Errors Prevented | Priority |
+|-------|--------|----------|---------------|------------------|----------|
+| **tailwind-v4-shadcn** | **✅ Complete** | **6h** | **~70%** | **3** | High |
+| **cloudflare-worker-base** | **✅ Complete** | **2h** | **~60%** | **6** | Critical |
+| **firecrawl-scraper** | **🚧 Incomplete** | **2h needed** | **~55%** | **-** | Medium |
+| cloudflare-d1 | Planned | 4h (est.) | ~55% | - | Critical |
+| cloudflare-r2 | Planned | 4h (est.) | ~55% | - | High |
+| cloudflare-kv | Planned | 3h (est.) | ~50% | - | High |
+| cloudflare-workers-ai | Planned | 5h (est.) | ~60% | - | High |
+| cloudflare-vectorize | Planned | 4h (est.) | ~55% | - | Medium |
+| cloudflare-queues | Planned | 3h (est.) | ~50% | - | Medium |
+| clerk-auth | Planned | 5h (est.) | ~60% | - | Critical |
+| hono-routing | Planned | 4h (est.) | ~55% | - | High |
+| react-hook-form-zod | Planned | 4h (est.) | ~60% | - | High |
+| tanstack-query | Planned | 4h (est.) | ~55% | - | Medium |
+| drizzle-orm-d1 | Planned | 5h (est.) | ~60% | - | Low |
+
+**Total Skills Planned**: 13 (2 complete, 1 incomplete, 10 to build)
 
 ---
 
@@ -449,21 +532,27 @@ A skill is considered "complete" when:
 ## 🚀 Future Skills (Backlog)
 
 ### High Demand:
-- **prisma-d1**: Prisma ORM with Cloudflare D1
-- **stripe-cloudflare**: Stripe integration for CF Workers
-- **email-resend**: Email with Resend API
-- **image-optimization**: Image handling with Cloudflare Images
+- **stripe-payments**: Stripe integration (webhooks, subscriptions, checkout)
+- **resend-email**: Email with Resend API (templates, transactional)
+- **cloudflare-images**: Image optimization and transformations
+- **authjs-auth**: Auth.js integration (alternative to Clerk)
 
 ### Medium Demand:
-- **vitest-setup**: Testing with Vitest
+- **vitest-testing**: Testing with Vitest (unit, integration)
 - **playwright-e2e**: E2E testing setup
-- **sentry-monitoring**: Error tracking
-- **analytics-integration**: PostHog, Plausible, etc.
+- **sentry-monitoring**: Error tracking and performance monitoring
+- **posthog-analytics**: Product analytics integration
+- **vite-react**: Standalone Vite + React (no Cloudflare)
 
 ### Low Demand:
-- **react-native-base**: Mobile app setup
-- **tauri-desktop**: Desktop app setup
-- **discord-bot**: Discord bot with CF Workers
+- **cloudflare-browser-rendering**: Puppeteer on Workers
+- **cloudflare-durable-objects**: Durable Objects patterns
+- **nextjs-setup**: Next.js best practices
+- **prisma-d1**: Prisma ORM for D1 (if Drizzle not sufficient)
+
+### Composite Skills (After Atomic Skills Complete):
+- **cloudflare-full-stack-starter**: References multiple atomic skills for quick starts
+- **saas-starter**: Complete SaaS stack (auth + db + payments + email)
 
 ---
 
@@ -485,20 +574,31 @@ A skill is considered "complete" when:
 
 ## 📊 Metrics Dashboard
 
-### Token Efficiency (Average):
-- Manual setup: 50,000-70,000 tokens
-- With skills: 15,000-25,000 tokens
-- **Average savings: ~65%**
+### Token Efficiency (Atomic Skills):
+- Manual setup (per service): 8,000-15,000 tokens
+- With atomic skill: 3,000-5,000 tokens
+- **Average savings per skill: ~55-60%**
+
+### Composite Task Efficiency:
+- Manual full-stack setup: 50,000-70,000 tokens
+- With 4-5 atomic skills composed: 15,000-25,000 tokens
+- **Total savings: ~65-70%**
 
 ### Error Prevention:
-- Manual setup: 2-4 errors average
-- With skills: 0 errors
+- Manual setup: 2-4 errors average per service
+- With atomic skills: 0 errors
 - **Error reduction: 100%**
 
 ### Time Savings:
-- Manual setup: 2-4 hours
-- With skills: 15-30 minutes
+- Manual setup: 2-4 hours per service
+- With atomic skills: 15-30 minutes
 - **Time savings: ~85%**
+
+### Atomic Architecture Benefits:
+- ✅ Skills are reusable across different stacks
+- ✅ Update once, benefit everywhere
+- ✅ Claude composes skills automatically
+- ✅ Users only load what they need
 
 ---
 
