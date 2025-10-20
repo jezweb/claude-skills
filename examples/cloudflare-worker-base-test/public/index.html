@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Cloudflare Worker + Hono + Static Assets</title>
+	<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+	<div class="container">
+		<header>
+			<h1>🔥 Cloudflare Worker + Hono + Static Assets</h1>
+			<p>Testing API routes with Workers Static Assets and SPA fallback</p>
+		</header>
+
+		<section class="test-section">
+			<h2>API Tests</h2>
+			<p>These API routes are handled by the Worker thanks to <code>run_worker_first</code> configuration.</p>
+
+			<div class="test-group">
+				<button onclick="testHello()">Test /api/hello</button>
+				<button onclick="testData()">Test /api/data</button>
+				<button onclick="testEcho()">Test /api/echo (POST)</button>
+				<button onclick="testHealth()">Test /api/health</button>
+			</div>
+
+			<div id="results">
+				<h3>Results:</h3>
+				<pre id="output">Click a button to test the API...</pre>
+			</div>
+		</section>
+
+		<section class="info-section">
+			<h2>✅ What This Demonstrates</h2>
+			<ul>
+				<li><strong>Static Assets</strong>: This HTML is served from <code>public/</code></li>
+				<li><strong>API Routes</strong>: <code>/api/*</code> routes are handled by Worker first</li>
+				<li><strong>SPA Fallback</strong>: Unknown routes return this index.html</li>
+				<li><strong>Hono Framework</strong>: Type-safe routing with JSON responses</li>
+				<li><strong>ES Module Format</strong>: Correct export pattern prevents build errors</li>
+			</ul>
+		</section>
+
+		<footer>
+			<p>
+				📚 <a href="https://developers.cloudflare.com/workers/static-assets/">Static Assets Docs</a> |
+				<a href="https://hono.dev/docs/getting-started/cloudflare-workers">Hono Docs</a> |
+				<a href="https://developers.cloudflare.com/workers/vite-plugin/">Vite Plugin Docs</a>
+			</p>
+		</footer>
+	</div>
+
+	<script src="/script.js"></script>
+</body>
+</html>
