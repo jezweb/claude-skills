@@ -37,12 +37,10 @@ We pivoted from **bundled composite skills** to **atomic, domain-focused skills*
 
 ## Current Status
 
-### ✅ Completed Skills (2)
+### ✅ Completed Skills (3)
 - `tailwind-v4-shadcn` - Tailwind v4 + shadcn/ui (6h dev, ~70% token savings)
 - `cloudflare-worker-base` - Hono + Vite + wrangler (2h dev, ~60% token savings)
-
-### 🚧 Incomplete Skills (1)
-- `firecrawl-scraper` - Has templates, needs SKILL.md + README.md (2h to complete)
+- `firecrawl-scraper` - Firecrawl v2 API for web scraping (1.5h dev, ~60% token savings)
 
 ### 📋 Planned Atomic Skills (11)
 
@@ -96,12 +94,7 @@ User: "Build a Cloudflare full-stack app with database and auth"
 ## Next Steps
 
 ### Immediate (This Week):
-1. **Complete firecrawl-scraper** (2 hours)
-   - Add SKILL.md with YAML frontmatter
-   - Add README.md with keywords
-   - Document existing templates
-
-2. **Build cloudflare-d1** (4 hours) - Highest priority
+1. **Build cloudflare-d1** (4 hours) - Highest priority
    - Research Cloudflare Docs MCP
    - Create templates for D1 setup
    - Document migration patterns
