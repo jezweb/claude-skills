@@ -3,7 +3,7 @@
 **Project**: Claude Code Skills Collection
 **Maintainer**: Jeremy Dawes (Jezweb)
 **Repository**: https://github.com/jezweb/claude-skills
-**Last Updated**: 2025-10-21
+**Last Updated**: 2025-10-22
 
 ---
 
@@ -378,7 +378,7 @@ Result: Integrated solution from atomic skills
 
 ---
 
-### Batch 2 - Auth & Frameworks (Week 2) ⭐⭐
+### Batch 2 - AI SDK & Auth & Frameworks (Week 2-3) ⭐⭐⭐
 
 #### 7. cloudflare-nextjs
 **Status**: ✅ Complete (2025-10-21)
@@ -423,7 +423,94 @@ Result: Integrated solution from atomic skills
 
 ---
 
-#### 8. clerk-auth
+#### 8. ai-sdk-core
+**Status**: ✅ Complete (2025-10-22)
+**Priority**: Critical
+**Dependencies**: None
+**Actual Dev Time**: 6 hours
+**Token Savings**: ~58%
+**Errors Prevented**: 12
+
+**What It Does**:
+- Backend AI functionality with Vercel AI SDK v5 (stable)
+- Text generation (generateText, streamText) with multi-provider support
+- Structured output (generateObject, streamObject) with Zod validation
+- Tool calling and Agent class for multi-step execution
+- stopWhen conditions for workflow control (replaces maxSteps)
+- Multi-provider support (OpenAI, Anthropic, Google, Cloudflare Workers AI)
+- Critical v4→v5 migration guide (15+ breaking changes documented)
+- Node.js, Cloudflare Workers, Next.js Server Components/Actions integration
+- Production patterns for error handling, cost optimization, and performance
+
+**Files Created**:
+- README.md (comprehensive auto-trigger keywords)
+- SKILL.md (931 lines - complete API reference)
+- templates/generate-text-basic.ts (simple text generation)
+- templates/stream-text-chat.ts (streaming chat with messages)
+- templates/generate-object-zod.ts (structured output with Zod)
+- templates/stream-object-zod.ts (streaming structured data)
+- templates/tools-basic.ts (tool calling basics)
+- templates/agent-with-tools.ts (Agent class usage)
+- templates/multi-step-execution.ts (stopWhen patterns)
+- templates/openai-setup.ts (OpenAI provider configuration)
+- templates/anthropic-setup.ts (Anthropic provider configuration)
+- templates/google-setup.ts (Google provider configuration)
+- templates/cloudflare-worker-integration.ts (Workers AI integration)
+- templates/nextjs-server-action.ts (Next.js Server Actions)
+- templates/package.json (dependencies template)
+- references/providers-quickstart.md (top 4 providers setup)
+- references/v5-breaking-changes.md (complete migration guide)
+- references/top-errors.md (12 errors with solutions)
+- references/production-patterns.md (best practices)
+- references/links-to-official-docs.md (organized documentation links)
+- scripts/check-versions.sh (package version checker)
+
+**Production Validated**: Templates tested, all files complete
+
+**Auto-Trigger Keywords**:
+- `ai sdk core`, `vercel ai sdk`, `generateText`, `streamText`, `generateObject`
+- `ai tools calling`, `ai agent class`, `openai sdk`, `anthropic sdk`, `google gemini sdk`
+- `multi-provider ai`, `zod ai schema`, `ai streaming backend`
+- Error keywords: `AI_APICallError`, `AI_NoObjectGeneratedError`, `worker startup limit ai`
+
+---
+
+#### 9. ai-sdk-ui
+**Status**: Planned (HIGH PRIORITY - DO AFTER ai-sdk-core)
+**Priority**: Critical
+**Dependencies**: None (complements ai-sdk-core)
+**Estimated Dev Time**: 5-7 hours
+**Token Savings**: ~50-55%
+**Errors Prevented**: 12+
+
+**What It Does**:
+- Frontend React hooks for AI-powered UIs with Vercel AI SDK v5
+- useChat hook (chat interfaces with streaming)
+- useCompletion hook (text completions)
+- useObject hook (streaming structured data)
+- v4→v5 migration (especially useChat input management)
+- Next.js App Router and Pages Router integration
+- Message rendering, persistence, tool calling UI
+- React, Next.js, and other React frameworks
+
+**Files to Create**:
+- README.md (comprehensive keywords)
+- SKILL.md (700-900 lines)
+- 11 templates (useChat, useCompletion, useObject, Next.js examples)
+- 5 references (migration, streaming, errors, Next.js, links)
+- scripts/check-versions.sh
+
+**Production Validated**: Specification complete, ready to build
+
+**Auto-Trigger Keywords**:
+- `ai sdk ui`, `useChat`, `useCompletion`, `useObject`, `react ai chat`
+- `nextjs ai chat`, `streaming ai ui`, `ai chat interface`, `vercel ai ui`
+- `chat message state`, `message persistence`, `ai file attachments`
+- Error keywords: `useChat failed to parse`, `useChat no response`, `unclosed streams`
+
+---
+
+#### 10. clerk-auth
 **Status**: Planned
 **Priority**: Critical
 **Dependencies**: None (works across frameworks)
@@ -446,7 +533,7 @@ Result: Integrated solution from atomic skills
 
 ---
 
-#### 9. hono-routing
+#### 11. hono-routing
 **Status**: Planned
 **Priority**: High
 **Dependencies**: None
@@ -468,7 +555,7 @@ Result: Integrated solution from atomic skills
 
 ---
 
-#### 10. react-hook-form-zod
+#### 12. react-hook-form-zod
 **Status**: Planned
 **Priority**: High
 **Dependencies**: None
@@ -490,9 +577,9 @@ Result: Integrated solution from atomic skills
 
 ---
 
-### Batch 3 - Data & Utilities (Week 3) ⭐
+### Batch 3 - Data & Utilities (Week 4) ⭐
 
-#### 11. tanstack-query
+#### 13. tanstack-query
 **Status**: Planned
 **Priority**: Medium
 **Dependencies**: None
@@ -514,7 +601,7 @@ Result: Integrated solution from atomic skills
 
 ---
 
-#### 12. drizzle-orm-d1
+#### 14. drizzle-orm-d1
 **Status**: Planned (Optional)
 **Priority**: Low
 **Dependencies**: cloudflare-d1
@@ -652,7 +739,7 @@ Calculate:
 ### Overall Progress:
 - **Completed**: 11 skills ✅
 - **Batch 1 - Cloudflare Services**: 7/7 complete (100%) 🎯
-- **Batch 2 - Auth & Frameworks**: 1/4 complete (25%)
+- **Batch 2 - AI SDK & Auth & Frameworks**: 1/6 complete (17%)
 - **Batch 3 - Data & Utilities**: 0/2 complete
 
 ### Skills by Status:
@@ -670,13 +757,15 @@ Calculate:
 | **cloudflare-queues** | **✅ Complete** | **3h** | **~50%** | **8** | Medium |
 | **cloudflare-agents** | **✅ Complete** | **18h** | **~65%** | **15** | Critical |
 | **cloudflare-nextjs** | **✅ Complete** | **4h** | **~59%** | **10** | High |
+| ai-sdk-core | Planned | 6-8h (est.) | ~55-60% | 12 | Critical |
+| ai-sdk-ui | Planned | 5-7h (est.) | ~50-55% | 12 | Critical |
 | clerk-auth | Planned | 5h (est.) | ~60% | - | Critical |
 | hono-routing | Planned | 4h (est.) | ~55% | - | High |
 | react-hook-form-zod | Planned | 4h (est.) | ~60% | - | High |
 | tanstack-query | Planned | 4h (est.) | ~55% | - | Medium |
 | drizzle-orm-d1 | Planned | 5h (est.) | ~60% | - | Low |
 
-**Total Skills Planned**: 15 (11 complete, 4 to build)
+**Total Skills Planned**: 17 (11 complete, 6 to build)
 
 ---
 
@@ -787,6 +876,6 @@ A skill is considered "complete" when:
 
 ---
 
-**Last Updated**: 2025-10-21
+**Last Updated**: 2025-10-22 (Added ai-sdk-core and ai-sdk-ui to Batch 2)
 **Next Review**: 2025-10-28
 **Maintainer**: Jeremy Dawes | jeremy@jezweb.net
