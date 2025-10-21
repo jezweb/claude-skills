@@ -59,11 +59,6 @@ We pivoted from **bundled composite skills** to **atomic, domain-focused skills*
 2. `hono-routing` - Hono patterns (middleware, RPC, typed routes)
 3. `react-hook-form-zod` - Forms + validation (client + server)
 
-**Batch 2 - Auth & Frameworks (3 skills)**
-5. `clerk-auth` - All Clerk knowledge (React, Next.js, CF Workers, JWT)
-6. `hono-routing` - Hono patterns (middleware, RPC, typed routes)
-7. `react-hook-form-zod` - Forms + validation (client + server)
-
 **Batch 3 - Data & Utilities (1 skill)**
 4. `tanstack-query` - Server state management
 
