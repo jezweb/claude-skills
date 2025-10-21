@@ -1,0 +1,56 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "my-worker",
+  "main": "src/index.ts",
+  "compatibility_date": "2025-10-11",
+  "observability": {
+    "enabled": true
+  },
+
+  // KV Namespace Bindings
+  "kv_namespaces": [
+    {
+      // The binding name - accessible as env.CACHE in your Worker
+      "binding": "CACHE",
+
+      // Production namespace ID (from: wrangler kv namespace create CACHE)
+      "id": "<YOUR_PRODUCTION_NAMESPACE_ID>",
+
+      // Preview/local namespace ID (from: wrangler kv namespace create CACHE --preview)
+      // This is optional but recommended for local development
+      "preview_id": "<YOUR_PREVIEW_NAMESPACE_ID>"
+    },
+
+    // Multiple namespaces example
+    {
+      "binding": "CONFIG",
+      "id": "<CONFIG_PRODUCTION_ID>",
+      "preview_id": "<CONFIG_PREVIEW_ID>"
+    },
+
+    {
+      "binding": "SESSIONS",
+      "id": "<SESSIONS_PRODUCTION_ID>",
+      "preview_id": "<SESSIONS_PREVIEW_ID>"
+    }
+  ]
+
+  // IMPORTANT NOTES:
+  //
+  // 1. Create namespaces first:
+  //    npx wrangler kv namespace create CACHE
+  //    npx wrangler kv namespace create CACHE --preview
+  //
+  // 2. Copy the IDs from the command output to this file
+  //
+  // 3. NEVER commit real namespace IDs to public repos
+  //    Use environment variables for sensitive namespaces:
+  //    "id": "${KV_CACHE_ID}"
+  //
+  // 4. preview_id is optional but recommended for local development
+  //    It creates a separate namespace for testing
+  //
+  // 5. Binding names must be valid JavaScript identifiers
+  //    Good: CACHE, MY_KV, UserData
+  //    Bad: my-kv, user.data, 123kv
+}

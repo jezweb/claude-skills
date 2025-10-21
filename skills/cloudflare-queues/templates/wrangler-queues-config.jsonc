@@ -1,0 +1,57 @@
+{
+  "name": "my-worker",
+  "main": "src/index.ts",
+  "compatibility_date": "2025-10-11",
+
+  // Queue Bindings Configuration
+  "queues": {
+
+    // Producer Configuration (send messages TO queues)
+    "producers": [
+      {
+        "binding": "MY_QUEUE",           // Available as env.MY_QUEUE in code
+        "queue": "my-queue",              // Queue name (must be created first)
+        "delivery_delay": 0               // Optional: delay all messages (0-43200 seconds)
+      },
+      {
+        "binding": "HIGH_PRIORITY_QUEUE",
+        "queue": "high-priority-queue"
+      },
+      {
+        "binding": "LOW_PRIORITY_QUEUE",
+        "queue": "low-priority-queue",
+        "delivery_delay": 60              // Delay all messages by 1 minute
+      }
+    ],
+
+    // Consumer Configuration (receive messages FROM queues)
+    "consumers": [
+      {
+        "queue": "my-queue",              // Queue to consume from
+        "max_batch_size": 10,             // Max messages per batch (1-100, default: 10)
+        "max_batch_timeout": 5,           // Max seconds to wait (0-60, default: 5)
+        "max_retries": 3,                 // Max retry attempts (0-100, default: 3)
+        "dead_letter_queue": "my-dlq",    // Optional: where failed messages go
+        "retry_delay": 0,                 // Optional: delay retries (seconds)
+        "max_concurrency": null           // Optional: limit concurrent consumers (default: auto-scale to 250)
+      },
+      {
+        "queue": "high-priority-queue",
+        "max_batch_size": 50,             // Larger batches for high volume
+        "max_batch_timeout": 1,           // Low latency
+        "max_retries": 5,
+        "dead_letter_queue": "priority-dlq"
+      },
+      {
+        "queue": "my-dlq",                // Consumer for dead letter queue
+        "max_batch_size": 10,
+        "max_batch_timeout": 30           // Can wait longer for DLQ
+      }
+    ]
+  },
+
+  // Optional: Increase CPU limit for long-running consumers
+  "limits": {
+    "cpu_ms": 30000  // 30 seconds (default). Can be increased to 300000 (5 minutes)
+  }
+}

@@ -37,20 +37,27 @@ We pivoted from **bundled composite skills** to **atomic, domain-focused skills*
 
 ## Current Status
 
-### ✅ Completed Skills (5)
-- `tailwind-v4-shadcn` - Tailwind v4 + shadcn/ui (6h dev, ~70% token savings)
-- `cloudflare-worker-base` - Hono + Vite + wrangler (2h dev, ~60% token savings)
-- `firecrawl-scraper` - Firecrawl v2 API for web scraping (1.5h dev, ~60% token savings)
-- `cloudflare-d1` - D1 serverless database (2.5h dev, ~58% token savings)
-- `cloudflare-r2` - R2 object storage (2.5h dev, ~60% token savings)
+### ✅ Completed Skills (9)
 
-### 📋 Planned Atomic Skills (8)
+**Batch 1 - Cloudflare Services (6/6 complete)** 🎯
+1. `cloudflare-worker-base` - Hono + Vite + wrangler (2h dev, ~60% token savings, 6 errors prevented)
+2. `cloudflare-d1` - D1 serverless database (2.5h dev, ~58% token savings, 6 errors prevented)
+3. `cloudflare-r2` - R2 object storage (2.5h dev, ~60% token savings, 6 errors prevented)
+4. `cloudflare-kv` - KV namespaces (3h dev, ~55% token savings, 6 errors prevented)
+5. `cloudflare-workers-ai` - Workers AI (5h dev, ~60% token savings, 6 errors prevented)
+6. `cloudflare-vectorize` - Vector search (3h dev, ~65% token savings, 8 errors prevented)
+7. `cloudflare-queues` - Async processing (3h dev, ~50% token savings, 8 errors prevented)
 
-**Batch 1 - Cloudflare Services (4 skills remaining)**
-1. `cloudflare-kv` - KV namespaces (caching patterns)
-2. `cloudflare-workers-ai` - Workers AI (models, streaming, embeddings)
-3. `cloudflare-vectorize` - Vector search (embeddings, RAG)
-4. `cloudflare-queues` - Async processing (batch jobs, retries)
+**Other Skills (2)**
+8. `tailwind-v4-shadcn` - Tailwind v4 + shadcn/ui (6h dev, ~70% token savings, 3 errors prevented)
+9. `firecrawl-scraper` - Firecrawl v2 API (1.5h dev, ~60% token savings, 6 errors prevented)
+
+### 📋 Planned Atomic Skills (4)
+
+**Batch 2 - Auth & Frameworks (3 skills)**
+1. `clerk-auth` - All Clerk knowledge (React, Next.js, CF Workers, JWT)
+2. `hono-routing` - Hono patterns (middleware, RPC, typed routes)
+3. `react-hook-form-zod` - Forms + validation (client + server)
 
 **Batch 2 - Auth & Frameworks (3 skills)**
 5. `clerk-auth` - All Clerk knowledge (React, Next.js, CF Workers, JWT)
@@ -58,7 +65,7 @@ We pivoted from **bundled composite skills** to **atomic, domain-focused skills*
 7. `react-hook-form-zod` - Forms + validation (client + server)
 
 **Batch 3 - Data & Utilities (1 skill)**
-8. `tanstack-query` - Server state management
+4. `tanstack-query` - Server state management
 
 ---
 
@@ -92,20 +99,17 @@ User: "Build a Cloudflare full-stack app with database and auth"
 
 ## Next Steps
 
-### Immediate (This Week):
-1. **Build cloudflare-d1** (4 hours) - Highest priority
-   - Research Cloudflare Docs MCP
-   - Create templates for D1 setup
-   - Document migration patterns
-   - Test with real project
+### ✅ Batch 1 Complete! (6/6 Cloudflare Services)
 
-### Week 2:
-- Complete remaining Cloudflare services (R2, KV, Workers AI, Vectorize, Queues)
-- Build clerk-auth skill (critical for most apps)
+All core Cloudflare Workers services are now covered with atomic skills. This provides a complete foundation for building serverless applications on Cloudflare.
 
-### Week 3:
-- Build framework skills (hono-routing, react-hook-form-zod)
-- Build utility skills (tanstack-query, drizzle-orm-d1)
+### Next Up - Batch 2 (Auth & Frameworks):
+1. **clerk-auth** - Critical for most apps with authentication
+2. **hono-routing** - Routing patterns for Cloudflare Workers
+3. **react-hook-form-zod** - Forms + validation best practices
+
+### Batch 3 (Data & Utilities):
+4. **tanstack-query** - Server state management (optional)
 
 ---
 

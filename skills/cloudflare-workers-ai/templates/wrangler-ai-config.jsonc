@@ -1,0 +1,138 @@
+/**
+ * Cloudflare Workers AI - Wrangler Configuration
+ *
+ * This configuration file sets up Workers AI binding for your Worker.
+ * Place this in your project root as wrangler.jsonc
+ */
+
+{
+  "name": "my-ai-worker",
+  "main": "src/index.ts",
+  "compatibility_date": "2025-10-21",
+
+  /**
+   * AI Binding
+   * Provides access to Workers AI models via env.AI
+   */
+  "ai": {
+    "binding": "AI" // Available in your Worker as env.AI
+  },
+
+  /**
+   * Optional: AI Gateway Integration
+   * Provides caching, logging, and analytics for AI requests
+   * Create a gateway at: https://dash.cloudflare.com/ai/ai-gateway
+   */
+  // Note: AI Gateway is configured per-request, not in wrangler.jsonc
+  // Use the gateway option in env.AI.run():
+  // env.AI.run(model, inputs, { gateway: { id: 'my-gateway' } })
+
+  /**
+   * Optional: Vectorize Binding (for RAG patterns)
+   * Store and search vector embeddings
+   */
+  "vectorize": [
+    {
+      "binding": "VECTORIZE",
+      "index_name": "my-embeddings-index"
+    }
+  ],
+
+  /**
+   * Optional: D1 Database (for RAG document storage)
+   */
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "my-database",
+      "database_id": "YOUR_DATABASE_ID"
+    }
+  ],
+
+  /**
+   * Optional: R2 Bucket (for image storage)
+   */
+  "r2_buckets": [
+    {
+      "binding": "BUCKET",
+      "bucket_name": "ai-generated-images"
+    }
+  ],
+
+  /**
+   * Optional: KV Namespace (for caching AI responses)
+   */
+  "kv_namespaces": [
+    {
+      "binding": "CACHE",
+      "id": "YOUR_KV_NAMESPACE_ID"
+    }
+  ],
+
+  /**
+   * Environment Variables
+   * Store API keys and configuration
+   */
+  "vars": {
+    "ENVIRONMENT": "production"
+  },
+
+  /**
+   * Secrets (use: wrangler secret put SECRET_NAME)
+   * - CLOUDFLARE_API_KEY
+   * - CLOUDFLARE_ACCOUNT_ID
+   */
+
+  /**
+   * Workers Configuration
+   */
+  "limits": {
+    "cpu_ms": 30000 // 30 seconds (increase for long AI operations)
+  },
+
+  /**
+   * Local Development
+   * Run: npx wrangler dev
+   */
+  "dev": {
+    "port": 8787
+  }
+}
+
+/**
+ * TypeScript Types
+ *
+ * Add to your src/index.ts:
+ *
+ * export interface Env {
+ *   AI: Ai;
+ *   VECTORIZE?: Vectorize;
+ *   DB?: D1Database;
+ *   BUCKET?: R2Bucket;
+ *   CACHE?: KVNamespace;
+ *   CLOUDFLARE_API_KEY?: string;
+ *   CLOUDFLARE_ACCOUNT_ID?: string;
+ * }
+ */
+
+/**
+ * Usage Examples
+ *
+ * Basic AI inference:
+ * const response = await env.AI.run('@cf/meta/llama-3.1-8b-instruct', {
+ *   prompt: 'Hello!',
+ * });
+ *
+ * With AI Gateway:
+ * const response = await env.AI.run(
+ *   '@cf/meta/llama-3.1-8b-instruct',
+ *   { prompt: 'Hello!' },
+ *   { gateway: { id: 'my-gateway' } }
+ * );
+ *
+ * Streaming:
+ * const stream = await env.AI.run('@cf/meta/llama-3.1-8b-instruct', {
+ *   messages: [{ role: 'user', content: 'Hello!' }],
+ *   stream: true,
+ * });
+ */
