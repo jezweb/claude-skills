@@ -37,20 +37,20 @@ We pivoted from **bundled composite skills** to **atomic, domain-focused skills*
 
 ## Current Status
 
-### ✅ Completed Skills (3)
+### ✅ Completed Skills (4)
 - `tailwind-v4-shadcn` - Tailwind v4 + shadcn/ui (6h dev, ~70% token savings)
 - `cloudflare-worker-base` - Hono + Vite + wrangler (2h dev, ~60% token savings)
 - `firecrawl-scraper` - Firecrawl v2 API for web scraping (1.5h dev, ~60% token savings)
+- `cloudflare-d1` - D1 serverless database (2.5h dev, ~58% token savings)
 
-### 📋 Planned Atomic Skills (11)
+### 📋 Planned Atomic Skills (10)
 
-**Batch 1 - Cloudflare Services (6 skills)**
-1. `cloudflare-d1` - D1 database (migrations, queries, bindings)
-2. `cloudflare-r2` - R2 storage (uploads, CORS, presigned URLs)
-3. `cloudflare-kv` - KV namespaces (caching patterns)
-4. `cloudflare-workers-ai` - Workers AI (models, streaming, embeddings)
-5. `cloudflare-vectorize` - Vector search (embeddings, RAG)
-6. `cloudflare-queues` - Async processing (batch jobs, retries)
+**Batch 1 - Cloudflare Services (5 skills remaining)**
+1. `cloudflare-r2` - R2 object storage (uploads, CORS, presigned URLs)
+2. `cloudflare-kv` - KV namespaces (caching patterns)
+3. `cloudflare-workers-ai` - Workers AI (models, streaming, embeddings)
+4. `cloudflare-vectorize` - Vector search (embeddings, RAG)
+5. `cloudflare-queues` - Async processing (batch jobs, retries)
 
 **Batch 2 - Auth & Frameworks (3 skills)**
 7. `clerk-auth` - All Clerk knowledge (React, Next.js, CF Workers, JWT)
