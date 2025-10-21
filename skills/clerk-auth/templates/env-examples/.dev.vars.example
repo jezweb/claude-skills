@@ -1,0 +1,63 @@
+# Clerk Environment Variables for Cloudflare Workers
+#
+# Copy this file to .dev.vars for local development
+# Get your keys from https://dashboard.clerk.com
+
+# ==========================================
+# LOCAL DEVELOPMENT (.dev.vars)
+# ==========================================
+
+# Secret Key (server-side verification)
+CLERK_SECRET_KEY=sk_test_...
+
+# Publishable Key (can be in wrangler.jsonc or here)
+CLERK_PUBLISHABLE_KEY=pk_test_...
+
+# ==========================================
+# PRODUCTION DEPLOYMENT
+# ==========================================
+
+# For production, use wrangler secrets:
+#
+# 1. Set secret key (encrypted, not in wrangler.jsonc):
+#    wrangler secret put CLERK_SECRET_KEY
+#
+# 2. Set publishable key in wrangler.jsonc:
+#    {
+#      "vars": {
+#        "CLERK_PUBLISHABLE_KEY": "pk_live_..."
+#      }
+#    }
+
+# ==========================================
+# SECURITY NOTES
+# ==========================================
+
+# 1. NEVER commit .dev.vars to version control
+#    .dev.vars is in .gitignore by default
+#
+# 2. Use different keys for development and production
+#    - Development: pk_test_... / sk_test_...
+#    - Production: pk_live_... / sk_live_...
+#
+# 3. Production secrets via wrangler secret put
+#    This encrypts secrets, they won't appear in wrangler.jsonc
+#
+# 4. Rotate CLERK_SECRET_KEY if compromised
+#    Generate new keys in Clerk Dashboard
+
+# ==========================================
+# OPTIONAL - Additional Bindings
+# ==========================================
+
+# If your Worker uses other services, add them here:
+# DATABASE_URL=...
+# API_KEY=...
+
+# ==========================================
+# REFERENCE
+# ==========================================
+
+# Official Docs:
+# https://clerk.com/docs/reference/backend/verify-token
+# https://developers.cloudflare.com/workers/wrangler/configuration/

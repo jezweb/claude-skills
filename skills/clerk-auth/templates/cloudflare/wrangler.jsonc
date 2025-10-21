@@ -1,0 +1,46 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "my-clerk-worker",
+  "main": "src/index.ts",
+  "account_id": "YOUR_ACCOUNT_ID",
+  "compatibility_date": "2025-10-11",
+  "observability": {
+    "enabled": true
+  },
+  "vars": {
+    "CLERK_PUBLISHABLE_KEY": "pk_test_..."
+  }
+
+  /**
+   * CRITICAL: Never commit CLERK_SECRET_KEY to version control
+   *
+   * To set CLERK_SECRET_KEY:
+   *
+   * 1. Production:
+   *    wrangler secret put CLERK_SECRET_KEY
+   *
+   * 2. Local development:
+   *    Create .dev.vars file (see templates/env-examples/.dev.vars.example)
+   *
+   * After setting, access via c.env.CLERK_SECRET_KEY in your Worker
+   */
+
+  /**
+   * Optional: Add other Cloudflare bindings
+   *
+   * KV Namespace:
+   * "kv_namespaces": [
+   *   { "binding": "AUTH_CACHE", "id": "YOUR_KV_ID" }
+   * ]
+   *
+   * D1 Database:
+   * "d1_databases": [
+   *   { "binding": "DB", "database_name": "my-db", "database_id": "YOUR_DB_ID" }
+   * ]
+   *
+   * R2 Bucket:
+   * "r2_buckets": [
+   *   { "binding": "ASSETS", "bucket_name": "my-bucket" }
+   * ]
+   */
+}
