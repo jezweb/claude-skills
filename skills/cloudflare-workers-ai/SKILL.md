@@ -1,6 +1,29 @@
+---
+name: Cloudflare Workers AI
+description: |
+  Complete knowledge domain for Cloudflare Workers AI - Run AI models on serverless GPUs across Cloudflare's global network.
+
+  Use when: implementing AI inference on Workers, running LLM models, generating text/images with AI,
+  configuring Workers AI bindings, implementing AI streaming, using AI Gateway, integrating with
+  embeddings/RAG systems, or encountering "AI_ERROR", rate limit errors, model not found, token
+  limit exceeded, or neurons exceeded errors.
+
+  Keywords: workers ai, cloudflare ai, ai bindings, llm workers, @cf/meta/llama, workers ai models,
+  ai inference, cloudflare llm, ai streaming, text generation ai, ai embeddings, image generation ai,
+  workers ai rag, ai gateway, llama workers, flux image generation, stable diffusion workers,
+  vision models ai, ai chat completion, AI_ERROR, rate limit ai, model not found, token limit exceeded,
+  neurons exceeded, ai quota exceeded, streaming failed, model unavailable, workers ai hono,
+  ai gateway workers, vercel ai sdk workers, openai compatible workers, workers ai vectorize
+---
+
 # Cloudflare Workers AI - Complete Reference
 
 Production-ready knowledge domain for building AI-powered applications with Cloudflare Workers AI.
+
+**Status**: Production Ready ✅
+**Last Updated**: 2025-10-21
+**Dependencies**: cloudflare-worker-base (for Worker setup)
+**Latest Versions**: wrangler@4.43.0, @cloudflare/workers-types@4.20251014.0
 
 ---
 

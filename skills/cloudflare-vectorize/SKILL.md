@@ -1,27 +1,34 @@
 ---
-name: cloudflare-vectorize
-version: 1.0.0
-description: Complete guide for Cloudflare Vectorize - vector database for semantic search, RAG, and AI-powered applications
-author: Jezweb
-tags:
-  - cloudflare
-  - vectorize
-  - vector-database
-  - embeddings
-  - semantic-search
-  - RAG
-  - workers-ai
-  - openai
-category: cloudflare
-status: production
-token_savings: 65%
-errors_prevented: 8
-dev_time_saved: 2.5 hours
+name: Cloudflare Vectorize
+description: |
+  Complete knowledge domain for Cloudflare Vectorize - globally distributed vector database for building
+  semantic search, RAG (Retrieval Augmented Generation), and AI-powered applications.
+
+  Use when: creating vector indexes, inserting embeddings, querying vectors, implementing semantic search,
+  building RAG systems, configuring metadata filtering, working with Workers AI embeddings, integrating
+  with OpenAI embeddings, or encountering metadata index timing errors, dimension mismatches, filter
+  syntax issues, or insert vs upsert confusion.
+
+  Keywords: vectorize, vector database, vector index, vector search, similarity search, semantic search,
+  nearest neighbor, knn search, ann search, RAG, retrieval augmented generation, chat with data,
+  document search, semantic Q&A, context retrieval, bge-base, @cf/baai/bge-base-en-v1.5,
+  text-embedding-3-small, text-embedding-3-large, Workers AI embeddings, openai embeddings,
+  insert vectors, upsert vectors, query vectors, delete vectors, metadata filtering, namespace filtering,
+  topK search, cosine similarity, euclidean distance, dot product, wrangler vectorize, metadata index,
+  create vectorize index, vectorize dimensions, vectorize metric, vectorize binding
 ---
 
-# Cloudflare Vectorize Skill
+# Cloudflare Vectorize
 
 Complete implementation guide for Cloudflare Vectorize - a globally distributed vector database for building semantic search, RAG (Retrieval Augmented Generation), and AI-powered applications with Cloudflare Workers.
+
+**Status**: Production Ready ✅
+**Last Updated**: 2025-10-21
+**Dependencies**: cloudflare-worker-base (for Worker setup), cloudflare-workers-ai (for embeddings)
+**Latest Versions**: wrangler@4.43.0, @cloudflare/workers-types@4.20251014.0
+**Token Savings**: ~65%
+**Errors Prevented**: 8
+**Dev Time Saved**: ~3 hours
 
 ## What This Skill Provides
 
