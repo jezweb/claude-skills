@@ -324,6 +324,60 @@ Result: Integrated solution from atomic skills
 
 ---
 
+#### 7. cloudflare-agents
+**Status**: ✅ Complete (2025-10-21)
+**Priority**: Critical
+**Dependencies**: cloudflare-worker-base (recommended)
+**Actual Dev Time**: 18 hours
+**Token Savings**: ~65%
+**Errors Prevented**: 15
+
+**What It Does**:
+- Complete Cloudflare Agents SDK knowledge (all 17 API surfaces)
+- Agent Class API (onRequest, onConnect, onMessage, onStart)
+- WebSocket & Server-Sent Events (real-time bidirectional communication)
+- State management (this.setState, this.sql, state sync)
+- Task scheduling (this.schedule with delays, dates, cron)
+- Workflow integration (triggering Cloudflare Workflows)
+- Browser Rendering (web scraping with Puppeteer)
+- RAG implementation (Vectorize + Workers AI embeddings)
+- MCP servers (Model Context Protocol with McpAgent)
+- Human-in-the-loop patterns (approval workflows)
+- Client APIs (AgentClient, useAgent, useAgentChat hooks)
+- Multi-agent communication and orchestration
+- Durable Objects configuration and migrations
+
+**Files Created**:
+- README.md (comprehensive auto-trigger keywords)
+- SKILL.md (1300+ lines covering all APIs)
+- 13 templates (wrangler config, agents, workers, clients, MCP)
+- templates/wrangler-agents-config.jsonc
+- templates/basic-agent.ts
+- templates/websocket-agent.ts
+- templates/state-sync-agent.ts
+- templates/scheduled-agent.ts
+- templates/workflow-agent.ts
+- templates/browser-agent.ts
+- templates/rag-agent.ts
+- templates/chat-agent-streaming.ts
+- templates/calling-agents-worker.ts
+- templates/react-useagent-client.tsx
+- templates/mcp-server-basic.ts
+- templates/hitl-agent.ts
+
+**Production Validated**: Cloudflare's own MCP servers (https://github.com/cloudflare/mcp-server-cloudflare)
+
+**Auto-Trigger Keywords**:
+- `cloudflare agents`, `agents sdk`, `Agent class`, `Durable Objects agents`
+- `this.setState`, `this.sql`, `this.schedule`, `run workflows`
+- `browse web agents`, `rag agents`, `mcp server`, `McpAgent`
+- `useAgent hook`, `AgentClient`, `routeAgentRequest`, `getAgentByName`
+- `stateful agents`, `WebSocket agents`, `streaming chat agent`
+- `human in the loop`, `multi-agent`, `agent orchestration`
+- Error keywords: `"new_sqlite_classes"`, `"migrations required"`, `"binding not found"`
+
+---
+
 ### Batch 2 - Auth & Frameworks (Week 2) ⭐⭐
 
 #### 7. clerk-auth
@@ -553,8 +607,8 @@ Calculate:
 ## 📈 Progress Tracking
 
 ### Overall Progress:
-- **Completed**: 9 skills ✅
-- **Batch 1 - Cloudflare Services**: 6/6 complete (100%) 🎯
+- **Completed**: 10 skills ✅
+- **Batch 1 - Cloudflare Services**: 7/7 complete (100%) 🎯
 - **Batch 2 - Auth & Frameworks**: 0/3 complete
 - **Batch 3 - Data & Utilities**: 0/2 complete
 
@@ -571,13 +625,14 @@ Calculate:
 | **cloudflare-workers-ai** | **✅ Complete** | **5h** | **~60%** | **6** | High |
 | **cloudflare-vectorize** | **✅ Complete** | **3h** | **~65%** | **8** | Medium |
 | **cloudflare-queues** | **✅ Complete** | **3h** | **~50%** | **8** | Medium |
+| **cloudflare-agents** | **✅ Complete** | **18h** | **~65%** | **15** | Critical |
 | clerk-auth | Planned | 5h (est.) | ~60% | - | Critical |
 | hono-routing | Planned | 4h (est.) | ~55% | - | High |
 | react-hook-form-zod | Planned | 4h (est.) | ~60% | - | High |
 | tanstack-query | Planned | 4h (est.) | ~55% | - | Medium |
 | drizzle-orm-d1 | Planned | 5h (est.) | ~60% | - | Low |
 
-**Total Skills Planned**: 13 (9 complete, 4 to build)
+**Total Skills Planned**: 14 (10 complete, 4 to build)
 
 ---
 

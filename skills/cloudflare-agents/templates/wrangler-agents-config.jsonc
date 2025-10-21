@@ -1,0 +1,95 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "my-agent",
+  "main": "src/index.ts",
+  "account_id": "YOUR_ACCOUNT_ID",
+  "compatibility_date": "2025-10-21",
+  "compatibility_flags": ["nodejs_compat"],
+
+  // REQUIRED: Durable Objects configuration for Agents
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "MyAgent",        // MUST match class name exactly
+        "class_name": "MyAgent"   // MUST match exported class
+      }
+    ]
+  },
+
+  // REQUIRED: Migrations (SQLite must be in v1)
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": ["MyAgent"]  // Enables persistent state
+    }
+  ],
+
+  // Optional: Workers AI binding
+  "ai": {
+    "binding": "AI"
+  },
+
+  // Optional: Vectorize binding (for RAG)
+  "vectorize": {
+    "bindings": [
+      {
+        "binding": "VECTORIZE",
+        "index_name": "my-agent-vectors"
+      }
+    ]
+  },
+
+  // Optional: Browser Rendering binding
+  "browser": {
+    "binding": "BROWSER"
+  },
+
+  // Optional: Workflows binding
+  "workflows": [
+    {
+      "name": "MY_WORKFLOW",
+      "class_name": "MyWorkflow"
+      // Add "script_name": "workflow-project" if in different script
+    }
+  ],
+
+  // Optional: D1 binding (additional persistent storage)
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "my-agent-db",
+      "database_id": "your-database-id-here"
+    }
+  ],
+
+  // Optional: R2 binding (file storage)
+  "r2_buckets": [
+    {
+      "binding": "BUCKET",
+      "bucket_name": "my-agent-files"
+    }
+  ],
+
+  // Optional: KV binding
+  "kv_namespaces": [
+    {
+      "binding": "KV",
+      "id": "your-kv-namespace-id"
+    }
+  ],
+
+  // Environment variables
+  "vars": {
+    "ENVIRONMENT": "production"
+  },
+
+  // Secrets (set with: wrangler secret put SECRET_NAME)
+  // OPENAI_API_KEY
+  // ANTHROPIC_API_KEY
+  // etc.
+
+  // Observability
+  "observability": {
+    "enabled": true
+  }
+}
