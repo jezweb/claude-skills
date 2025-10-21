@@ -380,7 +380,50 @@ Result: Integrated solution from atomic skills
 
 ### Batch 2 - Auth & Frameworks (Week 2) ⭐⭐
 
-#### 7. clerk-auth
+#### 7. cloudflare-nextjs
+**Status**: ✅ Complete (2025-10-21)
+**Priority**: High
+**Dependencies**: None
+**Actual Dev Time**: 4 hours
+**Token Savings**: ~59%
+**Errors Prevented**: 10
+
+**What It Does**:
+- Deploy Next.js (App Router and Pages Router) to Cloudflare Workers
+- OpenNext Cloudflare adapter (`@opennextjs/cloudflare`) setup
+- New and existing project migration patterns
+- wrangler.jsonc and open-next.config.ts configuration
+- Development workflow (dev + preview modes)
+- Integration with Cloudflare services (D1, R2, KV, Workers AI)
+- Comprehensive error prevention (10+ documented errors)
+- Security (CVE-2025-6087 mitigation)
+
+**Files Created**:
+- README.md (comprehensive auto-trigger keywords, 200+ lines)
+- SKILL.md (complete guide, 800+ lines)
+- scripts/setup-new-project.sh (C3 scaffold)
+- scripts/setup-existing-project.sh (adapter migration)
+- scripts/analyze-bundle.sh (worker size debugging)
+- references/wrangler.jsonc (complete configuration)
+- references/open-next.config.ts (adapter config)
+- references/package.json (scripts template)
+- references/.env (build configuration)
+- references/database-client-example.ts (request-scoped pattern)
+- references/troubleshooting.md (all errors and solutions)
+- references/feature-support.md (feature compatibility matrix)
+- assets/workflow-diagram.md (development workflow)
+
+**Production Validated**: Official Cloudflare support, OpenNext adapter maintained
+
+**Auto-Trigger Keywords**:
+- `next.js cloudflare`, `nextjs workers`, `opennext adapter`
+- `next.js ssr cloudflare`, `next.js isr workers`, `server components cloudflare`
+- `migrate next.js to cloudflare`, `nextjs d1`, `nextjs workers ai`
+- Error keywords: `worker size limit nextjs`, `finalizationregistry nextjs`, `cannot perform i/o nextjs`
+
+---
+
+#### 8. clerk-auth
 **Status**: Planned
 **Priority**: Critical
 **Dependencies**: None (works across frameworks)
@@ -403,7 +446,7 @@ Result: Integrated solution from atomic skills
 
 ---
 
-#### 8. hono-routing
+#### 9. hono-routing
 **Status**: Planned
 **Priority**: High
 **Dependencies**: None
@@ -425,7 +468,7 @@ Result: Integrated solution from atomic skills
 
 ---
 
-#### 9. react-hook-form-zod
+#### 10. react-hook-form-zod
 **Status**: Planned
 **Priority**: High
 **Dependencies**: None
@@ -449,7 +492,7 @@ Result: Integrated solution from atomic skills
 
 ### Batch 3 - Data & Utilities (Week 3) ⭐
 
-#### 10. tanstack-query
+#### 11. tanstack-query
 **Status**: Planned
 **Priority**: Medium
 **Dependencies**: None
@@ -471,7 +514,7 @@ Result: Integrated solution from atomic skills
 
 ---
 
-#### 11. drizzle-orm-d1
+#### 12. drizzle-orm-d1
 **Status**: Planned (Optional)
 **Priority**: Low
 **Dependencies**: cloudflare-d1
@@ -607,9 +650,9 @@ Calculate:
 ## 📈 Progress Tracking
 
 ### Overall Progress:
-- **Completed**: 10 skills ✅
+- **Completed**: 11 skills ✅
 - **Batch 1 - Cloudflare Services**: 7/7 complete (100%) 🎯
-- **Batch 2 - Auth & Frameworks**: 0/3 complete
+- **Batch 2 - Auth & Frameworks**: 1/4 complete (25%)
 - **Batch 3 - Data & Utilities**: 0/2 complete
 
 ### Skills by Status:
@@ -626,13 +669,14 @@ Calculate:
 | **cloudflare-vectorize** | **✅ Complete** | **3h** | **~65%** | **8** | Medium |
 | **cloudflare-queues** | **✅ Complete** | **3h** | **~50%** | **8** | Medium |
 | **cloudflare-agents** | **✅ Complete** | **18h** | **~65%** | **15** | Critical |
+| **cloudflare-nextjs** | **✅ Complete** | **4h** | **~59%** | **10** | High |
 | clerk-auth | Planned | 5h (est.) | ~60% | - | Critical |
 | hono-routing | Planned | 4h (est.) | ~55% | - | High |
 | react-hook-form-zod | Planned | 4h (est.) | ~60% | - | High |
 | tanstack-query | Planned | 4h (est.) | ~55% | - | Medium |
 | drizzle-orm-d1 | Planned | 5h (est.) | ~60% | - | Low |
 
-**Total Skills Planned**: 14 (10 complete, 4 to build)
+**Total Skills Planned**: 15 (11 complete, 4 to build)
 
 ---
 

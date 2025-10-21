@@ -1,0 +1,106 @@
+// Complete wrangler.jsonc configuration for Next.js on Cloudflare Workers
+{
+  // Worker name (update this to your project name)
+  "name": "my-next-app",
+
+  // CRITICAL: Minimum compatibility_date for FinalizationRegistry support
+  "compatibility_date": "2025-05-05",
+
+  // CRITICAL: nodejs_compat flag required for Node.js runtime
+  "compatibility_flags": ["nodejs_compat"],
+
+  // Optional: Custom domain routing
+  // "routes": [
+  //   {
+  //     "pattern": "example.com/*",
+  //     "custom_domain": true
+  //   }
+  // ],
+
+  // Optional: D1 Database bindings
+  // "d1_databases": [
+  //   {
+  //     "binding": "DB",
+  //     "database_name": "production-db",
+  //     "database_id": "your-database-id"
+  //   }
+  // ],
+
+  // Optional: R2 Storage bindings
+  // "r2_buckets": [
+  //   {
+  //     "binding": "BUCKET",
+  //     "bucket_name": "your-bucket-name"
+  //   }
+  // ],
+
+  // Optional: KV Storage bindings
+  // "kv_namespaces": [
+  //   {
+  //     "binding": "KV",
+  //     "id": "your-kv-namespace-id"
+  //   }
+  // ],
+
+  // Optional: Workers AI binding
+  // "ai": {
+  //   "binding": "AI"
+  // },
+
+  // Optional: Vectorize binding
+  // "vectorize": [
+  //   {
+  //     "binding": "VECTORIZE",
+  //     "index_name": "your-index-name"
+  //   }
+  // ],
+
+  // Optional: Queue bindings
+  // "queues": {
+  //   "producers": [
+  //     {
+  //       "binding": "QUEUE",
+  //       "queue": "your-queue-name"
+  //     }
+  //   ],
+  //   "consumers": [
+  //     {
+  //       "queue": "your-queue-name",
+  //       "max_batch_size": 10,
+  //       "max_batch_timeout": 30
+  //     }
+  //   ]
+  // },
+
+  // Optional: Durable Objects bindings
+  // "durable_objects": {
+  //   "bindings": [
+  //     {
+  //       "name": "MY_DURABLE_OBJECT",
+  //       "class_name": "MyDurableObject",
+  //       "script_name": "your-do-worker"
+  //     }
+  //   ]
+  // },
+
+  // Optional: Environment variables (non-secret)
+  // "vars": {
+  //   "ENVIRONMENT": "production",
+  //   "LOG_LEVEL": "info"
+  // },
+
+  // Optional: Service bindings
+  // "services": [
+  //   {
+  //     "binding": "AUTH_SERVICE",
+  //     "service": "auth-worker"
+  //   }
+  // ],
+
+  // Optional: Analytics Engine binding
+  // "analytics_engine_datasets": [
+  //   {
+  //     "binding": "ANALYTICS"
+  //   }
+  // ]
+}
