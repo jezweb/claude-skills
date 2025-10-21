@@ -2,6 +2,11 @@
 
 Thank you for your interest in contributing! This guide will help you create high-quality skills for the Claude Code community.
 
+**🚀 Quick Start**: Use our templates! Copy `templates/skill-skeleton/` to get started in minutes.
+**📋 Checklist**: Verify your work with [ONE_PAGE_CHECKLIST.md](ONE_PAGE_CHECKLIST.md)
+**📖 Workflow**: See [QUICK_WORKFLOW.md](QUICK_WORKFLOW.md) for step-by-step process
+**⚠️ Avoid Mistakes**: Read [planning/COMMON_MISTAKES.md](planning/COMMON_MISTAKES.md)
+
 ---
 
 ## 🎯 Skill Development Guidelines

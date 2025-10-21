@@ -4,6 +4,10 @@
 
 A curated collection of battle-tested skills for building modern web applications with Cloudflare, React, Tailwind, and AI integrations.
 
+**👋 New Here?** → Read [START_HERE.md](START_HERE.md) for quick navigation
+**🔨 Building a Skill?** → Use [QUICK_WORKFLOW.md](QUICK_WORKFLOW.md) and [templates/](templates/)
+**📖 Project Context?** → See [CLAUDE.md](CLAUDE.md)
+
 ---
 
 ## 🚀 Quick Start
