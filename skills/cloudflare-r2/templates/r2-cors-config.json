@@ -1,0 +1,133 @@
+{
+  "_comment": "R2 CORS Policy Examples - Apply via Cloudflare Dashboard",
+  "_instructions": [
+    "1. Go to Cloudflare Dashboard → R2",
+    "2. Select your bucket",
+    "3. Go to Settings tab",
+    "4. Under CORS Policy → Add CORS policy",
+    "5. Paste one of the configurations below",
+    "6. Save"
+  ],
+
+  "public_assets_all_origins": {
+    "CORSRules": [
+      {
+        "AllowedOrigins": ["*"],
+        "AllowedMethods": ["GET", "HEAD"],
+        "AllowedHeaders": ["Range"],
+        "MaxAgeSeconds": 3600
+      }
+    ]
+  },
+
+  "public_assets_specific_origin": {
+    "CORSRules": [
+      {
+        "AllowedOrigins": ["https://example.com", "https://www.example.com"],
+        "AllowedMethods": ["GET", "HEAD"],
+        "AllowedHeaders": ["Range"],
+        "MaxAgeSeconds": 3600
+      }
+    ]
+  },
+
+  "file_uploads": {
+    "CORSRules": [
+      {
+        "AllowedOrigins": ["https://app.example.com"],
+        "AllowedMethods": ["GET", "PUT", "POST", "DELETE", "HEAD"],
+        "AllowedHeaders": [
+          "Content-Type",
+          "Content-MD5",
+          "Content-Disposition",
+          "x-amz-meta-*"
+        ],
+        "ExposeHeaders": ["ETag", "x-amz-version-id"],
+        "MaxAgeSeconds": 3600
+      }
+    ]
+  },
+
+  "presigned_urls": {
+    "_comment": "For presigned URL uploads from browser",
+    "CORSRules": [
+      {
+        "AllowedOrigins": ["https://app.example.com"],
+        "AllowedMethods": ["PUT", "POST"],
+        "AllowedHeaders": [
+          "Content-Type",
+          "Content-MD5",
+          "x-amz-*"
+        ],
+        "ExposeHeaders": ["ETag"],
+        "MaxAgeSeconds": 3600
+      }
+    ]
+  },
+
+  "multiple_domains": {
+    "CORSRules": [
+      {
+        "AllowedOrigins": [
+          "https://app.example.com",
+          "https://admin.example.com",
+          "https://staging.example.com"
+        ],
+        "AllowedMethods": ["GET", "PUT", "POST", "DELETE", "HEAD"],
+        "AllowedHeaders": ["*"],
+        "ExposeHeaders": ["ETag", "Content-Length"],
+        "MaxAgeSeconds": 86400
+      }
+    ]
+  },
+
+  "development_localhost": {
+    "_comment": "For local development only - DO NOT USE IN PRODUCTION",
+    "CORSRules": [
+      {
+        "AllowedOrigins": ["http://localhost:3000", "http://localhost:5173"],
+        "AllowedMethods": ["GET", "PUT", "POST", "DELETE", "HEAD"],
+        "AllowedHeaders": ["*"],
+        "ExposeHeaders": ["ETag"],
+        "MaxAgeSeconds": 3600
+      }
+    ]
+  },
+
+  "strict_security": {
+    "_comment": "Minimal CORS for maximum security",
+    "CORSRules": [
+      {
+        "AllowedOrigins": ["https://app.example.com"],
+        "AllowedMethods": ["GET"],
+        "AllowedHeaders": ["Range"],
+        "MaxAgeSeconds": 3600
+      }
+    ]
+  },
+
+  "cdn_and_api": {
+    "_comment": "Separate rules for CDN assets and API uploads",
+    "CORSRules": [
+      {
+        "_comment": "Rule for CDN/static assets",
+        "AllowedOrigins": ["*"],
+        "AllowedMethods": ["GET", "HEAD"],
+        "AllowedHeaders": ["Range"],
+        "MaxAgeSeconds": 86400
+      },
+      {
+        "_comment": "Rule for authenticated API uploads",
+        "AllowedOrigins": ["https://app.example.com"],
+        "AllowedMethods": ["PUT", "POST", "DELETE"],
+        "AllowedHeaders": [
+          "Content-Type",
+          "Authorization",
+          "x-amz-meta-*"
+        ],
+        "ExposeHeaders": ["ETag"],
+        "MaxAgeSeconds": 3600
+      }
+    ]
+  }
+}

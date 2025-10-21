@@ -1,0 +1,49 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "my-r2-worker",
+  "main": "src/index.ts",
+  "account_id": "YOUR_ACCOUNT_ID",
+  "compatibility_date": "2025-10-11",
+
+  // R2 Bucket Bindings
+  "r2_buckets": [
+    {
+      // The binding name - accessible as env.MY_BUCKET in your Worker
+      "binding": "MY_BUCKET",
+
+      // The actual bucket name in R2 (must exist)
+      "bucket_name": "my-bucket",
+
+      // Optional: Use a different bucket for local development
+      // This prevents dev/test data from polluting production bucket
+      "preview_bucket_name": "my-bucket-preview"
+    }
+  ],
+
+  // Multiple buckets example
+  // "r2_buckets": [
+  //   {
+  //     "binding": "UPLOADS",
+  //     "bucket_name": "user-uploads"
+  //   },
+  //   {
+  //     "binding": "ASSETS",
+  //     "bucket_name": "static-assets"
+  //   },
+  //   {
+  //     "binding": "BACKUPS",
+  //     "bucket_name": "database-backups"
+  //   }
+  // ],
+
+  // Optional: Enable observability
+  "observability": {
+    "enabled": true
+  },
+
+  // Optional: Workers Static Assets (if serving frontend)
+  "assets": {
+    "directory": "./public/",
+    "binding": "ASSETS"
+  }
+}
