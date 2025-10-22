@@ -577,9 +577,159 @@ Result: Integrated solution from atomic skills
 
 ---
 
-### Batch 3 - Data & Utilities (Week 4) ⭐
+### Batch 3 - Cloudflare Advanced Services ⭐
 
-#### 13. tanstack-query
+#### 10. cloudflare-durable-objects
+**Status**: Planned (HIGHEST PRIORITY)
+**Priority**: Critical
+**Dependencies**: cloudflare-worker-base
+**Estimated Dev Time**: 8-10 hours
+**Token Savings**: ~65-70%
+**Errors Prevented**: 15+
+
+**What It Does**:
+- Durable Objects class structure (default export, constructor patterns)
+- State API (get, put, delete, transaction, SQL)
+- WebSocket Hibernation API for real-time connections
+- Alarms API for scheduled tasks within DOs
+- RPC vs HTTP fetch patterns
+- Location hints and routing
+- Migration patterns between DO classes
+- Rate limiting, session management, coordination
+- Real-time applications (chat, multiplayer, collaboration)
+
+**Auto-Trigger Keywords**:
+- `durable objects`, `cloudflare do`, `websocket hibernation`
+- `do state api`, `durable objects alarm`, `do migration`
+- `real-time cloudflare`, `websocket workers`, `multiplayer cloudflare`
+- Error keywords: `do class export`, `do constructor`, `alarm api error`
+
+---
+
+#### 11. cloudflare-workflows
+**Status**: Planned
+**Priority**: Critical
+**Dependencies**: cloudflare-worker-base
+**Estimated Dev Time**: 6-8 hours
+**Token Savings**: ~60%
+**Errors Prevented**: 10+
+
+**What It Does**:
+- Workflow class patterns and structure
+- Step functions for multi-step processes
+- Sleep and delays for scheduling
+- Retry logic with exponential backoff
+- Saga patterns (compensation)
+- Event-driven workflows
+- Integration with Queues, Durable Objects, D1
+- Background jobs, payment processing, order fulfillment, ETL pipelines
+
+**Auto-Trigger Keywords**:
+- `cloudflare workflows`, `durable execution`, `workflow cloudflare`
+- `saga pattern`, `background jobs cloudflare`, `multi-step process`
+- `workflow retry`, `compensation pattern`, `long-running task`
+
+---
+
+#### 12. cloudflare-hyperdrive
+**Status**: Planned
+**Priority**: High
+**Dependencies**: cloudflare-worker-base
+**Estimated Dev Time**: 4-5 hours
+**Token Savings**: ~55%
+**Errors Prevented**: 8+
+
+**What It Does**:
+- PostgreSQL connection setup and configuration
+- Connection pooling for performance
+- Query patterns and optimization
+- Migration from traditional servers to Workers
+- Binding configuration in wrangler
+- Hybrid architectures (Workers + existing databases)
+- MySQL support patterns
+
+**Auto-Trigger Keywords**:
+- `cloudflare hyperdrive`, `workers postgresql`, `workers mysql`
+- `hyperdrive connection`, `database pooling cloudflare`, `postgres workers`
+- `migrate to cloudflare`, `hybrid cloudflare architecture`
+
+---
+
+#### 13. cloudflare-browser-rendering
+**Status**: Planned
+**Priority**: Medium
+**Dependencies**: cloudflare-worker-base, cloudflare-r2 (optional for storage)
+**Estimated Dev Time**: 5-6 hours
+**Token Savings**: ~50%
+**Errors Prevented**: 8+
+
+**What It Does**:
+- Puppeteer in Cloudflare Workers
+- Screenshot generation
+- PDF generation from HTML
+- Web scraping patterns
+- Form automation
+- Navigation and waiting patterns
+- Error handling for browser operations
+- Integration with R2 for storing screenshots/PDFs
+
+**Auto-Trigger Keywords**:
+- `cloudflare browser`, `puppeteer workers`, `browser rendering cloudflare`
+- `screenshot cloudflare`, `pdf generation workers`, `web scraping cloudflare`
+- `cloudflare automation`, `headless browser workers`
+
+---
+
+#### 14. cloudflare-cron-triggers
+**Status**: Planned
+**Priority**: Medium
+**Dependencies**: cloudflare-worker-base
+**Estimated Dev Time**: 3-4 hours
+**Token Savings**: ~40%
+**Errors Prevented**: 6+
+
+**What It Does**:
+- Cron syntax and scheduling patterns
+- Scheduled Workers configuration
+- Error handling for cron jobs
+- Idempotency patterns
+- Integration with D1, KV, R2 for data operations
+- Daily reports, cache warming, cleanup jobs, data sync, backup automation
+
+**Auto-Trigger Keywords**:
+- `cloudflare cron`, `scheduled workers`, `cron triggers cloudflare`
+- `workers scheduler`, `daily job cloudflare`, `cache warming`
+- `cleanup job`, `scheduled task workers`
+
+---
+
+#### 15. cloudflare-email-workers
+**Status**: Planned
+**Priority**: Medium
+**Dependencies**: cloudflare-worker-base
+**Estimated Dev Time**: 4-5 hours
+**Token Savings**: ~45%
+**Errors Prevented**: 7+
+
+**What It Does**:
+- Email routing configuration
+- Parsing email content and headers
+- Attachment handling and extraction
+- Forwarding patterns and rules
+- Integration with D1 for storage, KV for config
+- Email-to-ticket systems, support automation
+- Spam filtering patterns
+
+**Auto-Trigger Keywords**:
+- `cloudflare email`, `email workers`, `email routing cloudflare`
+- `parse email workers`, `email attachment`, `email-to-ticket`
+- `email forwarding cloudflare`, `receive email workers`
+
+---
+
+### Batch 4 - Data & Utilities ⭐
+
+#### 16. tanstack-query
 **Status**: Planned
 **Priority**: Medium
 **Dependencies**: None
@@ -601,7 +751,7 @@ Result: Integrated solution from atomic skills
 
 ---
 
-#### 14. drizzle-orm-d1
+#### 17. drizzle-orm-d1
 **Status**: Planned (Optional)
 **Priority**: Low
 **Dependencies**: cloudflare-d1
@@ -737,10 +887,11 @@ Calculate:
 ## 📈 Progress Tracking
 
 ### Overall Progress:
-- **Completed**: 11 skills ✅
-- **Batch 1 - Cloudflare Services**: 7/7 complete (100%) 🎯
-- **Batch 2 - AI SDK & Auth & Frameworks**: 1/6 complete (17%)
-- **Batch 3 - Data & Utilities**: 0/2 complete
+- **Completed**: 10 skills ✅
+- **Batch 1 - Cloudflare Foundation**: 9/9 complete (100%) 🎯
+- **Batch 2 - AI SDK & Auth**: 1/6 complete (17%)
+- **Batch 3 - Cloudflare Advanced**: 0/6 complete (0%)
+- **Batch 4 - Data & Utilities**: 0/2 complete (0%)
 
 ### Skills by Status:
 
@@ -762,10 +913,16 @@ Calculate:
 | clerk-auth | Planned | 5h (est.) | ~60% | - | Critical |
 | hono-routing | Planned | 4h (est.) | ~55% | - | High |
 | react-hook-form-zod | Planned | 4h (est.) | ~60% | - | High |
+| cloudflare-durable-objects | Planned | 8-10h (est.) | ~65-70% | 15+ | Critical |
+| cloudflare-workflows | Planned | 6-8h (est.) | ~60% | 10+ | Critical |
+| cloudflare-hyperdrive | Planned | 4-5h (est.) | ~55% | 8+ | High |
+| cloudflare-browser-rendering | Planned | 5-6h (est.) | ~50% | 8+ | Medium |
+| cloudflare-cron-triggers | Planned | 3-4h (est.) | ~40% | 6+ | Medium |
+| cloudflare-email-workers | Planned | 4-5h (est.) | ~45% | 7+ | Medium |
 | tanstack-query | Planned | 4h (est.) | ~55% | - | Medium |
 | drizzle-orm-d1 | Planned | 5h (est.) | ~60% | - | Low |
 
-**Total Skills Planned**: 17 (11 complete, 6 to build)
+**Total Skills Planned**: 23 (10 complete, 13 to build)
 
 ---
 
@@ -876,6 +1033,6 @@ A skill is considered "complete" when:
 
 ---
 
-**Last Updated**: 2025-10-22 (Completed ai-sdk-ui - 10 skills total)
+**Last Updated**: 2025-10-22 (Added Batch 3: 6 Cloudflare advanced services - 23 skills planned)
 **Next Review**: 2025-10-28
 **Maintainer**: Jeremy Dawes | jeremy@jezweb.net
