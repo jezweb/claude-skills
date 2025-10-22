@@ -1,0 +1,98 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "my-durable-objects-worker",
+  "main": "src/index.ts",
+  "compatibility_date": "2025-10-22",
+  "compatibility_flags": ["nodejs_compat"],
+
+  // Durable Objects Configuration
+  "durable_objects": {
+    "bindings": [
+      {
+        // Simple counter example
+        "name": "COUNTER",
+        "class_name": "Counter"
+      },
+      {
+        // WebSocket chat room example
+        "name": "CHAT_ROOM",
+        "class_name": "ChatRoom"
+      },
+      {
+        // Rate limiter example
+        "name": "RATE_LIMITER",
+        "class_name": "RateLimiter"
+      },
+      {
+        // Session management example
+        "name": "USER_SESSION",
+        "class_name": "UserSession"
+      }
+    ]
+  },
+
+  // Migrations (REQUIRED for all DO changes)
+  "migrations": [
+    {
+      // Initial migration: Create new DO classes
+      "tag": "v1",
+      "new_sqlite_classes": [
+        "Counter",
+        "ChatRoom",
+        "RateLimiter",
+        "UserSession"
+      ]
+    }
+    // Example: Rename a DO class
+    // {
+    //   "tag": "v2",
+    //   "renamed_classes": [
+    //     {
+    //       "from": "Counter",
+    //       "to": "CounterV2"
+    //     }
+    //   ]
+    // }
+
+    // Example: Delete a DO class
+    // {
+    //   "tag": "v3",
+    //   "deleted_classes": ["OldClass"]
+    // }
+
+    // Example: Transfer a DO class from another Worker
+    // {
+    //   "tag": "v4",
+    //   "transferred_classes": [
+    //     {
+    //       "from": "OriginalClass",
+    //       "from_script": "original-worker-name",
+    //       "to": "TransferredClass"
+    //     }
+    //   ]
+    // }
+  ],
+
+  // Optional: Integrations with other Cloudflare services
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "my-database",
+      "database_id": "your-database-id"
+    }
+  ],
+
+  "kv_namespaces": [
+    {
+      "binding": "KV",
+      "id": "your-kv-namespace-id"
+    }
+  ],
+
+  "r2_buckets": [
+    {
+      "binding": "BUCKET",
+      "bucket_name": "my-bucket"
+    }
+  ]
+}

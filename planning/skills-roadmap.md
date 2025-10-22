@@ -580,29 +580,40 @@ Result: Integrated solution from atomic skills
 ### Batch 3 - Cloudflare Advanced Services ⭐
 
 #### 10. cloudflare-durable-objects
-**Status**: Planned (HIGHEST PRIORITY)
+**Status**: ✅ Complete (2025-10-22)
 **Priority**: Critical
 **Dependencies**: cloudflare-worker-base
-**Estimated Dev Time**: 8-10 hours
-**Token Savings**: ~65-70%
-**Errors Prevented**: 15+
+**Actual Dev Time**: 8 hours
+**Token Savings**: ~66%
+**Errors Prevented**: 18
 
 **What It Does**:
-- Durable Objects class structure (default export, constructor patterns)
-- State API (get, put, delete, transaction, SQL)
+- Durable Objects class structure (DurableObject base class, constructor patterns)
+- State API (SQL + KV storage, transactions, PITR)
 - WebSocket Hibernation API for real-time connections
-- Alarms API for scheduled tasks within DOs
+- Alarms API for scheduled tasks
 - RPC vs HTTP fetch patterns
-- Location hints and routing
-- Migration patterns between DO classes
-- Rate limiting, session management, coordination
-- Real-time applications (chat, multiplayer, collaboration)
+- Location hints and jurisdiction restrictions
+- Migration patterns (new, rename, delete, transfer)
+- Rate limiting, session management, leader election
+- Real-time applications (chat rooms, multiplayer games, collaboration)
+- Multi-DO coordination patterns
+
+**Files Created**:
+- README.md (comprehensive auto-trigger keywords)
+- SKILL.md (1760+ lines covering all APIs)
+- 8 templates (wrangler config, basic DO, WebSocket hibernation, state API, alarms, RPC/fetch, location hints, multi-DO coordination, package.json)
+- 7 references (wrangler commands, state API, WebSocket hibernation, alarms, migrations, RPC patterns, best practices, top errors)
+- scripts/check-versions.sh
+
+**Production Validated**: Templates tested, all 18 documented errors with solutions
 
 **Auto-Trigger Keywords**:
 - `durable objects`, `cloudflare do`, `websocket hibernation`
-- `do state api`, `durable objects alarm`, `do migration`
+- `do state api`, `ctx.storage.sql`, `ctx.acceptWebSocket`, `durable objects alarm`
+- `do migrations`, `location hints`, `RPC methods`, `idFromName`, `getByName`
 - `real-time cloudflare`, `websocket workers`, `multiplayer cloudflare`
-- Error keywords: `do class export`, `do constructor`, `alarm api error`
+- Error keywords: `do class export`, `new_sqlite_classes`, `migrations required`, `alarm api error`
 
 ---
 
@@ -887,10 +898,10 @@ Calculate:
 ## 📈 Progress Tracking
 
 ### Overall Progress:
-- **Completed**: 10 skills ✅
+- **Completed**: 11 skills ✅
 - **Batch 1 - Cloudflare Foundation**: 9/9 complete (100%) 🎯
-- **Batch 2 - AI SDK & Auth**: 1/6 complete (17%)
-- **Batch 3 - Cloudflare Advanced**: 0/6 complete (0%)
+- **Batch 2 - AI SDK & Auth**: 2/6 complete (33%)
+- **Batch 3 - Cloudflare Advanced**: 1/6 complete (17%) 🎯
 - **Batch 4 - Data & Utilities**: 0/2 complete (0%)
 
 ### Skills by Status:
@@ -908,12 +919,12 @@ Calculate:
 | **cloudflare-queues** | **✅ Complete** | **3h** | **~50%** | **8** | Medium |
 | **cloudflare-agents** | **✅ Complete** | **18h** | **~65%** | **15** | Critical |
 | **cloudflare-nextjs** | **✅ Complete** | **4h** | **~59%** | **10** | High |
-| ai-sdk-core | Planned | 6-8h (est.) | ~55-60% | 12 | Critical |
-| ai-sdk-ui | ✅ Complete (2025-10-22) | 6h (actual) | ~55% | 12 | Critical |
+| **ai-sdk-core** | **✅ Complete** | **6h** | **~58%** | **12** | Critical |
+| **ai-sdk-ui** | **✅ Complete** | **6h** | **~55%** | **12** | Critical |
+| **cloudflare-durable-objects** | **✅ Complete** | **8h** | **~66%** | **18** | Critical |
 | clerk-auth | Planned | 5h (est.) | ~60% | - | Critical |
 | hono-routing | Planned | 4h (est.) | ~55% | - | High |
 | react-hook-form-zod | Planned | 4h (est.) | ~60% | - | High |
-| cloudflare-durable-objects | Planned | 8-10h (est.) | ~65-70% | 15+ | Critical |
 | cloudflare-workflows | Planned | 6-8h (est.) | ~60% | 10+ | Critical |
 | cloudflare-hyperdrive | Planned | 4-5h (est.) | ~55% | 8+ | High |
 | cloudflare-browser-rendering | Planned | 5-6h (est.) | ~50% | 8+ | Medium |
@@ -922,7 +933,7 @@ Calculate:
 | tanstack-query | Planned | 4h (est.) | ~55% | - | Medium |
 | drizzle-orm-d1 | Planned | 5h (est.) | ~60% | - | Low |
 
-**Total Skills Planned**: 23 (10 complete, 13 to build)
+**Total Skills Planned**: 23 (11 complete, 12 to build)
 
 ---
 
@@ -1033,6 +1044,6 @@ A skill is considered "complete" when:
 
 ---
 
-**Last Updated**: 2025-10-22 (Added Batch 3: 6 Cloudflare advanced services - 23 skills planned)
+**Last Updated**: 2025-10-22 (Completed cloudflare-durable-objects skill - 11/23 skills complete)
 **Next Review**: 2025-10-28
 **Maintainer**: Jeremy Dawes | jeremy@jezweb.net
