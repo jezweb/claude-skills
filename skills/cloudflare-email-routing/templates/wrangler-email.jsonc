@@ -1,0 +1,67 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "email-worker",
+  "main": "src/index.ts",
+  "account_id": "YOUR_ACCOUNT_ID",
+  "compatibility_date": "2025-10-11",
+
+  // Enable observability for debugging
+  "observability": {
+    "enabled": true
+  },
+
+  // Send email bindings
+  // Configure bindings for sending emails from Workers
+  "send_email": [
+    {
+      // Simple binding with single destination
+      "name": "NOTIFICATIONS",
+      "destination_address": "notifications@yourdomain.com"
+    },
+    {
+      // Flexible binding with multiple allowed destinations
+      "name": "ALERTS",
+      "allowed_destination_addresses": [
+        "alerts@yourdomain.com",
+        "admin@yourdomain.com",
+        "oncall@yourdomain.com"
+      ]
+    }
+  ],
+
+  // Optional: D1 database for email storage/logging
+  // Uncomment if you need to store emails or email metadata
+  // "d1_databases": [
+  //   {
+  //     "binding": "DB",
+  //     "database_name": "email-archive",
+  //     "database_id": "YOUR_DATABASE_ID"
+  //   }
+  // ],
+
+  // Optional: KV for caching email data or rate limiting
+  // Uncomment if you need key-value storage
+  // "kv_namespaces": [
+  //   {
+  //     "binding": "EMAIL_CACHE",
+  //     "id": "YOUR_KV_ID"
+  //   }
+  // ],
+
+  // Optional: R2 for storing email attachments
+  // Uncomment if you need object storage
+  // "r2_buckets": [
+  //   {
+  //     "binding": "ATTACHMENTS",
+  //     "bucket_name": "email-attachments"
+  //   }
+  // ],
+
+  // Optional: Secrets for API keys (e.g., sending to external services)
+  // Set via: wrangler secret put SECRET_NAME
+  // Access in code: env.SECRET_NAME
+
+  // Note: Email Worker routing is configured in the Cloudflare Dashboard
+  // Go to: Email > Email Routing > Email Workers
+  // Bind your deployed worker to an email address (route)
+}
