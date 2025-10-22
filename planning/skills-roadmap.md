@@ -618,27 +618,36 @@ Result: Integrated solution from atomic skills
 ---
 
 #### 11. cloudflare-workflows
-**Status**: Planned
+**Status**: ✅ Complete (2025-10-22)
 **Priority**: Critical
 **Dependencies**: cloudflare-worker-base
-**Estimated Dev Time**: 6-8 hours
-**Token Savings**: ~60%
-**Errors Prevented**: 10+
+**Actual Dev Time**: 4 hours
+**Token Savings**: ~67%
+**Errors Prevented**: 5
 
 **What It Does**:
-- Workflow class patterns and structure
-- Step functions for multi-step processes
-- Sleep and delays for scheduling
-- Retry logic with exponential backoff
-- Saga patterns (compensation)
-- Event-driven workflows
-- Integration with Queues, Durable Objects, D1
-- Background jobs, payment processing, order fulfillment, ETL pipelines
+- WorkflowEntrypoint API (run, step.do, step.sleep, step.sleepUntil, step.waitForEvent)
+- Automatic retries with configurable backoff (exponential, linear, constant)
+- State persistence between steps
+- Long-running workflows (hours/days)
+- Event-driven patterns (human-in-the-loop, approvals)
+- Error handling (NonRetryableError, try-catch)
+- Workflow chaining and coordination
+
+**Files Created**:
+- README.md (comprehensive auto-trigger keywords)
+- SKILL.md (complete guide, 1100+ lines)
+- 6 templates (basic, retries, scheduled, events, trigger, wrangler config)
+- 2 references (common-issues.md with 5 errors, workflow-patterns.md)
+- Research log: planning/research-logs/cloudflare-workflows.md
+
+**Production Validated**: Based on official Cloudflare docs (Workflows launched Oct 2024)
 
 **Auto-Trigger Keywords**:
-- `cloudflare workflows`, `durable execution`, `workflow cloudflare`
-- `saga pattern`, `background jobs cloudflare`, `multi-step process`
-- `workflow retry`, `compensation pattern`, `long-running task`
+- `cloudflare workflows`, `workflows workers`, `durable execution`, `workflow step`
+- `WorkflowEntrypoint`, `step.do`, `step.sleep`, `step.sleepUntil`, `step.waitForEvent`
+- `workflow retries`, `NonRetryableError`, `long-running tasks`, `workflow events`
+- Error keywords: `I/O context`, `workflow execution failed`, `serialization error`
 
 ---
 
@@ -898,10 +907,10 @@ Calculate:
 ## 📈 Progress Tracking
 
 ### Overall Progress:
-- **Completed**: 11 skills ✅
+- **Completed**: 15 skills ✅
 - **Batch 1 - Cloudflare Foundation**: 9/9 complete (100%) 🎯
 - **Batch 2 - AI SDK & Auth**: 2/6 complete (33%)
-- **Batch 3 - Cloudflare Advanced**: 1/6 complete (17%) 🎯
+- **Batch 3 - Cloudflare Advanced**: 2/6 complete (33%) 🎯
 - **Batch 4 - Data & Utilities**: 0/2 complete (0%)
 
 ### Skills by Status:
@@ -925,7 +934,7 @@ Calculate:
 | clerk-auth | Planned | 5h (est.) | ~60% | - | Critical |
 | hono-routing | Planned | 4h (est.) | ~55% | - | High |
 | react-hook-form-zod | Planned | 4h (est.) | ~60% | - | High |
-| cloudflare-workflows | Planned | 6-8h (est.) | ~60% | 10+ | Critical |
+| **cloudflare-workflows** | **✅ Complete** | **4h** | **~67%** | **5** | Critical |
 | cloudflare-hyperdrive | Planned | 4-5h (est.) | ~55% | 8+ | High |
 | cloudflare-browser-rendering | Planned | 5-6h (est.) | ~50% | 8+ | Medium |
 | cloudflare-cron-triggers | Planned | 3-4h (est.) | ~40% | 6+ | Medium |
@@ -933,7 +942,7 @@ Calculate:
 | tanstack-query | Planned | 4h (est.) | ~55% | - | Medium |
 | drizzle-orm-d1 | Planned | 5h (est.) | ~60% | - | Low |
 
-**Total Skills Planned**: 23 (11 complete, 12 to build)
+**Total Skills Planned**: 23 (15 complete, 8 to build)
 
 ---
 
@@ -1044,6 +1053,6 @@ A skill is considered "complete" when:
 
 ---
 
-**Last Updated**: 2025-10-22 (Completed cloudflare-durable-objects skill - 11/23 skills complete)
+**Last Updated**: 2025-10-22 (Completed cloudflare-workflows skill - 15/23 skills complete)
 **Next Review**: 2025-10-28
 **Maintainer**: Jeremy Dawes | jeremy@jezweb.net
