@@ -1,0 +1,33 @@
+{
+  "name": "hono-app",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Hono application with routing, middleware, validation, and RPC",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "hono": "^4.10.2"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.0",
+    "tsx": "^4.19.0",
+    "@types/node": "^22.10.0"
+  },
+  "optionalDependencies": {
+    "zod": "^4.1.12",
+    "valibot": "^1.1.0",
+    "@hono/zod-validator": "^0.7.4",
+    "@hono/valibot-validator": "^0.5.3",
+    "@hono/typia-validator": "^0.1.2",
+    "@hono/arktype-validator": "^2.0.1",
+    "arktype": "^2.0.0",
+    "typia": "^7.1.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

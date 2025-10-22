@@ -32,7 +32,7 @@ Skills will be symlinked to `~/.claude/skills/`. Claude Code will automatically 
 
 ---
 
-## 📦 Available Skills (16 Production-Ready)
+## 📦 Available Skills (17 Production-Ready)
 
 ### Cloudflare Core Infrastructure
 
@@ -112,6 +112,15 @@ Complete Agents SDK for building stateful AI agents with WebSocket, scheduling, 
 Deploy Next.js (App Router/Pages) to Cloudflare Workers with OpenNext adapter. Prevents 10 documented errors.
 
 **Triggers**: `next.js cloudflare`, `nextjs workers`, `opennext adapter`
+
+---
+
+### Routing & API Frameworks
+
+#### **hono-routing**
+Complete Hono routing and middleware patterns: validation (Zod/Valibot), RPC, error handling, context extension. Prevents 8 documented errors.
+
+**Triggers**: `hono routing`, `hono middleware`, `hono validator`, `hono rpc`, `type-safe api`
 
 ---
 
