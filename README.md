@@ -32,7 +32,7 @@ Skills will be symlinked to `~/.claude/skills/`. Claude Code will automatically 
 
 ---
 
-## 📦 Available Skills (15 Production-Ready)
+## 📦 Available Skills (16 Production-Ready)
 
 ### Cloudflare Core Infrastructure
 
@@ -112,6 +112,15 @@ Complete Agents SDK for building stateful AI agents with WebSocket, scheduling, 
 Deploy Next.js (App Router/Pages) to Cloudflare Workers with OpenNext adapter. Prevents 10 documented errors.
 
 **Triggers**: `next.js cloudflare`, `nextjs workers`, `opennext adapter`
+
+---
+
+### Authentication
+
+#### **clerk-auth**
+Complete Clerk authentication for React, Next.js, and Cloudflare Workers with JWT verification. Prevents 10 documented errors.
+
+**Triggers**: `clerk auth`, `clerk`, `@clerk/nextjs`, `@clerk/backend`, `JWT verification`
 
 ---
 
@@ -344,8 +353,8 @@ Using skills vs manual setup (measured across 15 production skills):
 | **Average Tokens** | 12,000-15,000 | 4,000-5,000 | **~67%** |
 | **Typical Errors** | 2-4 per service | 0 (prevented) | **100%** |
 | **Setup Time** | 2-4 hours | 15-45 minutes | **~80%** |
-| **Total Skills** | - | 15 production-ready | - |
-| **Errors Prevented** | - | 131 documented | - |
+| **Total Skills** | - | 16 production-ready | - |
+| **Errors Prevented** | - | 141 documented | - |
 
 ### Real Examples:
 
