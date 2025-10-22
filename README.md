@@ -160,6 +160,11 @@ Tailwind CSS v4 + shadcn/ui + Vite + React with dark mode and theme provider. Pr
 
 ## 🎯 Skill Usage Protocol
 
+### Use this or something like it in your main user CLAUDE.md file >>>
+
+
+```
+
 **CRITICAL**: Claude Code automatically checks `~/.claude/skills/` for relevant skills before planning ANY implementation task.
 
 ### Auto-Discovery Rules:
@@ -177,7 +182,7 @@ Tailwind CSS v4 + shadcn/ui + Vite + React with dark mode and theme provider. Pr
 - ✅ Deployment workflows (Wrangler, build optimization)
 
 ### Skill Invocation Pattern:
-```
+
 User: "Set up [technology/pattern]"
 ↓
 Claude: [Checks ~/.claude/skills/ automatically]
@@ -189,7 +194,7 @@ User: [Approves]
 Claude: [Uses skill templates and automation]
 ↓
 Result: Production-ready setup, zero errors, ~67% token savings
-```
+
 
 ### Example Workflow:
 ❌ **Bad**: Start planning Tailwind v4 setup manually
@@ -202,6 +207,8 @@ Skills are organized by domain. Check README.md in each skill for:
 - Known issues it prevents
 - Template structure
 - When to use / when not to use
+
+```
 
 ---
 
