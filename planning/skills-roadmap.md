@@ -3,7 +3,7 @@
 **Project**: Claude Code Skills Collection
 **Maintainer**: Jeremy Dawes (Jezweb)
 **Repository**: https://github.com/jezweb/claude-skills
-**Last Updated**: 2025-10-22
+**Last Updated**: 2025-10-23
 
 ---
 
@@ -324,7 +324,57 @@ Result: Integrated solution from atomic skills
 
 ---
 
-#### 7. cloudflare-agents
+#### 7. cloudflare-cron-triggers
+**Status**: ✅ Complete (2025-10-23)
+**Priority**: Medium
+**Dependencies**: cloudflare-worker-base
+**Actual Dev Time**: 1.5 hours
+**Token Savings**: ~60%
+**Errors Prevented**: 6
+
+**What It Does**:
+- Scheduled Worker execution using cron expressions
+- Scheduled handler setup (ES modules format required)
+- Cron expression syntax (5-field format, UTC only)
+- ScheduledController API (cron, type, scheduledTime properties)
+- Multiple cron schedules with switch routing
+- Integration with all Cloudflare bindings (D1, R2, KV, AI, Queues, Workflows)
+- Testing workflow (--test-scheduled flag, /__scheduled endpoint)
+- Green Compute configuration (renewable energy data centers)
+- UTC timezone conversion guide
+- 15-minute propagation delay handling
+
+**Files Created**:
+- README.md (comprehensive auto-trigger keywords)
+- SKILL.md (complete API reference, 900+ lines)
+- templates/basic-scheduled.ts (minimal scheduled Worker)
+- templates/hono-with-scheduled.ts (combined HTTP + scheduled handlers)
+- templates/multiple-crons.ts (multiple schedules with routing)
+- templates/scheduled-with-bindings.ts (all Cloudflare bindings examples)
+- templates/wrangler-cron-config.jsonc (complete configuration patterns)
+- references/cron-expressions-reference.md (complete cron syntax, 50+ patterns)
+- references/common-patterns.md (12 real-world use cases)
+
+**Known Issues Prevented**:
+1. 15-minute propagation delay confusion
+2. Wrong handler name errors (must be 'scheduled')
+3. UTC timezone confusion (no local timezone support)
+4. Invalid cron expression syntax (6-field not supported)
+5. ES modules format requirement (no Service Worker format)
+6. CPU time limit errors (default 30s, max 5min)
+
+**Production Validated**: Cloudflare official documentation examples
+
+**Auto-Trigger Keywords**:
+- `cloudflare cron`, `cron triggers`, `scheduled workers`, `scheduled handler`
+- `scheduled() handler`, `ScheduledController`, `wrangler crons`, `periodic tasks`
+- `scheduled tasks`, `maintenance tasks`, `background jobs`, `cron expression`
+- `green compute`, `workflow triggers`, `UTC timezone`
+- Error keywords: `"scheduled handler not found"`, `"cron expression invalid"`, `"changes not propagating"`
+
+---
+
+#### 8. cloudflare-agents
 **Status**: ✅ Complete (2025-10-21)
 **Priority**: Critical
 **Dependencies**: cloudflare-worker-base (recommended)
