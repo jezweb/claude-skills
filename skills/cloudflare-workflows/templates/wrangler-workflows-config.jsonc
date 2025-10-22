@@ -1,0 +1,171 @@
+/**
+ * Complete Wrangler Configuration for Workflows
+ *
+ * This file shows all configuration options for Cloudflare Workflows.
+ * Copy and adapt to your project's needs.
+ */
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "my-workflow-project",
+  "main": "src/index.ts",
+  "account_id": "YOUR_ACCOUNT_ID",
+  "compatibility_date": "2025-10-22",
+
+  /**
+   * Workflows Configuration
+   *
+   * Define workflows that can be triggered from Workers.
+   * Each workflow binding makes a workflow class available via env.BINDING_NAME
+   */
+  "workflows": [
+    {
+      /**
+       * name: The name of the workflow (used in dashboard, CLI commands)
+       * This is the workflow identifier for wrangler commands like:
+       * - npx wrangler workflows instances list my-workflow
+       * - npx wrangler workflows instances describe my-workflow <id>
+       */
+      "name": "my-workflow",
+
+      /**
+       * binding: The name used in your code to access this workflow
+       * Available in Workers as: env.MY_WORKFLOW
+       */
+      "binding": "MY_WORKFLOW",
+
+      /**
+       * class_name: The exported class name that extends WorkflowEntrypoint
+       * Must match your TypeScript class:
+       * export class MyWorkflow extends WorkflowEntrypoint { ... }
+       */
+      "class_name": "MyWorkflow"
+    },
+
+    /**
+     * Example: Multiple workflows in one project
+     */
+    {
+      "name": "payment-workflow",
+      "binding": "PAYMENT_WORKFLOW",
+      "class_name": "PaymentWorkflow"
+    },
+    {
+      "name": "approval-workflow",
+      "binding": "APPROVAL_WORKFLOW",
+      "class_name": "ApprovalWorkflow"
+    }
+
+    /**
+     * Example: Workflow in different Worker script
+     *
+     * If your workflow is defined in a separate Worker script,
+     * use script_name to reference it
+     */
+    // {
+    //   "name": "external-workflow",
+    //   "binding": "EXTERNAL_WORKFLOW",
+    //   "class_name": "ExternalWorkflow",
+    //   "script_name": "workflow-worker"  // Name of Worker that contains the workflow
+    // }
+  ],
+
+  /**
+   * Optional: Other Cloudflare bindings
+   */
+
+  // KV Namespace
+  // "kv_namespaces": [
+  //   {
+  //     "binding": "MY_KV",
+  //     "id": "YOUR_KV_ID"
+  //   }
+  // ],
+
+  // D1 Database
+  // "d1_databases": [
+  //   {
+  //     "binding": "DB",
+  //     "database_name": "my-database",
+  //     "database_id": "YOUR_DB_ID"
+  //   }
+  // ],
+
+  // R2 Bucket
+  // "r2_buckets": [
+  //   {
+  //     "binding": "MY_BUCKET",
+  //     "bucket_name": "my-bucket"
+  //   }
+  // ],
+
+  // Queues
+  // "queues": {
+  //   "producers": [
+  //     {
+  //       "binding": "MY_QUEUE",
+  //       "queue": "my-queue"
+  //     }
+  //   ]
+  // },
+
+  /**
+   * Optional: Environment variables
+   */
+  // "vars": {
+  //   "ENVIRONMENT": "production",
+  //   "API_URL": "https://api.example.com"
+  // },
+
+  /**
+   * Optional: Observability
+   */
+  "observability": {
+    "enabled": true
+  },
+
+  /**
+   * Optional: Multiple environments
+   */
+  "env": {
+    "staging": {
+      "vars": {
+        "ENVIRONMENT": "staging"
+      },
+      "workflows": [
+        {
+          "name": "my-workflow-staging",
+          "binding": "MY_WORKFLOW",
+          "class_name": "MyWorkflow"
+        }
+      ]
+    },
+    "production": {
+      "vars": {
+        "ENVIRONMENT": "production"
+      },
+      "workflows": [
+        {
+          "name": "my-workflow-production",
+          "binding": "MY_WORKFLOW",
+          "class_name": "MyWorkflow"
+        }
+      ]
+    }
+  }
+}
+
+/**
+ * Deployment Commands:
+ *
+ * # Deploy to default (production)
+ * npx wrangler deploy
+ *
+ * # Deploy to staging environment
+ * npx wrangler deploy --env staging
+ *
+ * # List workflow instances
+ * npx wrangler workflows instances list my-workflow
+ *
+ * # Get instance status
+ * npx wrangler workflows instances describe my-workflow <instance-id>
+ */
