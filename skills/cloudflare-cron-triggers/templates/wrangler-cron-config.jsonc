@@ -1,0 +1,322 @@
+/**
+ * Complete Wrangler Configuration Examples for Cron Triggers
+ *
+ * This file shows various ways to configure cron triggers in wrangler.jsonc
+ */
+
+// ============================================================================
+// BASIC CONFIGURATION
+// ============================================================================
+
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "my-scheduled-worker",
+  "main": "src/index.ts",
+  "compatibility_date": "2025-10-23",
+  "account_id": "YOUR_ACCOUNT_ID",
+
+  // Single cron trigger
+  "triggers": {
+    "crons": [
+      "0 * * * *"  // Every hour at minute 0
+    ]
+  }
+}
+
+// ============================================================================
+// MULTIPLE CRON TRIGGERS
+// ============================================================================
+
+{
+  "name": "multi-schedule-worker",
+  "main": "src/index.ts",
+  "compatibility_date": "2025-10-23",
+
+  "triggers": {
+    "crons": [
+      "*/5 * * * *",     // Every 5 minutes
+      "0 */6 * * *",     // Every 6 hours
+      "0 2 * * *",       // Daily at 2am UTC
+      "0 0 * * 1"        // Weekly on Monday at midnight UTC
+    ]
+  }
+}
+
+// ============================================================================
+// ENVIRONMENT-SPECIFIC CRONS
+// ============================================================================
+
+{
+  "name": "my-worker",
+  "main": "src/index.ts",
+  "compatibility_date": "2025-10-23",
+
+  // Different schedules per environment
+  "env": {
+    "dev": {
+      "triggers": {
+        "crons": [
+          "*/5 * * * *"   // Dev: every 5 minutes for testing
+        ]
+      }
+    },
+    "staging": {
+      "triggers": {
+        "crons": [
+          "*/30 * * * *"  // Staging: every 30 minutes
+        ]
+      }
+    },
+    "production": {
+      "triggers": {
+        "crons": [
+          "0 * * * *",    // Production: hourly
+          "0 0 * * *"     // Production: also daily at midnight
+        ]
+      }
+    }
+  }
+}
+
+// Deploy with: npx wrangler deploy --env production
+
+// ============================================================================
+// WITH ALL BINDINGS
+// ============================================================================
+
+{
+  "name": "full-featured-worker",
+  "main": "src/index.ts",
+  "compatibility_date": "2025-10-23",
+  "account_id": "YOUR_ACCOUNT_ID",
+
+  // Cron triggers
+  "triggers": {
+    "crons": ["0 * * * *"]
+  },
+
+  // D1 Database
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "my-database",
+      "database_id": "YOUR_DATABASE_ID"
+    }
+  ],
+
+  // R2 Storage
+  "r2_buckets": [
+    {
+      "binding": "MY_BUCKET",
+      "bucket_name": "my-bucket"
+    }
+  ],
+
+  // KV Storage
+  "kv_namespaces": [
+    {
+      "binding": "KV_NAMESPACE",
+      "id": "YOUR_KV_ID"
+    }
+  ],
+
+  // Workers AI
+  "ai": {
+    "binding": "AI"
+  },
+
+  // Vectorize
+  "vectorize": [
+    {
+      "binding": "VECTOR_INDEX",
+      "index_name": "my-index"
+    }
+  ],
+
+  // Queues (Producer)
+  "queues": {
+    "producers": [
+      {
+        "binding": "MY_QUEUE",
+        "queue": "my-queue"
+      }
+    ]
+  },
+
+  // Workflows
+  "workflows": [
+    {
+      "name": "my-workflow",
+      "binding": "MY_WORKFLOW",
+      "script_name": "my-workflow-worker"
+    }
+  ],
+
+  // Durable Objects
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "RATE_LIMITER",
+        "class_name": "RateLimiter",
+        "script_name": "rate-limiter-worker"
+      }
+    ]
+  },
+
+  // Environment Variables (non-sensitive)
+  "vars": {
+    "ENVIRONMENT": "production",
+    "LOG_LEVEL": "info"
+  },
+
+  // CPU Limits (if needed for long-running tasks)
+  "limits": {
+    "cpu_ms": 300000  // 5 minutes (max for Standard plan)
+  },
+
+  // Observability
+  "observability": {
+    "enabled": true
+  }
+}
+
+// Secrets (set separately with wrangler secret put):
+// npx wrangler secret put API_KEY
+// npx wrangler secret put DATABASE_URL
+
+// ============================================================================
+// COMMON CRON PATTERNS
+// ============================================================================
+
+{
+  "triggers": {
+    "crons": [
+      // Every minute (testing only - expensive!)
+      "* * * * *",
+
+      // Every 5 minutes
+      "*/5 * * * *",
+
+      // Every 15 minutes
+      "*/15 * * * *",
+
+      // Every 30 minutes
+      "*/30 * * * *",
+
+      // Every hour
+      "0 * * * *",
+
+      // Every hour at :30
+      "30 * * * *",
+
+      // Every 6 hours
+      "0 */6 * * *",
+
+      // Every 12 hours
+      "0 */12 * * *",
+
+      // Daily at midnight UTC
+      "0 0 * * *",
+
+      // Daily at 2am UTC
+      "0 2 * * *",
+
+      // Daily at noon UTC
+      "0 12 * * *",
+
+      // Every Monday at 9am UTC
+      "0 9 * * 1",
+
+      // Every weekday at 9am UTC
+      "0 9 * * 1-5",
+
+      // Every weekend day at 10am UTC
+      "0 10 * * 0,6",
+
+      // First day of month at midnight UTC
+      "0 0 1 * *",
+
+      // Last day of month (not directly supported - use logic in handler)
+      // "0 0 28-31 * *" then check if tomorrow is 1st
+
+      // Every quarter (Jan 1, Apr 1, Jul 1, Oct 1 at midnight)
+      "0 0 1 1,4,7,10 *",
+
+      // Twice daily (6am and 6pm UTC)
+      "0 6,18 * * *",
+
+      // Every 30 minutes during business hours (9am-5pm UTC, weekdays)
+      "*/30 9-17 * * 1-5"
+    ]
+  }
+}
+
+// ============================================================================
+// REMOVING CRON TRIGGERS
+// ============================================================================
+
+{
+  "name": "my-worker",
+  "main": "src/index.ts",
+  "compatibility_date": "2025-10-23",
+
+  // Empty array removes all cron triggers
+  "triggers": {
+    "crons": []
+  }
+}
+
+// After deploy, Worker will no longer execute on schedule
+
+// ============================================================================
+// WITH STATIC ASSETS
+// ============================================================================
+
+{
+  "name": "worker-with-frontend",
+  "main": "src/index.ts",
+  "compatibility_date": "2025-10-23",
+
+  // Cron triggers
+  "triggers": {
+    "crons": ["0 * * * *"]
+  },
+
+  // Static Assets (for frontend)
+  "assets": {
+    "directory": "./public/",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/api/*"]
+  }
+}
+
+// ============================================================================
+// NOTES
+// ============================================================================
+
+/*
+ * Important Reminders:
+ *
+ * 1. All cron times are UTC (no timezone conversion)
+ * 2. Changes take up to 15 minutes to propagate globally
+ * 3. Free plan: maximum 3 cron schedules per Worker
+ * 4. Paid plan: higher limits (check current limits)
+ * 5. Use npx wrangler triggers deploy for trigger-only changes
+ * 6. Validate expressions at https://crontab.guru/
+ * 7. Test locally with: npx wrangler dev --test-scheduled
+ *
+ * Deployment Commands:
+ *
+ * # Deploy everything
+ * npx wrangler deploy
+ *
+ * # Deploy specific environment
+ * npx wrangler deploy --env production
+ *
+ * # Deploy only trigger changes (faster)
+ * npx wrangler triggers deploy
+ *
+ * # View current triggers
+ * npx wrangler deployments list
+ */
