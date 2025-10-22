@@ -1,0 +1,38 @@
+{
+  "name": "my-worker-with-hyperdrive",
+  "main": "src/index.ts",
+  "compatibility_date": "2024-09-23",
+  "compatibility_flags": [
+    "nodejs_compat"  // REQUIRED for database drivers (pg, postgres, mysql2)
+  ],
+  "hyperdrive": [
+    {
+      // Binding name - access as env.HYPERDRIVE in your Worker
+      "binding": "HYPERDRIVE",
+
+      // Hyperdrive configuration ID from: wrangler hyperdrive create
+      "id": "<your-hyperdrive-id-here>",
+
+      // (Optional) Local development connection string
+      // Alternative: Use CLOUDFLARE_HYPERDRIVE_LOCAL_CONNECTION_STRING_HYPERDRIVE env var
+      "localConnectionString": "postgres://user:password@localhost:5432/local_db"
+    }
+  ],
+
+  // Example: Multiple Hyperdrive configurations
+  // "hyperdrive": [
+  //   {
+  //     "binding": "POSTGRES_DB",
+  //     "id": "postgres-hyperdrive-id"
+  //   },
+  //   {
+  //     "binding": "MYSQL_DB",
+  //     "id": "mysql-hyperdrive-id"
+  //   }
+  // ],
+
+  // Optional: Enable observability
+  "observability": {
+    "enabled": true
+  }
+}
