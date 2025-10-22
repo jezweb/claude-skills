@@ -1,0 +1,36 @@
+{
+  "name": "my-turnstile-app",
+  "main": "src/index.ts",
+  "compatibility_date": "2025-10-22",
+
+  // Public sitekey - safe to commit to version control
+  // Use dummy keys for development, real keys for production
+  "vars": {
+    "TURNSTILE_SITE_KEY": "1x00000000000000000000AA" // Test key - always passes
+    // Production: Replace with your real sitekey from https://dash.cloudflare.com/?to=/:account/turnstile
+  },
+
+  // Secret key - NEVER commit to version control
+  // Set using: wrangler secret put TURNSTILE_SECRET_KEY
+  "secrets": ["TURNSTILE_SECRET_KEY"],
+
+  // Optional: Environment-specific configuration
+  "env": {
+    "production": {
+      "vars": {
+        "TURNSTILE_SITE_KEY": "<YOUR_PRODUCTION_SITE_KEY>"
+      }
+    },
+    "staging": {
+      "vars": {
+        "TURNSTILE_SITE_KEY": "<YOUR_STAGING_SITE_KEY>"
+      }
+    },
+    "development": {
+      "vars": {
+        // Use test sitekey for development (always passes)
+        "TURNSTILE_SITE_KEY": "1x00000000000000000000AA"
+      }
+    }
+  }
+}

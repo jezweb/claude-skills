@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Turnstile Example - Implicit Rendering</title>
+
+  <!-- CRITICAL: Load from Cloudflare CDN only - never proxy or cache -->
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
+  <!-- Optional: CSP headers if needed -->
+  <meta http-equiv="Content-Security-Policy" content="
+    script-src 'self' https://challenges.cloudflare.com;
+    frame-src 'self' https://challenges.cloudflare.com;
+    connect-src 'self' https://challenges.cloudflare.com;
+  ">
+
+  <style>
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 20px;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 500;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    button {
+      background: #0070f3;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover {
+      background: #0051cc;
+    }
+    button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+    .error {
+      color: red;
+      margin-top: 10px;
+    }
+    .success {
+      color: green;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Contact Form with Turnstile</h1>
+
+  <form id="contactForm" action="/api/contact" method="POST">
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input type="text" id="name" name="name" required>
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" required>
+    </div>
+
+    <div class="form-group">
+      <label for="message">Message</label>
+      <textarea id="message" name="message" rows="5" required></textarea>
+    </div>
+
+    <!-- Turnstile Widget - Implicit Rendering -->
+    <div class="cf-turnstile"
+         data-sitekey="YOUR_SITE_KEY"
+         data-callback="onTurnstileSuccess"
+         data-error-callback="onTurnstileError"
+         data-expired-callback="onTurnstileExpired"
+         data-theme="auto"
+         data-size="normal"></div>
+
+    <button type="submit" id="submitButton">Submit</button>
+
+    <div id="message"></div>
+  </form>
+
+  <script>
+    let turnstileToken = null;
+
+    function onTurnstileSuccess(token) {
+      console.log('Turnstile success:', token);
+      turnstileToken = token;
+      document.getElementById('submitButton').disabled = false;
+    }
+
+    function onTurnstileError(error) {
+      console.error('Turnstile error:', error);
+      showMessage('Verification failed. Please try again.', 'error');
+      document.getElementById('submitButton').disabled = true;
+    }
+
+    function onTurnstileExpired() {
+      console.warn('Turnstile token expired');
+      turnstileToken = null;
+      document.getElementById('submitButton').disabled = true;
+      showMessage('Verification expired. Please try again.', 'error');
+    }
+
+    function showMessage(text, type) {
+      const messageDiv = document.getElementById('message');
+      messageDiv.textContent = text;
+      messageDiv.className = type;
+    }
+
+    // Handle form submission
+    document.getElementById('contactForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      if (!turnstileToken) {
+        showMessage('Please complete the verification.', 'error');
+        return;
+      }
+
+      const formData = new FormData(e.target);
+      // Token is automatically added as 'cf-turnstile-response' by Turnstile
+
+      try {
+        const response = await fetch('/api/contact', {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (response.ok) {
+          showMessage('Message sent successfully!', 'success');
+          e.target.reset();
+          turnstileToken = null;
+          // Reset Turnstile widget
+          turnstile.reset();
+        } else {
+          const error = await response.text();
+          showMessage(`Error: ${error}`, 'error');
+        }
+      } catch (error) {
+        showMessage(`Network error: ${error.message}`, 'error');
+      }
+    });
+
+    // Disable submit button initially
+    document.getElementById('submitButton').disabled = true;
+  </script>
+</body>
+</html>

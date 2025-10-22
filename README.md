@@ -32,7 +32,7 @@ Skills will be symlinked to `~/.claude/skills/`. Claude Code will automatically 
 
 ---
 
-## 📦 Available Skills (17 Production-Ready)
+## 📦 Available Skills (18 Production-Ready)
 
 ### Cloudflare Core Infrastructure
 
@@ -103,6 +103,13 @@ Stateful coordination with WebSocket Hibernation, SQL storage, alarms, and real-
 Complete Agents SDK for building stateful AI agents with WebSocket, scheduling, RAG, and MCP servers. Prevents 15 documented errors.
 
 **Triggers**: `cloudflare agents`, `agents sdk`, `stateful agents`, `mcp server`
+
+---
+
+#### **cloudflare-turnstile**
+CAPTCHA-alternative bot protection with client-side widgets, server-side validation, React integration, and testing patterns. Prevents 12 documented errors.
+
+**Triggers**: `turnstile`, `captcha`, `bot protection`, `recaptcha alternative`, `siteverify`, `error 110200`, `error 300030`
 
 ---
 
