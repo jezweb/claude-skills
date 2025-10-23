@@ -1,0 +1,78 @@
+{
+  "name": "cloudflare-full-stack-app",
+  "main": "backend/src/index.ts",
+  "compatibility_date": "2025-04-01",
+  "compatibility_flags": ["nodejs_compat"],
+
+  // Static assets configuration
+  "assets": {
+    "directory": "./dist/client",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application"
+  },
+
+  // Workers AI binding
+  "ai": {
+    "binding": "AI"
+  },
+
+  // D1 Database
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "my-app-db",
+      "database_id": "TODO: Run 'npx wrangler d1 create my-app-db' and paste ID here"
+    }
+  ],
+
+  // KV Namespace
+  "kv_namespaces": [
+    {
+      "binding": "KV",
+      "id": "TODO: Run 'npx wrangler kv:namespace create my-app-kv' and paste ID here"
+    }
+  ],
+
+  // R2 Bucket
+  "r2_buckets": [
+    {
+      "binding": "BUCKET",
+      "bucket_name": "my-app-bucket"
+    }
+  ],
+
+  // Vectorize Index
+  "vectorize": [
+    {
+      "binding": "VECTORIZE",
+      "index_name": "my-app-index"
+    }
+  ],
+
+  // Queues
+  "queues": {
+    "producers": [
+      {
+        "binding": "QUEUE",
+        "queue": "my-app-queue"
+      }
+    ],
+    "consumers": [
+      {
+        "queue": "my-app-queue",
+        "max_batch_size": 10,
+        "max_retries": 3,
+        "dead_letter_queue": "my-app-dlq"
+      }
+    ]
+  },
+
+  // Environment variables
+  // Use .dev.vars for local development
+  // Use 'npx wrangler secret put KEY_NAME' for production
+
+  // Observability
+  "observability": {
+    "enabled": true
+  }
+}

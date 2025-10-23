@@ -1,0 +1,25 @@
+# ============================================
+# Environment Variables for Local Development
+# ============================================
+# Copy this file to .dev.vars and fill in your values
+# NEVER commit .dev.vars to git!
+
+# Clerk Authentication (COMMENTED - uncomment to enable)
+# Get keys from: https://dashboard.clerk.com
+# CLERK_PUBLISHABLE_KEY=pk_test_xxx
+# CLERK_SECRET_KEY=sk_test_xxx
+# CLERK_JWT_VERIFICATION_KEY=your-jwt-verification-key
+
+# AI Providers (COMMENTED - uncomment what you need)
+# OpenAI: https://platform.openai.com/api-keys
+# OPENAI_API_KEY=sk-xxx
+
+# Anthropic: https://console.anthropic.com/
+# ANTHROPIC_API_KEY=sk-ant-xxx
+
+# Google AI: https://aistudio.google.com/app/apikey
+# GOOGLE_GENERATIVE_AI_API_KEY=xxx
+
+# Other Services (add as needed)
+# FIRECRAWL_API_KEY=fc-xxx
+# STRIPE_SECRET_KEY=sk_test_xxx
