@@ -32,7 +32,7 @@ Skills will be symlinked to `~/.claude/skills/`. Claude Code will automatically 
 
 ---
 
-## 📦 Available Skills (18 Production-Ready)
+## 📦 Available Skills (29 Production-Ready)
 
 ### Cloudflare Core Infrastructure
 
