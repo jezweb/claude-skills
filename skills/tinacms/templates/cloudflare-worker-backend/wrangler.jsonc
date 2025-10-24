@@ -1,0 +1,55 @@
+{
+  "$schema": "https://raw.githubusercontent.com/cloudflare/wrangler/main/npm/wrangler/wrangler-schema.json",
+  "name": "tina-backend",
+  "main": "src/index.ts",
+  "compatibility_date": "2025-10-24",
+  "compatibility_flags": ["nodejs_compat"],
+
+  // Environment variables for development
+  "vars": {
+    "TINA_PUBLIC_IS_LOCAL": "false"
+  },
+
+  // Environment-specific configurations
+  "env": {
+    "development": {
+      "vars": {
+        "TINA_PUBLIC_IS_LOCAL": "true"
+      }
+    },
+    "production": {
+      "vars": {
+        "TINA_PUBLIC_IS_LOCAL": "false"
+      },
+      // Add secrets via: wrangler secret put NEXTAUTH_SECRET
+      "secrets": [
+        "NEXTAUTH_SECRET"
+      ]
+    }
+  },
+
+  // Optional: Add KV for session storage
+  // "kv_namespaces": [
+  //   {
+  //     "binding": "SESSION_KV",
+  //     "id": "your-kv-namespace-id"
+  //   }
+  // ],
+
+  // Optional: Add D1 for user management
+  // "d1_databases": [
+  //   {
+  //     "binding": "DB",
+  //     "database_name": "tina-users",
+  //     "database_id": "your-d1-database-id"
+  //   }
+  // ],
+
+  // Routes configuration (adjust based on your setup)
+  "routes": [
+    {
+      "pattern": "yourdomain.com/api/tina/*",
+      "zone_name": "yourdomain.com"
+    }
+  ]
+}

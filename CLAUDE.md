@@ -3,7 +3,7 @@
 **Repository**: https://github.com/jezweb/claude-skills
 **Purpose**: Production-ready skills for Claude Code CLI
 **Owner**: Jeremy Dawes (Jez) | Jezweb
-**Status**: Active Development | 9 Skills Complete
+**Status**: Active Development | 27 Skills Complete
 
 ---
 
@@ -54,8 +54,9 @@ claude-skills/
 ├── CHANGELOG.md                  # Version history
 ├── LICENSE                       # MIT License
 │
-├── skills/                       # ← All production skills
+├── skills/                       # ← All production skills (27 total)
 │   ├── tailwind-v4-shadcn/       # Gold standard example
+│   ├── tinacms/                  # ← NEW: Git-backed CMS
 │   ├── cloudflare-worker-base/
 │   ├── cloudflare-d1/
 │   ├── cloudflare-r2/
@@ -63,7 +64,8 @@ claude-skills/
 │   ├── cloudflare-workers-ai/
 │   ├── cloudflare-vectorize/
 │   ├── cloudflare-queues/
-│   └── firecrawl-scraper/
+│   ├── firecrawl-scraper/
+│   └── [22 more skills...]
 │
 ├── templates/                    # ← Templates for new skills
 │   ├── SKILL-TEMPLATE.md         # Copy-paste SKILL.md starter
@@ -95,9 +97,17 @@ claude-skills/
 
 ---
 
-## Current Status (2025-10-21)
+## Current Status (2025-10-24)
 
-### ✅ Completed Skills (9)
+### ✅ Completed Skills (27)
+
+**Recently Added**:
+- **tinacms** (2025-10-24) - Complete TinaCMS integration for Git-backed content management
+  - Supports: Next.js, Vite+React, Astro, Framework-agnostic
+  - 9 errors prevented, 68% token savings
+  - Self-hosting templates for Cloudflare Workers, Vercel, Netlify
+
+**Full Skill List** (run `ls skills/` to see all):
 
 **Cloudflare Suite** (7 skills):
 1. **cloudflare-worker-base** - Hono + Vite + Static Assets foundation

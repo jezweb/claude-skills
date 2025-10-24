@@ -1,0 +1,25 @@
+{
+  "name": "astro-tinacms-app",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tinacms dev -c \"astro dev\"",
+    "build": "tinacms build && astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@astrojs/mdx": "^4.0.0",
+    "@astrojs/react": "^4.0.0",
+    "astro": "^5.15.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "tinacms": "^2.9.0"
+  },
+  "devDependencies": {
+    "@tinacms/cli": "^1.11.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "typescript": "^5.6.0"
+  }
+}
