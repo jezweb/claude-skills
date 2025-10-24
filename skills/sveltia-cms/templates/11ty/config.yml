@@ -1,0 +1,63 @@
+# Sveltia CMS Configuration for 11ty (Eleventy)
+# Place this file in: admin/config.yml
+
+backend:
+  name: github
+  repo: owner/repo  # Change to your GitHub repository
+  branch: main
+  base_url: https://your-worker.workers.dev  # Your Cloudflare Workers OAuth proxy URL
+
+# Media storage
+media_folder: src/assets/images
+public_folder: /assets/images
+
+# Optional: Image optimization
+media_libraries:
+  default:
+    config:
+      max_file_size: 5242880
+      slugify_filename: true
+      transformations:
+        raster_image:
+          format: webp
+          quality: 85
+          width: 2048
+          height: 2048
+
+# Collections
+collections:
+  # Blog Posts
+  - name: blog
+    label: Blog Posts
+    folder: src/posts
+    create: true
+    slug: '{{slug}}'
+    fields:
+      - label: Title
+        name: title
+        widget: string
+
+      - label: Description
+        name: description
+        widget: text
+        required: false
+
+      - label: Date
+        name: date
+        widget: datetime
+        date_format: 'YYYY-MM-DD'
+        time_format: false
+
+      - label: Tags
+        name: tags
+        widget: list
+        required: false
+
+      - label: Featured Image
+        name: image
+        widget: image
+        required: false
+
+      - label: Body
+        name: body
+        widget: markdown

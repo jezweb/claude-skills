@@ -1,0 +1,52 @@
+# Blog Post Collection Template
+# Copy this collection definition to your admin/config.yml
+
+- name: posts
+  label: Blog Posts
+  folder: content/posts  # Adjust for your framework (e.g., _posts for Jekyll)
+  create: true
+  slug: '{{year}}-{{month}}-{{day}}-{{slug}}'
+  format: yaml  # or md, toml, json
+  fields:
+    - label: Title
+      name: title
+      widget: string
+      hint: Post title
+
+    - label: Date
+      name: date
+      widget: datetime
+      date_format: 'YYYY-MM-DD'
+      time_format: 'HH:mm:ss'
+      format: 'YYYY-MM-DDTHH:mm:ssZ'
+
+    - label: Draft
+      name: draft
+      widget: boolean
+      default: true
+      hint: Set to false to publish
+
+    - label: Featured Image
+      name: image
+      widget: image
+      required: false
+
+    - label: Excerpt / Description
+      name: description
+      widget: text
+      required: false
+      hint: Short description for SEO
+
+    - label: Tags
+      name: tags
+      widget: list
+      required: false
+
+    - label: Categories
+      name: categories
+      widget: list
+      required: false
+
+    - label: Body
+      name: body
+      widget: markdown

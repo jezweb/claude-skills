@@ -1,0 +1,78 @@
+# Landing Page Collection Template (Structured Content)
+# Copy this collection definition to your admin/config.yml
+
+- name: pages
+  label: Landing Pages
+  folder: content/pages
+  create: true
+  slug: '{{slug}}'
+  format: json  # JSON for structured data
+  fields:
+    - label: Title
+      name: title
+      widget: string
+
+    - label: SEO
+      name: seo
+      widget: object
+      fields:
+        - label: Meta Title
+          name: metaTitle
+          widget: string
+          required: false
+
+        - label: Meta Description
+          name: metaDescription
+          widget: text
+          required: false
+
+        - label: OG Image
+          name: ogImage
+          widget: image
+          required: false
+
+    - label: Hero Section
+      name: hero
+      widget: object
+      fields:
+        - label: Headline
+          name: headline
+          widget: string
+
+        - label: Subheadline
+          name: subheadline
+          widget: text
+
+        - label: Hero Image
+          name: image
+          widget: image
+          required: false
+
+        - label: CTA Button
+          name: cta
+          widget: object
+          fields:
+            - label: Text
+              name: text
+              widget: string
+            - label: URL
+              name: url
+              widget: string
+
+    - label: Features
+      name: features
+      widget: list
+      required: false
+      fields:
+        - label: Title
+          name: title
+          widget: string
+
+        - label: Description
+          name: description
+          widget: text
+
+        - label: Icon
+          name: icon
+          widget: image
+          required: false

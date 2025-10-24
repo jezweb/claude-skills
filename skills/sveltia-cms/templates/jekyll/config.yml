@@ -1,0 +1,82 @@
+# Sveltia CMS Configuration for Jekyll
+# Place this file in: admin/config.yml
+
+backend:
+  name: github
+  repo: owner/repo  # Change to your GitHub repository
+  branch: main      # or 'gh-pages' if using GitHub Pages source branch
+  base_url: https://your-worker.workers.dev  # Your Cloudflare Workers OAuth proxy URL
+
+# Media storage
+media_folder: assets/images/uploads
+public_folder: /assets/images/uploads
+
+# Optional: Image optimization
+media_libraries:
+  default:
+    config:
+      max_file_size: 5242880  # 5 MB
+      slugify_filename: true
+      transformations:
+        raster_image:
+          format: webp
+          quality: 85
+          width: 2048
+          height: 2048
+
+# Collections
+collections:
+  # Blog Posts
+  - name: posts
+    label: Blog Posts
+    folder: _posts
+    create: true
+    slug: '{{year}}-{{month}}-{{day}}-{{slug}}'
+    fields:
+      - label: Layout
+        name: layout
+        widget: hidden
+        default: post
+
+      - label: Title
+        name: title
+        widget: string
+
+      - label: Date
+        name: date
+        widget: datetime
+        date_format: 'YYYY-MM-DD'
+        time_format: 'HH:mm:ss'
+        format: 'YYYY-MM-DD HH:mm:ss ZZ'
+
+      - label: Categories
+        name: categories
+        widget: list
+        required: false
+
+      - label: Tags
+        name: tags
+        widget: list
+        required: false
+
+      - label: Featured Image
+        name: image
+        widget: image
+        required: false
+
+      - label: Body
+        name: body
+        widget: markdown
+
+  # Pages
+  - name: pages
+    label: Pages
+    files:
+      - name: about
+        label: About Page
+        file: about.md
+        fields:
+          - { label: Layout, name: layout, widget: hidden, default: page }
+          - { label: Title, name: title, widget: string }
+          - { label: Permalink, name: permalink, widget: hidden, default: /about/ }
+          - { label: Body, name: body, widget: markdown }

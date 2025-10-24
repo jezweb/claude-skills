@@ -1,0 +1,26 @@
+{
+  "name": "sveltia-cms-auth",
+  "main": "src/index.ts",
+  "compatibility_date": "2025-10-24",
+  "account_id": "", // Add your Cloudflare account ID here
+
+  // Environment variables (set via: npx wrangler secret put VARIABLE_NAME)
+  // Required:
+  // - GITHUB_CLIENT_ID: Your GitHub OAuth App Client ID
+  // - GITHUB_CLIENT_SECRET: Your GitHub OAuth App Client Secret
+  //
+  // Optional:
+  // - GITLAB_APPLICATION_ID: Your GitLab Application ID
+  // - GITLAB_SECRET: Your GitLab Application Secret
+  // - ALLOWED_DOMAINS: Comma-separated list of allowed domains (e.g., "yourdomain.com,*.yourdomain.com")
+
+  "vars": {
+    // Public variables (safe to commit)
+    "ENVIRONMENT": "production"
+  },
+
+  // For development
+  "dev": {
+    "port": 8787
+  }
+}

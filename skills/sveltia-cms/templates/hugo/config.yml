@@ -1,0 +1,113 @@
+# Sveltia CMS Configuration for Hugo
+# Place this file in: static/admin/config.yml
+
+backend:
+  name: github
+  repo: owner/repo  # Change to your GitHub repository (e.g., jezweb/my-blog)
+  branch: main      # Change if your default branch is different
+  base_url: https://your-worker.workers.dev  # Your Cloudflare Workers OAuth proxy URL
+
+# Media storage
+media_folder: static/images/uploads  # Where uploaded files are saved
+public_folder: /images/uploads        # URL path for content files
+
+# Optional: Image optimization
+media_libraries:
+  default:
+    config:
+      max_file_size: 5242880  # 5 MB in bytes
+      slugify_filename: true
+      transformations:
+        raster_image:
+          format: webp  # Convert to WebP
+          quality: 85
+          width: 2048
+          height: 2048
+        svg:
+          optimize: true
+
+# Collections (content types)
+collections:
+  # Blog Posts
+  - name: posts
+    label: Blog Posts
+    folder: content/posts
+    create: true
+    slug: '{{year}}-{{month}}-{{day}}-{{slug}}'
+    format: yaml  # Hugo supports yaml, toml, json
+    fields:
+      - label: Title
+        name: title
+        widget: string
+        hint: Post title (required)
+
+      - label: Date
+        name: date
+        widget: datetime
+        date_format: 'YYYY-MM-DD'
+        time_format: 'HH:mm:ss'
+        format: 'YYYY-MM-DDTHH:mm:ssZ'
+        hint: Publication date
+
+      - label: Draft
+        name: draft
+        widget: boolean
+        default: true
+        hint: Set to false to publish
+
+      - label: Featured Image
+        name: image
+        widget: image
+        required: false
+        hint: Main post image
+
+      - label: Excerpt
+        name: description
+        widget: text
+        required: false
+        hint: Short description for SEO and previews
+
+      - label: Tags
+        name: tags
+        widget: list
+        required: false
+        hint: Post tags (comma-separated)
+
+      - label: Categories
+        name: categories
+        widget: list
+        required: false
+        hint: Post categories
+
+      - label: Body
+        name: body
+        widget: markdown
+        hint: Post content
+
+  # Documentation Pages (optional)
+  - name: docs
+    label: Documentation
+    folder: content/docs
+    create: true
+    slug: '{{slug}}'
+    format: yaml
+    fields:
+      - label: Title
+        name: title
+        widget: string
+
+      - label: Description
+        name: description
+        widget: text
+        required: false
+
+      - label: Weight
+        name: weight
+        widget: number
+        value_type: int
+        hint: Sort order (lower numbers appear first)
+        required: false
+
+      - label: Body
+        name: body
+        widget: markdown

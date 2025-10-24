@@ -1,0 +1,45 @@
+# Documentation Page Collection Template
+# Copy this collection definition to your admin/config.yml
+
+- name: docs
+  label: Documentation
+  folder: content/docs  # Adjust for your framework
+  create: true
+  slug: '{{slug}}'
+  format: yaml
+  fields:
+    - label: Title
+      name: title
+      widget: string
+
+    - label: Description
+      name: description
+      widget: text
+      required: false
+      hint: Page description for SEO
+
+    - label: Order / Weight
+      name: weight
+      widget: number
+      value_type: int
+      required: false
+      hint: Sort order (lower numbers appear first)
+
+    - label: Category
+      name: category
+      widget: select
+      options:
+        - Getting Started
+        - Guides
+        - API Reference
+        - Advanced
+      required: false
+
+    - label: Draft
+      name: draft
+      widget: boolean
+      default: false
+
+    - label: Body
+      name: body
+      widget: markdown
