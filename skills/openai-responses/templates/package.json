@@ -1,0 +1,30 @@
+{
+  "name": "openai-responses-examples",
+  "version": "1.0.0",
+  "description": "OpenAI Responses API Examples",
+  "type": "module",
+  "scripts": {
+    "basic": "tsx templates/basic-response.ts",
+    "conversation": "tsx templates/stateful-conversation.ts",
+    "mcp": "tsx templates/mcp-integration.ts",
+    "code": "tsx templates/code-interpreter.ts",
+    "file": "tsx templates/file-search.ts",
+    "web": "tsx templates/web-search.ts",
+    "image": "tsx templates/image-generation.ts",
+    "background": "tsx templates/background-mode.ts",
+    "worker": "wrangler dev templates/cloudflare-worker.ts"
+  },
+  "dependencies": {
+    "openai": "^5.19.1"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.0.0",
+    "@types/node": "^20.0.0",
+    "tsx": "^4.7.1",
+    "typescript": "^5.3.3",
+    "wrangler": "^3.95.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
