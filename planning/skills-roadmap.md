@@ -1706,6 +1706,70 @@ A skill is considered "complete" when:
 
 ## 🚀 Future Skills (Backlog)
 
+### Planned Enhancement: cloudflare-full-stack-scaffold v2.0
+
+**Status**: Planned (2025-10-24)
+**Type**: Major enhancement to existing skill
+**Priority**: High
+**Estimated Dev Time**: 12-15 hours
+
+**Goal**: Make the full-stack scaffold more comprehensive with real-time features, advanced AI pipelines, and production-ready file uploads.
+
+**Approach**: Opt-in scripts (maintain current pattern like enable-auth.sh)
+
+**Features to Add**:
+
+**1. Real-time Features** (3 opt-in scripts):
+- `enable-realtime-chat.sh` - Durable Objects chat room with WebSocket Hibernation, message history, presence tracking
+- `enable-collaborative-editing.sh` - Multi-user document editing with operational transforms, conflict resolution
+- `enable-live-notifications.sh` - Server-sent events for real-time updates (messages, status changes, job completion)
+
+**2. AI Capability Pipelines** (4 opt-in scripts):
+- `enable-rag-pipeline.sh` - Complete RAG: Upload docs → Vectorize embeddings → Workers AI retrieval → Stream response with sources
+- `enable-multi-agent.sh` - Multi-agent orchestration using cloudflare-agents SDK (research → writer → editor)
+- `enable-ai-database.sh` - Natural language → SQL queries, AI-powered data analysis, chat with D1 database
+- `enable-ai-vision.sh` - Image/video/audio processing → text extraction → embeddings → multimodal search
+
+**3. Comprehensive File Uploads** (1 opt-in script):
+- `enable-file-uploads.sh` - Drag-drop, multiple files, previews (images/PDFs), progress bars, error handling, presigned URLs, client-side R2 uploads
+
+**New Backend Routes** (8 total):
+- `backend/routes/realtime-chat.ts` (Durable Object)
+- `backend/routes/collaborative-editing.ts` (Durable Object)
+- `backend/routes/live-notifications.ts` (SSE)
+- `backend/routes/rag-pipeline.ts` (Vectorize + Workers AI)
+- `backend/routes/multi-agent.ts` (cloudflare-agents SDK)
+- `backend/routes/ai-database.ts` (natural language → SQL)
+- `backend/routes/ai-vision.ts` (multimodal processing)
+- `backend/routes/file-uploads.ts` (R2 presigned URLs)
+
+**New Frontend Components** (8 total):
+- `src/components/RealtimeChat.tsx`
+- `src/components/CollaborativeEditor.tsx`
+- `src/components/LiveNotifications.tsx`
+- `src/components/FileUploader.tsx`
+- `src/pages/RAGDemo.tsx`
+- `src/pages/MultiAgentDemo.tsx`
+- `src/pages/AIDatabaseChat.tsx`
+- `src/pages/VisionDemo.tsx`
+
+**Documentation Updates**:
+- Update `docs/ARCHITECTURE.md` with real-time and AI pipeline patterns
+- Update `scaffold/README.md` with all new features
+- Add comprehensive examples to SKILL.md
+- Update token savings metrics (estimated ~85% vs building from scratch)
+
+**Why These Features**:
+- **Real-time**: Essential for modern collaborative apps, chat interfaces, live dashboards
+- **AI pipelines**: Showcase integration between multiple Cloudflare services (D1 + Vectorize + Workers AI + R2)
+- **File uploads**: Missing UI component despite R2 being configured - common requirement
+- **All opt-in**: Keeps base scaffold simple, users enable only what they need
+
+**Token Savings**: ~85% (estimated) vs building these features from scratch
+**Production Value**: Transforms scaffold from "starter" to "production-ready for AI-powered SaaS"
+
+---
+
 ### High Demand:
 - **stripe-payments**: Stripe integration (webhooks, subscriptions, checkout)
 - **resend-email**: Email with Resend API (templates, transactional)
