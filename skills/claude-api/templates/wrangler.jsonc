@@ -1,0 +1,80 @@
+// wrangler.jsonc - Cloudflare Workers configuration for Claude API
+{
+  "name": "claude-api-worker",
+  "main": "src/index.ts",
+  "compatibility_date": "2025-01-01",
+
+  // Bindings
+  "vars": {
+    "ENVIRONMENT": "production"
+  },
+
+  // Environment variables (secrets)
+  // Set with: wrangler secret put ANTHROPIC_API_KEY
+  // "ANTHROPIC_API_KEY": "sk-ant-..."  // Never commit this!
+
+  // KV namespace (optional - for caching)
+  "kv_namespaces": [
+    {
+      "binding": "CACHE",
+      "id": "your-kv-namespace-id",
+      "preview_id": "your-kv-preview-id"
+    }
+  ],
+
+  // D1 database (optional - for conversation storage)
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "claude-conversations",
+      "database_id": "your-d1-database-id"
+    }
+  ],
+
+  // Durable Objects (optional - for rate limiting)
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "RATE_LIMITER",
+        "class_name": "RateLimiter",
+        "script_name": "claude-api-worker"
+      }
+    ]
+  },
+
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_classes": ["RateLimiter"]
+    }
+  ],
+
+  // Routes (if deploying to custom domain)
+  "routes": [
+    {
+      "pattern": "api.example.com/chat/*",
+      "zone_name": "example.com"
+    }
+  ],
+
+  // Limits and features
+  "limits": {
+    "cpu_ms": 50 // 50ms CPU time
+  },
+
+  "compatibility_flags": [
+    "nodejs_compat" // If using Node.js APIs
+  ],
+
+  // Observability
+  "observability": {
+    "enabled": true
+  },
+
+  // Tail consumers (for logging)
+  "tail_consumers": [
+    {
+      "service": "logging-worker"
+    }
+  ]
+}
