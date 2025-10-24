@@ -918,6 +918,590 @@ Result: Integrated solution from atomic skills
 
 ---
 
+### Batch 5 - AI API/SDK Suite ⭐⭐⭐
+
+**Overview**: Direct API integration skills for major AI providers (OpenAI, Anthropic Claude, Google Gemini). These complement existing ai-sdk-core/ai-sdk-ui skills by providing direct API access for use cases requiring provider-specific features, full control, or edge deployment without abstraction layers.
+
+**Build Order**: Claude → OpenAI → Google
+**Total Skills**: 9
+**Total Dev Time**: 50-64 hours
+**Average Token Savings**: ~60%
+**Total Errors Prevented**: 90+
+
+---
+
+#### 18. claude-api
+**Status**: Planned
+**Priority**: Critical
+**Dependencies**: None
+**Estimated Dev Time**: 5-6 hours
+**Token Savings**: ~62%
+**Errors Prevented**: 10+
+
+**What It Does**:
+- Anthropic Messages API (v1/messages)
+- Streaming responses with Server-Sent Events (SSE)
+- Extended context (200k tokens for Claude 3.5 Sonnet)
+- Prompt caching for cost optimization (up to 90% savings on repeated prompts)
+- System prompts and multi-turn conversations
+- Tool use (function calling with JSON schemas)
+- Vision (image understanding with base64 or URLs)
+- Thinking mode (extended reasoning for complex problems)
+- Both Cloudflare Workers (fetch-based) and Node.js (@anthropic-ai/sdk)
+- Rate limit handling (429 errors) and retry strategies
+
+**Files to Create**:
+- README.md (comprehensive auto-trigger keywords)
+- SKILL.md (complete API reference, 800+ lines)
+- templates/basic-chat.ts
+- templates/streaming-chat.ts
+- templates/prompt-caching.ts
+- templates/tool-use.ts
+- templates/vision.ts
+- templates/thinking-mode.ts
+- templates/cloudflare-worker.ts
+- templates/nodejs-example.ts
+- templates/package.json
+- references/api-reference.md
+- references/prompt-caching-guide.md
+- references/tool-use-patterns.md
+- references/vision-capabilities.md
+- references/error-handling.md
+- references/top-errors.md (10 common issues)
+- scripts/check-versions.sh
+
+**Known Issues to Prevent**:
+1. Streaming SSE parsing errors (incorrect event format handling)
+2. Prompt caching not activating (cache_control block placement)
+3. Tool use response format errors (JSON schema mismatches)
+4. Vision image format issues (base64 encoding requirements)
+5. Rate limit handling (429 errors without exponential backoff)
+6. Token counting mismatches for billing
+7. System prompt ordering issues (must be first message)
+8. Multi-turn conversation context management
+9. Thinking mode not available on all models (only Claude 3.5 Sonnet+)
+10. CORS errors in browser contexts (API key exposure)
+
+**Production Validated**: Based on official Anthropic documentation and Claude API usage patterns
+
+**Auto-Trigger Keywords**:
+- `claude api`, `anthropic api`, `messages api`, `@anthropic-ai/sdk`
+- `claude streaming`, `prompt caching claude`, `claude tool use`, `claude vision`
+- `claude thinking mode`, `claude function calling`, `anthropic messages`
+- Error keywords: `claude streaming error`, `prompt cache not working`, `anthropic 429`
+
+---
+
+#### 19. claude-agent-sdk
+**Status**: Planned
+**Priority**: High
+**Dependencies**: claude-api (recommended)
+**Estimated Dev Time**: 6-8 hours
+**Token Savings**: ~65%
+**Errors Prevented**: 12+
+
+**What It Does**:
+- Anthropic's Agent SDK for building production AI agents
+- Agent orchestration patterns (plan → execute → reflect loops)
+- Tool integration and tool chaining (sequential tool calls)
+- Multi-step reasoning workflows with state persistence
+- State management across agent runs (memory between executions)
+- Memory and context persistence (long-term conversation tracking)
+- Agentic loops with error recovery
+- Comparison with cloudflare-agents (different architectures and use cases)
+- Both Cloudflare Workers and Node.js environments
+
+**Files to Create**:
+- README.md (comprehensive auto-trigger keywords)
+- SKILL.md (complete guide, 1000+ lines)
+- templates/basic-agent.ts
+- templates/agent-with-tools.ts
+- templates/multi-step-agent.ts
+- templates/stateful-agent.ts
+- templates/agent-orchestration.ts
+- templates/memory-agent.ts
+- templates/cloudflare-worker-agent.ts
+- templates/package.json
+- references/agent-patterns.md
+- references/tool-integration.md
+- references/state-management.md
+- references/comparison-with-cloudflare-agents.md
+- references/best-practices.md
+- references/top-errors.md (12 common issues)
+- scripts/check-versions.sh
+
+**Known Issues to Prevent**:
+1. Agent loop infinite recursion (missing termination conditions)
+2. Tool calling timeout errors (long-running tool executions)
+3. State persistence failures (storage quota limits)
+4. Memory overflow with long conversations (context window exceeded)
+5. Tool response format mismatches (schema validation errors)
+6. Agent handoff coordination issues (state transfer failures)
+7. Streaming in multi-step workflows (buffer management)
+8. Error recovery in agent loops (retry logic for tool failures)
+9. Debugging agent reasoning (lack of observability)
+10. Cost optimization for multi-turn agents (caching strategies)
+11. Prompt engineering for agent behaviors (instruction clarity)
+12. Context window management across steps (pruning strategies)
+
+**Production Validated**: Based on Anthropic's Agent SDK documentation and best practices
+
+**Auto-Trigger Keywords**:
+- `claude agent sdk`, `anthropic agent`, `claude agents`, `agent orchestration`
+- `claude multi-step`, `agent tools claude`, `stateful agent`, `agent memory`
+- `agentic workflow`, `agent reasoning`, `claude agent loop`
+- Error keywords: `agent loop infinite`, `agent timeout`, `agent state lost`
+
+---
+
+#### 20. openai-api
+**Status**: Planned
+**Priority**: Critical
+**Dependencies**: None
+**Estimated Dev Time**: 6-8 hours
+**Token Savings**: ~60%
+**Errors Prevented**: 10+
+
+**What It Does**:
+- Core OpenAI API endpoints:
+  - Chat Completions (GPT-5, GPT-5-mini, GPT-5-nano, GPT-4o, o1, o3)
+  - Embeddings (text-embedding-3-small, text-embedding-3-large)
+  - Images (DALL-E 3 generation and editing)
+  - Audio (Whisper transcription, TTS voices)
+  - Moderation (content safety checks)
+- Streaming with Server-Sent Events (SSE)
+- Function calling (tool use with JSON schemas)
+- Structured outputs with JSON schema (guaranteed valid JSON)
+- Vision (image understanding with GPT-4o)
+- Both Cloudflare Workers (fetch-based) and Node.js (openai SDK)
+
+**Files to Create**:
+- README.md (comprehensive auto-trigger keywords)
+- SKILL.md (complete API reference, 900+ lines)
+- templates/chat-completion.ts
+- templates/streaming-chat.ts
+- templates/function-calling.ts
+- templates/structured-output.ts
+- templates/embeddings.ts
+- templates/image-generation.ts
+- templates/vision.ts
+- templates/audio-transcription.ts
+- templates/text-to-speech.ts
+- templates/moderation.ts
+- templates/cloudflare-worker.ts
+- templates/package.json
+- references/models-guide.md (GPT-5, GPT-4o, o1, o3 comparison)
+- references/function-calling-patterns.md
+- references/structured-output-guide.md
+- references/error-handling.md
+- references/rate-limits.md
+- references/cost-optimization.md
+- references/top-errors.md (10 common issues)
+- scripts/check-versions.sh
+
+**Known Issues to Prevent**:
+1. Rate limit errors (429) without exponential backoff
+2. Function calling schema validation failures
+3. Streaming SSE parsing errors (incomplete chunks)
+4. Structured output JSON schema mismatches
+5. Vision image encoding issues (base64 format)
+6. Embeddings dimension mismatches (1536 vs 3072)
+7. Audio file format incompatibility (Whisper requirements)
+8. TTS voice availability errors (model-specific voices)
+9. Token counting for billing accuracy
+10. API key exposure in client-side code
+
+**Production Validated**: Based on official OpenAI documentation and production usage patterns
+
+**Auto-Trigger Keywords**:
+- `openai api`, `gpt-5`, `gpt-5-mini`, `chatgpt api`, `openai sdk`
+- `openai streaming`, `function calling openai`, `openai embeddings`, `dall-e 3`
+- `whisper api`, `openai tts`, `gpt-4o`, `o1 model`, `o3 model`
+- Error keywords: `openai rate limit`, `openai 429`, `function calling error`
+
+---
+
+#### 21. openai-responses ⭐ NEW!
+**Status**: Planned
+**Priority**: Critical
+**Dependencies**: openai-api (recommended)
+**Estimated Dev Time**: 5-6 hours
+**Token Savings**: ~65%
+**Errors Prevented**: 8+
+
+**What It Does**:
+- NEW unified Responses API (launched March 2025)
+- Stateful conversations (vs stateless Chat Completions)
+- Built-in Model Context Protocol (MCP) server integration
+- Code Interpreter tool (integrated, no separate API)
+- Image generation (integrated DALL-E support)
+- File search capabilities (RAG without vector stores)
+- Reusable prompts with variables (template system)
+- Session management (automatic conversation history)
+- Both Cloudflare Workers (fetch-based) and Node.js environments
+
+**Files to Create**:
+- README.md (comprehensive auto-trigger keywords emphasizing "new unified API")
+- SKILL.md (complete guide, 700+ lines)
+- templates/basic-response.ts
+- templates/stateful-conversation.ts
+- templates/mcp-server-integration.ts
+- templates/code-interpreter.ts
+- templates/image-generation-integrated.ts
+- templates/file-search.ts
+- templates/reusable-prompts.ts
+- templates/package.json
+- references/responses-vs-chat-completions.md
+- references/mcp-integration-guide.md
+- references/code-interpreter-patterns.md
+- references/session-management.md
+- references/migration-from-chat-completions.md
+- references/top-errors.md (8 common issues)
+- scripts/check-versions.sh
+
+**Known Issues to Prevent**:
+1. Session state not persisting across requests
+2. MCP server connection failures (authentication errors)
+3. Code Interpreter timeout errors (long executions)
+4. Image generation rate limits (DALL-E quotas)
+5. File search relevance issues (query optimization)
+6. Reusable prompt variable substitution errors
+7. Migration from Chat Completions API (breaking changes)
+8. Cost tracking differences (stateful vs stateless pricing)
+
+**Production Validated**: Based on official OpenAI Responses API documentation (March 2025 release)
+
+**Auto-Trigger Keywords**:
+- `openai responses api`, `responses api`, `stateful openai`, `openai mcp`
+- `code interpreter openai`, `openai sessions`, `reusable prompts`, `unified api`
+- `openai march 2025`, `responses vs chat completions`
+- Error keywords: `responses api error`, `mcp server failed`, `session not found`
+
+---
+
+#### 22. openai-assistants
+**Status**: Planned
+**Priority**: High
+**Dependencies**: openai-api (recommended)
+**Estimated Dev Time**: 5-6 hours
+**Token Savings**: ~55%
+**Errors Prevented**: 12+
+
+**What It Does**:
+- Assistants API v2 (threads, runs, messages)
+- Built-in tools:
+  - Code Interpreter (data analysis, code execution, chart generation)
+  - File Search (RAG with vector stores, up to 10,000 files per assistant)
+  - Function Calling (custom tools with JSON schemas)
+- Thread management (conversation persistence across sessions)
+- Runs and streaming runs (real-time execution updates)
+- Vector stores for file search (automatic embeddings)
+- File uploads and management (up to 512MB per file)
+- Both Cloudflare Workers (fetch-based) and Node.js (openai SDK)
+
+**Files to Create**:
+- README.md (comprehensive auto-trigger keywords)
+- SKILL.md (complete guide, 900+ lines)
+- templates/basic-assistant.ts
+- templates/code-interpreter-assistant.ts
+- templates/file-search-assistant.ts
+- templates/function-calling-assistant.ts
+- templates/streaming-assistant.ts
+- templates/thread-management.ts
+- templates/vector-store-setup.ts
+- templates/file-uploads.ts
+- templates/package.json
+- references/assistants-api-v2.md
+- references/code-interpreter-guide.md
+- references/file-search-rag-guide.md
+- references/thread-lifecycle.md
+- references/vector-stores.md
+- references/migration-from-v1.md
+- references/top-errors.md (12 common issues)
+- scripts/check-versions.sh
+
+**Known Issues to Prevent**:
+1. Assistant run status polling timeout errors
+2. Vector store indexing delays (async processing)
+3. File search relevance issues (chunking strategy)
+4. Code Interpreter file output not found
+5. Thread message limit exceeded (max 100k messages)
+6. Function calling tool timeout errors
+7. Streaming run interruption handling
+8. Vector store quota limits (storage and retrieval)
+9. File upload format compatibility issues
+10. Assistant instructions token limit (32k max)
+11. Run cancellation race conditions
+12. Thread deletion while run is active
+
+**Production Validated**: Based on official OpenAI Assistants API v2 documentation
+
+**Auto-Trigger Keywords**:
+- `openai assistants`, `assistants api`, `openai threads`, `openai runs`
+- `code interpreter assistant`, `file search openai`, `vector store openai`
+- `openai rag`, `assistant streaming`, `thread persistence`
+- Error keywords: `assistant run failed`, `vector store error`, `thread not found`
+
+---
+
+#### 23. openai-realtime
+**Status**: Planned
+**Priority**: Medium
+**Dependencies**: None
+**Estimated Dev Time**: 4-5 hours
+**Token Savings**: ~50%
+**Errors Prevented**: 8+
+
+**What It Does**:
+- Realtime API for low-latency audio streaming
+- Speech-to-speech (direct audio-to-audio processing)
+- WebSocket connection patterns (persistent bidirectional)
+- Audio input/output handling (PCM16 at 24kHz, Opus codec)
+- Low-latency conversational AI (sub-second responses)
+- Model Context Protocol (MCP) server support
+- Image input support (multimodal with audio)
+- SIP calling integration for phone systems (optional)
+- Server-side WebSocket for Cloudflare Workers
+- Client-side WebSocket for browsers
+
+**Files to Create**:
+- README.md (comprehensive auto-trigger keywords)
+- SKILL.md (complete guide, 800+ lines)
+- templates/realtime-client.ts (browser WebSocket)
+- templates/realtime-server.ts (server WebSocket)
+- templates/speech-to-speech.ts
+- templates/audio-handling.ts
+- templates/mcp-integration.ts
+- templates/image-input.ts
+- templates/cloudflare-worker-websocket.ts
+- templates/package.json
+- references/realtime-api-reference.md
+- references/audio-formats.md
+- references/websocket-patterns.md
+- references/latency-optimization.md
+- references/sip-calling-guide.md
+- references/top-errors.md (8 common issues)
+- scripts/check-versions.sh
+
+**Known Issues to Prevent**:
+1. WebSocket connection establishment failures
+2. Audio format incompatibility (sample rate, codec)
+3. PCM16 encoding errors (incorrect byte order)
+4. WebSocket message buffering issues (latency spikes)
+5. Audio chunk synchronization problems
+6. MCP server connection timeout errors
+7. Image input encoding for multimodal requests
+8. SIP calling authentication failures
+
+**Production Validated**: Based on official OpenAI Realtime API documentation
+
+**Auto-Trigger Keywords**:
+- `openai realtime`, `realtime api`, `speech to speech openai`, `audio streaming`
+- `websocket openai`, `voice ai openai`, `low latency voice`, `sip calling`
+- Error keywords: `realtime connection failed`, `audio format error`, `websocket closed`
+
+---
+
+#### 24. openai-batch
+**Status**: Planned
+**Priority**: Medium
+**Dependencies**: openai-api (recommended)
+**Estimated Dev Time**: 3-4 hours
+**Token Savings**: ~50%
+**Errors Prevented**: 6+
+
+**What It Does**:
+- Batch API for async processing (non-urgent workloads)
+- 50% cost discount vs real-time API calls
+- 24-hour result delivery (results available within 1 day)
+- Bulk processing patterns (thousands of requests in one batch)
+- JSONL file format (JSON Lines for batch input/output)
+- Status polling and result retrieval
+- Use cases: model evaluations, classification, synthetic data generation, summarization
+- Both Cloudflare Workers (fetch-based) and Node.js environments
+
+**Files to Create**:
+- README.md (comprehensive auto-trigger keywords)
+- SKILL.md (complete guide, 600+ lines)
+- templates/create-batch.ts
+- templates/poll-status.ts
+- templates/retrieve-results.ts
+- templates/jsonl-formatter.ts
+- templates/evaluation-batch.ts
+- templates/classification-batch.ts
+- templates/package.json
+- references/batch-api-reference.md
+- references/jsonl-format.md
+- references/use-cases.md
+- references/cost-optimization.md
+- references/top-errors.md (6 common issues)
+- scripts/check-versions.sh
+
+**Known Issues to Prevent**:
+1. JSONL formatting errors (invalid line structure)
+2. Batch file size limits (max 100MB)
+3. Batch request limit exceeded (max 50k requests per batch)
+4. Status polling timeout (24-hour window)
+5. Result retrieval before batch completion
+6. Custom ID collisions (duplicate IDs in batch)
+
+**Production Validated**: Based on official OpenAI Batch API documentation
+
+**Auto-Trigger Keywords**:
+- `openai batch`, `batch api`, `async openai`, `bulk processing openai`
+- `openai jsonl`, `batch jobs openai`, `cost optimization openai`, `50% discount`
+- Error keywords: `batch failed`, `jsonl format error`, `batch status error`
+
+---
+
+#### 25. openai-agents-sdk ⚠️ Python-only
+**Status**: Planned
+**Priority**: Low (Python-specific)
+**Dependencies**: None
+**Estimated Dev Time**: 6-8 hours
+**Token Savings**: ~60%
+**Errors Prevented**: 10+
+
+**What It Does**:
+- OpenAI Agents SDK (Python framework, MIT license)
+- Multi-agent workflows and orchestration (coordinated agent teams)
+- Agent handoffs (transfer control between specialized agents)
+- Guardrails (input/output validation with custom rules)
+- Sessions (automatic conversation history management)
+- Tracing and observability (visualize agent execution)
+- Comparison with Responses API (TypeScript alternative for web projects)
+- Python 3.9+ required
+
+**Files to Create**:
+- README.md (comprehensive auto-trigger keywords, note Python-only)
+- SKILL.md (complete guide, 900+ lines)
+- templates/basic-agent.py
+- templates/multi-agent-workflow.py
+- templates/handoffs.py
+- templates/guardrails.py
+- templates/sessions.py
+- templates/tracing.py
+- templates/requirements.txt
+- references/agents-sdk-reference.md
+- references/multi-agent-patterns.md
+- references/handoff-strategies.md
+- references/guardrails-guide.md
+- references/tracing-observability.md
+- references/typescript-alternatives.md (Responses API comparison)
+- references/top-errors.md (10 common issues)
+- scripts/check-versions.sh (Python version check)
+
+**Known Issues to Prevent**:
+1. Agent handoff state transfer failures
+2. Guardrail validation rule conflicts
+3. Session storage quota limits
+4. Tracing data not persisting
+5. Multi-agent coordination deadlocks
+6. Python version compatibility issues (3.9+ required)
+7. Dependency conflicts with openai SDK
+8. Agent timeout in long workflows
+9. Handoff loop detection failures
+10. Observability data volume limits
+
+**Production Validated**: Based on official OpenAI Agents SDK (openai-agents-python) documentation
+
+**Auto-Trigger Keywords**:
+- `openai agents sdk`, `openai-agents`, `openai agents python`, `multi-agent openai`
+- `agent handoffs`, `guardrails openai`, `agent sessions`, `openai tracing`
+- Error keywords: `agent handoff failed`, `guardrail validation error`, `session not found`
+
+---
+
+#### 26. google-gemini-api
+**Status**: Planned
+**Priority**: Critical
+**Dependencies**: None
+**Estimated Dev Time**: 8-10 hours
+**Token Savings**: ~65%
+**Errors Prevented**: 15+
+
+**What It Does**:
+- Complete Google GenAI SDK coverage (@google/generative-ai)
+- Models: Gemini 2.5 Pro (2M context), Gemini 2.5 Flash, Gemini 2.5 Lite
+- Text generation with streaming (real-time token delivery)
+- Multimodal inputs (text + images + video + audio + PDFs in one prompt):
+  - Images (JPEG, PNG, WebP, up to 20MB)
+  - Video (MP4, MOV, AVI, up to 2GB)
+  - Audio (WAV, MP3, FLAC, up to 20MB)
+  - PDFs (native parsing, up to 30MB)
+- File API (upload/manage large files up to 2GB)
+- Long context (2M tokens for Pro model - entire codebases or books)
+- Structured output (JSON mode with schema validation)
+- Function calling (tool use with parallel execution)
+- Embeddings (text-embedding-004 with 768 dimensions)
+- Code execution (built-in Python code interpreter)
+- Safety settings (harm categories: harassment, hate speech, sexually explicit, dangerous content)
+- Grounding with Google Search (real-time web information)
+- Context caching (cost optimization, up to 90% savings)
+- Both Cloudflare Workers (fetch-based) and Node.js (@google/generative-ai)
+
+**Files to Create**:
+- README.md (comprehensive auto-trigger keywords)
+- SKILL.md (complete API reference, 1200+ lines)
+- templates/text-generation.ts
+- templates/streaming-chat.ts
+- templates/vision.ts
+- templates/video-understanding.ts
+- templates/audio-understanding.ts
+- templates/pdf-parsing.ts
+- templates/file-api.ts
+- templates/long-context.ts
+- templates/structured-output.ts
+- templates/function-calling.ts
+- templates/embeddings.ts
+- templates/code-execution.ts
+- templates/safety-settings.ts
+- templates/grounding.ts
+- templates/context-caching.ts
+- templates/cloudflare-worker.ts
+- templates/package.json
+- references/models-guide.md (Pro/Flash/Lite comparison)
+- references/multimodal-guide.md
+- references/file-api-guide.md
+- references/long-context-patterns.md
+- references/structured-output-guide.md
+- references/function-calling-patterns.md
+- references/embeddings-guide.md
+- references/code-execution-guide.md
+- references/safety-settings-guide.md
+- references/grounding-guide.md
+- references/cost-optimization.md
+- references/top-errors.md (15 common issues)
+- scripts/check-versions.sh
+
+**Known Issues to Prevent**:
+1. File API quota limits (storage and upload rate)
+2. Long context token counting errors (2M tokens)
+3. Multimodal format issues (video/audio encoding)
+4. PDF parsing failures (unsupported layouts)
+5. JSON schema validation errors (structured output)
+6. Function calling format mismatches (tool schemas)
+7. Safety filter blocking responses (strict settings)
+8. Context caching not activating (cache key mismatches)
+9. Grounding quota limits (Google Search API)
+10. Code execution security issues (sandboxing)
+11. Embedding dimensions mismatch (768 dimensions)
+12. Rate limit handling (429 errors)
+13. Video processing timeout errors (large files)
+14. Audio format incompatibility (codec support)
+15. Large file upload failures (network interruptions)
+
+**Production Validated**: Based on official Google AI documentation and Gemini API usage patterns
+
+**Auto-Trigger Keywords**:
+- `google gemini`, `gemini api`, `gemini 2.5`, `genai sdk`, `@google/generative-ai`
+- `gemini vision`, `gemini video`, `gemini audio`, `gemini pdf`, `long context gemini`
+- `gemini function calling`, `gemini embeddings`, `gemini code execution`, `gemini grounding`
+- `2m tokens`, `context caching gemini`, `structured output gemini`, `multimodal gemini`
+- Error keywords: `gemini rate limit`, `gemini safety filter`, `file api error`, `context too long`
+
+---
+
 ## 🏗️ Development Workflow
 
 ### Step-by-Step Process:
@@ -1033,13 +1617,14 @@ Calculate:
 ## 📈 Progress Tracking
 
 ### Overall Progress:
-- **Completed**: 29 skills ✅ (includes 10 skills not listed in table below)
-- **In Main Table**: 19/23 complete (83%)
-- **Additional Complete Skills**: cloudflare-full-stack-scaffold, cloudflare-full-stack-integration, cloudflare-email-routing, cloudflare-turnstile, cloudflare-cron-triggers, cloudflare-browser-rendering, sveltia-cms, tinacms, session-handoff-protocol, tailwind-v4-shadcn
+- **Completed**: 29 skills ✅ (includes 10 skills not listed in main table)
+- **In Main Table**: 19/32 complete (59%)
+- **Additional Complete Skills**: cloudflare-full-stack-scaffold, cloudflare-full-stack-integration, cloudflare-email-routing, cloudflare-turnstile, cloudflare-cron-triggers, cloudflare-browser-rendering, sveltia-cms, tinacms, session-handoff-protocol, zustand-state-management
 - **Batch 1 - Cloudflare Foundation**: 9/9 complete (100%) 🎯
 - **Batch 2 - AI SDK & Auth & Frameworks**: 4/6 complete (67%)
 - **Batch 3 - Cloudflare Advanced**: 3/6 complete (50%) 🎯
-- **Batch 4 - Data & Utilities**: 1/2 complete (50%) - tanstack-query ✅
+- **Batch 4 - Data & Utilities**: 2/2 complete (100%) 🎯
+- **Batch 5 - AI API/SDK Suite**: 0/9 planned (0%) ⭐ NEW!
 
 ### Skills by Status:
 
@@ -1069,9 +1654,19 @@ Calculate:
 | cloudflare-email-workers | Planned | 4-5h (est.) | ~45% | 7+ | Medium |
 | **tanstack-query** | **✅ Complete** | **4h** | **~55%** | **8** | Medium |
 | **drizzle-orm-d1** | **✅ Complete** | **5.5h** | **~60%** | **12** | High |
+| claude-api | Planned | 5-6h (est.) | ~62% | 10+ | Critical |
+| claude-agent-sdk | Planned | 6-8h (est.) | ~65% | 12+ | High |
+| openai-api | Planned | 6-8h (est.) | ~60% | 10+ | Critical |
+| openai-responses | Planned | 5-6h (est.) | ~65% | 8+ | Critical |
+| openai-assistants | Planned | 5-6h (est.) | ~55% | 12+ | High |
+| openai-realtime | Planned | 4-5h (est.) | ~50% | 8+ | Medium |
+| openai-batch | Planned | 3-4h (est.) | ~50% | 6+ | Medium |
+| openai-agents-sdk | Planned | 6-8h (est.) | ~60% | 10+ | Low |
+| google-gemini-api | Planned | 8-10h (est.) | ~65% | 15+ | Critical |
 
-**Total Skills In Table**: 23 (19 complete, 4 to build)
+**Total Skills In Table**: 32 (19 complete, 13 to build)
 **Total Skills In Repo**: 29 (all complete)
+**Batch 5 (Planned)**: 9 skills - AI API/SDK Suite (Claude, OpenAI, Google Gemini)
 
 ---
 
@@ -1182,6 +1777,6 @@ A skill is considered "complete" when:
 
 ---
 
-**Last Updated**: 2025-10-23 (Updated: react-hook-form-zod marked complete - 18/23 skills complete, 78% done)
-**Next Review**: 2025-10-28
+**Last Updated**: 2025-10-24 (Added: Batch 5 - AI API/SDK Suite - 9 new skills planned)
+**Next Review**: 2025-10-31
 **Maintainer**: Jeremy Dawes | jeremy@jezweb.net
