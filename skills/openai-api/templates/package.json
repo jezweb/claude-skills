@@ -1,0 +1,23 @@
+{
+  "name": "openai-api-examples",
+  "version": "1.0.0",
+  "description": "OpenAI API examples for Chat Completions, Embeddings, Images, Audio, and Moderation",
+  "type": "module",
+  "scripts": {
+    "chat-basic": "tsx templates/chat-completion-basic.ts",
+    "chat-nodejs": "tsx templates/chat-completion-nodejs.ts",
+    "stream": "tsx templates/streaming-chat.ts",
+    "functions": "tsx templates/function-calling.ts"
+  },
+  "dependencies": {
+    "openai": "^6.7.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
