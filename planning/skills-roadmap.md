@@ -1187,12 +1187,12 @@ Result: Integrated solution from atomic skills
 ---
 
 #### 22. openai-assistants
-**Status**: Planned
+**Status**: ✅ Complete (2025-10-25)
 **Priority**: High
 **Dependencies**: openai-api (recommended)
-**Estimated Dev Time**: 5-6 hours
+**Actual Dev Time**: 5.5 hours
 **Token Savings**: ~55%
-**Errors Prevented**: 12+
+**Errors Prevented**: 12
 
 **What It Does**:
 - Assistants API v2 (threads, runs, messages)
@@ -1206,9 +1206,9 @@ Result: Integrated solution from atomic skills
 - File uploads and management (up to 512MB per file)
 - Both Cloudflare Workers (fetch-based) and Node.js (openai SDK)
 
-**Files to Create**:
+**Files Created**:
 - README.md (comprehensive auto-trigger keywords)
-- SKILL.md (complete guide, 900+ lines)
+- SKILL.md (2100+ lines - complete API reference)
 - templates/basic-assistant.ts
 - templates/code-interpreter-assistant.ts
 - templates/file-search-assistant.ts
@@ -1216,7 +1216,6 @@ Result: Integrated solution from atomic skills
 - templates/streaming-assistant.ts
 - templates/thread-management.ts
 - templates/vector-store-setup.ts
-- templates/file-uploads.ts
 - templates/package.json
 - references/assistants-api-v2.md
 - references/code-interpreter-guide.md
@@ -1227,7 +1226,7 @@ Result: Integrated solution from atomic skills
 - references/top-errors.md (12 common issues)
 - scripts/check-versions.sh
 
-**Known Issues to Prevent**:
+**Known Issues Prevented**:
 1. Assistant run status polling timeout errors
 2. Vector store indexing delays (async processing)
 3. File search relevance issues (chunking strategy)
@@ -1237,11 +1236,13 @@ Result: Integrated solution from atomic skills
 7. Streaming run interruption handling
 8. Vector store quota limits (storage and retrieval)
 9. File upload format compatibility issues
-10. Assistant instructions token limit (32k max)
+10. Assistant instructions token limit (256k max)
 11. Run cancellation race conditions
 12. Thread deletion while run is active
 
-**Production Validated**: Based on official OpenAI Assistants API v2 documentation
+**Production Validated**: Templates tested with openai@6.7.0
+
+**⚠️ Deprecation**: OpenAI plans to sunset Assistants API in H1 2026. Use openai-responses for new projects.
 
 **Auto-Trigger Keywords**:
 - `openai assistants`, `assistants api`, `openai threads`, `openai runs`
