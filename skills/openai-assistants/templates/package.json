@@ -1,0 +1,23 @@
+{
+  "name": "openai-assistants-templates",
+  "version": "1.0.0",
+  "description": "OpenAI Assistants API v2 templates",
+  "type": "module",
+  "scripts": {
+    "basic": "tsx templates/basic-assistant.ts",
+    "code-interpreter": "tsx templates/code-interpreter-assistant.ts",
+    "file-search": "tsx templates/file-search-assistant.ts",
+    "function-calling": "tsx templates/function-calling-assistant.ts",
+    "streaming": "tsx templates/streaming-assistant.ts",
+    "thread-management": "tsx templates/thread-management.ts",
+    "vector-store": "tsx templates/vector-store-setup.ts"
+  },
+  "dependencies": {
+    "openai": "^6.7.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.3"
+  }
+}
