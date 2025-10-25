@@ -19,9 +19,9 @@ description: |
 license: MIT
 ---
 
-# Google Gemini API - Complete Guide (Phase 1)
+# Google Gemini API - Complete Guide
 
-**Version**: Production Ready ✅
+**Version**: Phase 2 Complete ✅
 **Package**: @google/genai@1.27.0 (⚠️ NOT @google/generative-ai)
 **Last Updated**: 2025-10-25
 
@@ -40,7 +40,7 @@ This skill uses the **correct current SDK** and provides a complete migration gu
 
 ## Status
 
-**✅ Phase 1 Complete (Production Ready)**:
+**✅ Phase 1 Complete**:
 - ✅ Text Generation (basic + streaming)
 - ✅ Multimodal Inputs (images, video, audio, PDFs)
 - ✅ Function Calling (basic + parallel execution)
@@ -49,17 +49,19 @@ This skill uses the **correct current SDK** and provides a complete migration gu
 - ✅ Generation Parameters (temperature, top-p, top-k, stop sequences)
 - ✅ Both Node.js SDK (@google/genai) and fetch approaches
 
-**🔮 Phase 2 (Future)**:
-- Context Caching (cost optimization)
-- Code Execution (built-in Python interpreter)
-- Grounding with Google Search
-- Embeddings API
-- Advanced multimodal patterns
+**✅ Phase 2 Complete**:
+- ✅ Context Caching (cost optimization with TTL-based caching)
+- ✅ Code Execution (built-in Python interpreter and sandbox)
+- ✅ Grounding with Google Search (real-time web information + citations)
+
+**📦 Separate Skills**:
+- **Embeddings**: See `google-gemini-embeddings` skill for text-embedding-004
 
 ---
 
 ## Table of Contents
 
+**Phase 1 - Core Features**:
 1. [Quick Start](#quick-start)
 2. [Current Models (2025)](#current-models-2025)
 3. [SDK vs Fetch Approaches](#sdk-vs-fetch-approaches)
@@ -71,10 +73,17 @@ This skill uses the **correct current SDK** and provides a complete migration gu
 9. [Multi-turn Chat](#multi-turn-chat)
 10. [Thinking Mode](#thinking-mode)
 11. [Generation Configuration](#generation-configuration)
-12. [Error Handling](#error-handling)
-13. [Rate Limits](#rate-limits)
-14. [SDK Migration Guide](#sdk-migration-guide)
-15. [Production Best Practices](#production-best-practices)
+
+**Phase 2 - Advanced Features**:
+12. [Context Caching](#context-caching)
+13. [Code Execution](#code-execution)
+14. [Grounding with Google Search](#grounding-with-google-search)
+
+**Common Reference**:
+15. [Error Handling](#error-handling)
+16. [Rate Limits](#rate-limits)
+17. [SDK Migration Guide](#sdk-migration-guide)
+18. [Production Best Practices](#production-best-practices)
 
 ---
 
@@ -1032,6 +1041,755 @@ const response = await fetch(
 
 ---
 
+## Context Caching
+
+Context caching allows you to cache frequently used content (like system instructions, large documents, or video files) to reduce costs by **up to 90%** and improve latency.
+
+### How It Works
+
+1. **Create a cache** with your repeated content
+2. **Reference the cache** in subsequent requests
+3. **Save tokens** - cached tokens cost significantly less
+4. **TTL management** - caches expire after specified time
+
+### Benefits
+
+- **Cost savings**: Up to 90% reduction on cached tokens
+- **Reduced latency**: Faster responses by reusing processed content
+- **Consistent context**: Same large context across multiple requests
+
+### Cache Creation (SDK)
+
+```typescript
+import { GoogleGenAI } from '@google/genai';
+import fs from 'fs';
+
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+
+// Create a cache for a large document
+const documentText = fs.readFileSync('./large-document.txt', 'utf-8');
+
+const cache = await ai.caches.create({
+  model: 'gemini-2.5-flash',
+  config: {
+    displayName: 'large-doc-cache', // Identifier for the cache
+    systemInstruction: 'You are an expert at analyzing legal documents.',
+    contents: documentText,
+    ttl: '3600s', // Cache for 1 hour
+  }
+});
+
+console.log('Cache created:', cache.name);
+console.log('Expires at:', cache.expireTime);
+```
+
+### Cache Creation (Fetch)
+
+```typescript
+const response = await fetch(
+  'https://generativelanguage.googleapis.com/v1beta/cachedContents',
+  {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-goog-api-key': env.GEMINI_API_KEY,
+    },
+    body: JSON.stringify({
+      model: 'models/gemini-2.5-flash',
+      displayName: 'large-doc-cache',
+      systemInstruction: {
+        parts: [{ text: 'You are an expert at analyzing legal documents.' }]
+      },
+      contents: [
+        { parts: [{ text: documentText }] }
+      ],
+      ttl: '3600s'
+    }),
+  }
+);
+
+const cache = await response.json();
+console.log('Cache created:', cache.name);
+```
+
+### Using a Cache (SDK)
+
+```typescript
+// Generate content using the cache
+const response = await ai.models.generateContent({
+  model: cache.name, // Use cache name as model
+  contents: 'Summarize the key points in the document'
+});
+
+console.log(response.text);
+```
+
+### Using a Cache (Fetch)
+
+```typescript
+const response = await fetch(
+  `https://generativelanguage.googleapis.com/v1beta/${cache.name}:generateContent`,
+  {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-goog-api-key': env.GEMINI_API_KEY,
+    },
+    body: JSON.stringify({
+      contents: [
+        { parts: [{ text: 'Summarize the key points in the document' }] }
+      ]
+    }),
+  }
+);
+
+const data = await response.json();
+console.log(data.candidates[0].content.parts[0].text);
+```
+
+### Update Cache TTL (SDK)
+
+```typescript
+import { UpdateCachedContentConfig } from '@google/genai';
+
+await ai.caches.update({
+  name: cache.name,
+  config: {
+    ttl: '7200s' // Extend to 2 hours
+  }
+});
+```
+
+### Update Cache with Expiration Time (SDK)
+
+```typescript
+// Set specific expiration time (must be timezone-aware)
+const in10Minutes = new Date(Date.now() + 10 * 60 * 1000);
+
+await ai.caches.update({
+  name: cache.name,
+  config: {
+    expireTime: in10Minutes
+  }
+});
+```
+
+### List and Delete Caches (SDK)
+
+```typescript
+// List all caches
+const caches = await ai.caches.list();
+for (const cache of caches) {
+  console.log(cache.name, cache.displayName);
+}
+
+// Delete a specific cache
+await ai.caches.delete({ name: cache.name });
+```
+
+### Caching with Video Files
+
+```typescript
+import { GoogleGenAI } from '@google/genai';
+import fs from 'fs';
+
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+
+// Upload video file
+const videoFile = await ai.files.upload({
+  file: fs.createReadStream('./video.mp4')
+});
+
+// Wait for processing
+while (videoFile.state.name === 'PROCESSING') {
+  await new Promise(resolve => setTimeout(resolve, 2000));
+  videoFile = await ai.files.get({ name: videoFile.name });
+}
+
+// Create cache with video
+const cache = await ai.caches.create({
+  model: 'gemini-2.5-flash',
+  config: {
+    displayName: 'video-analysis-cache',
+    systemInstruction: 'You are an expert video analyzer.',
+    contents: [videoFile],
+    ttl: '300s' // 5 minutes
+  }
+});
+
+// Use cache for multiple queries
+const response1 = await ai.models.generateContent({
+  model: cache.name,
+  contents: 'What happens in the first minute?'
+});
+
+const response2 = await ai.models.generateContent({
+  model: cache.name,
+  contents: 'Describe the main characters'
+});
+```
+
+### Key Points
+
+**When to Use Caching:**
+- Large system instructions used repeatedly
+- Long documents analyzed multiple times
+- Video/audio files queried with different prompts
+- Consistent context across conversation sessions
+
+**TTL Guidelines:**
+- Short sessions: 300s (5 min) to 3600s (1 hour)
+- Long sessions: 3600s (1 hour) to 86400s (24 hours)
+- Maximum: 7 days
+
+**Cost Savings:**
+- Cached input tokens: ~90% cheaper than regular tokens
+- Output tokens: Same price (not cached)
+
+**Important:**
+- You must use explicit model version suffixes (e.g., `gemini-2.5-flash-001`, NOT just `gemini-2.5-flash`)
+- Caches are automatically deleted after TTL expires
+- Update TTL before expiration to extend cache lifetime
+
+---
+
+## Code Execution
+
+Gemini models can generate and execute Python code to solve problems requiring computation, data analysis, or visualization.
+
+### How It Works
+
+1. Model generates executable Python code
+2. Code runs in secure sandbox
+3. Results are returned to the model
+4. Model incorporates results into response
+
+### Supported Operations
+
+- Mathematical calculations
+- Data analysis and statistics
+- File processing (CSV, JSON, etc.)
+- Chart and graph generation
+- Algorithm implementation
+- Data transformations
+
+### Available Python Packages
+
+**Standard Library:**
+- `math`, `statistics`, `random`, `datetime`, `json`, `csv`, `re`
+- `collections`, `itertools`, `functools`
+
+**Data Science:**
+- `numpy`, `pandas`, `scipy`
+
+**Visualization:**
+- `matplotlib`, `seaborn`
+
+**Note**: Limited package availability compared to full Python environment
+
+### Basic Code Execution (SDK)
+
+```typescript
+import { GoogleGenAI, Tool, ToolCodeExecution } from '@google/genai';
+
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+
+const response = await ai.models.generateContent({
+  model: 'gemini-2.5-flash',
+  contents: 'What is the sum of the first 50 prime numbers? Generate and run code for the calculation.',
+  config: {
+    tools: [{ codeExecution: {} }]
+  }
+});
+
+// Parse response parts
+for (const part of response.candidates[0].content.parts) {
+  if (part.text) {
+    console.log('Text:', part.text);
+  }
+  if (part.executableCode) {
+    console.log('Generated Code:', part.executableCode.code);
+  }
+  if (part.codeExecutionResult) {
+    console.log('Execution Output:', part.codeExecutionResult.output);
+  }
+}
+```
+
+### Basic Code Execution (Fetch)
+
+```typescript
+const response = await fetch(
+  `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent`,
+  {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-goog-api-key': env.GEMINI_API_KEY,
+    },
+    body: JSON.stringify({
+      tools: [{ code_execution: {} }],
+      contents: [
+        {
+          parts: [
+            { text: 'What is the sum of the first 50 prime numbers? Generate and run code.' }
+          ]
+        }
+      ]
+    }),
+  }
+);
+
+const data = await response.json();
+
+for (const part of data.candidates[0].content.parts) {
+  if (part.text) {
+    console.log('Text:', part.text);
+  }
+  if (part.executableCode) {
+    console.log('Code:', part.executableCode.code);
+  }
+  if (part.codeExecutionResult) {
+    console.log('Result:', part.codeExecutionResult.output);
+  }
+}
+```
+
+### Chat with Code Execution (SDK)
+
+```typescript
+const chat = await ai.chats.create({
+  model: 'gemini-2.5-flash',
+  config: {
+    tools: [{ codeExecution: {} }]
+  }
+});
+
+let response = await chat.sendMessage('I have a math question for you.');
+console.log(response.text);
+
+response = await chat.sendMessage(
+  'Calculate the Fibonacci sequence up to the 20th number and sum them.'
+);
+
+// Model will generate and execute code, then provide answer
+for (const part of response.candidates[0].content.parts) {
+  if (part.text) console.log(part.text);
+  if (part.executableCode) console.log('Code:', part.executableCode.code);
+  if (part.codeExecutionResult) console.log('Output:', part.codeExecutionResult.output);
+}
+```
+
+### Data Analysis Example
+
+```typescript
+const response = await ai.models.generateContent({
+  model: 'gemini-2.5-flash',
+  contents: `
+    Analyze this sales data and calculate:
+    1. Total revenue
+    2. Average sale price
+    3. Best-selling month
+
+    Data (CSV format):
+    month,sales,revenue
+    Jan,150,45000
+    Feb,200,62000
+    Mar,175,53000
+    Apr,220,68000
+  `,
+  config: {
+    tools: [{ codeExecution: {} }]
+  }
+});
+
+// Model will generate pandas/numpy code to analyze data
+for (const part of response.candidates[0].content.parts) {
+  if (part.text) console.log(part.text);
+  if (part.executableCode) console.log('Analysis Code:', part.executableCode.code);
+  if (part.codeExecutionResult) console.log('Results:', part.codeExecutionResult.output);
+}
+```
+
+### Visualization Example
+
+```typescript
+const response = await ai.models.generateContent({
+  model: 'gemini-2.5-flash',
+  contents: 'Create a bar chart showing the distribution of prime numbers under 100 by their last digit. Generate the chart and describe the pattern.',
+  config: {
+    tools: [{ codeExecution: {} }]
+  }
+});
+
+// Model generates matplotlib code, executes it, and describes results
+for (const part of response.candidates[0].content.parts) {
+  if (part.text) console.log(part.text);
+  if (part.executableCode) console.log('Chart Code:', part.executableCode.code);
+  if (part.codeExecutionResult) {
+    // Note: Chart image data would be in output
+    console.log('Execution completed');
+  }
+}
+```
+
+### Response Structure
+
+```typescript
+{
+  candidates: [
+    {
+      content: {
+        parts: [
+          { text: "I'll calculate that for you." },
+          {
+            executableCode: {
+              language: "PYTHON",
+              code: "def is_prime(n):\n  if n <= 1:\n    return False\n  ..."
+            }
+          },
+          {
+            codeExecutionResult: {
+              outcome: "OUTCOME_OK", // or "OUTCOME_FAILED"
+              output: "5117\n"
+            }
+          },
+          { text: "The sum of the first 50 prime numbers is 5117." }
+        ]
+      }
+    }
+  ]
+}
+```
+
+### Error Handling
+
+```typescript
+for (const part of response.candidates[0].content.parts) {
+  if (part.codeExecutionResult) {
+    if (part.codeExecutionResult.outcome === 'OUTCOME_FAILED') {
+      console.error('Code execution failed:', part.codeExecutionResult.output);
+    } else {
+      console.log('Success:', part.codeExecutionResult.output);
+    }
+  }
+}
+```
+
+### Key Points
+
+**When to Use Code Execution:**
+- Complex mathematical calculations
+- Data analysis and statistics
+- Algorithm implementations
+- File parsing and processing
+- Chart generation
+- Computational problems
+
+**Limitations:**
+- Sandbox environment (limited file system access)
+- Limited Python package availability
+- Execution timeout limits
+- No network access from code
+- No persistent state between executions
+
+**Best Practices:**
+- Specify what calculation or analysis you need clearly
+- Request code generation explicitly ("Generate and run code...")
+- Check `outcome` field for errors
+- Use for deterministic computations, not for general programming
+
+**Important:**
+- Code Execution is NOT available on `gemini-2.5-flash-lite`
+- Only works with Gemini 2.5 models (Pro, Flash)
+- Code runs in isolated sandbox for security
+
+---
+
+## Grounding with Google Search
+
+Grounding connects the model to real-time web information, reducing hallucinations and providing up-to-date, fact-checked responses with citations.
+
+### How It Works
+
+1. Model determines if it needs current information
+2. Automatically performs Google Search
+3. Processes search results
+4. Incorporates findings into response
+5. Provides citations and source URLs
+
+### Benefits
+
+- **Real-time information**: Access to current events and data
+- **Reduced hallucinations**: Answers grounded in web sources
+- **Verifiable**: Citations allow fact-checking
+- **Up-to-date**: Not limited to model's training cutoff
+
+### Two Grounding APIs
+
+#### 1. Google Search (`googleSearch`) - Recommended for Gemini 2.5
+
+```typescript
+const groundingTool = {
+  googleSearch: {}
+};
+```
+
+**Features:**
+- Simple configuration
+- Automatic search when needed
+- Available on all Gemini 2.5 models
+
+#### 2. Google Search Retrieval (`googleSearchRetrieval`) - Legacy (Gemini 1.5)
+
+```typescript
+const retrievalTool = {
+  googleSearchRetrieval: {
+    dynamicRetrievalConfig: {
+      mode: 'MODE_DYNAMIC',
+      dynamicThreshold: 0.7 // Only search if confidence < 70%
+    }
+  }
+};
+```
+
+**Features:**
+- Dynamic threshold control
+- Used with Gemini 1.5 models
+- More configuration options
+
+### Basic Grounding (SDK) - Gemini 2.5
+
+```typescript
+import { GoogleGenAI } from '@google/genai';
+
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+
+const response = await ai.models.generateContent({
+  model: 'gemini-2.5-flash',
+  contents: 'Who won the euro 2024?',
+  config: {
+    tools: [{ googleSearch: {} }]
+  }
+});
+
+console.log(response.text);
+
+// Check if grounding was used
+if (response.candidates[0].groundingMetadata) {
+  console.log('Search was performed!');
+  console.log('Sources:', response.candidates[0].groundingMetadata);
+}
+```
+
+### Basic Grounding (Fetch) - Gemini 2.5
+
+```typescript
+const response = await fetch(
+  `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent`,
+  {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-goog-api-key': env.GEMINI_API_KEY,
+    },
+    body: JSON.stringify({
+      contents: [
+        { parts: [{ text: 'Who won the euro 2024?' }] }
+      ],
+      tools: [
+        { google_search: {} }
+      ]
+    }),
+  }
+);
+
+const data = await response.json();
+console.log(data.candidates[0].content.parts[0].text);
+
+if (data.candidates[0].groundingMetadata) {
+  console.log('Grounding metadata:', data.candidates[0].groundingMetadata);
+}
+```
+
+### Dynamic Retrieval (SDK) - Gemini 1.5
+
+```typescript
+import { GoogleGenAI, DynamicRetrievalConfigMode } from '@google/genai';
+
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+
+const response = await ai.models.generateContent({
+  model: 'gemini-1.5-flash',
+  contents: 'Who won the euro 2024?',
+  config: {
+    tools: [
+      {
+        googleSearchRetrieval: {
+          dynamicRetrievalConfig: {
+            mode: DynamicRetrievalConfigMode.MODE_DYNAMIC,
+            dynamicThreshold: 0.7 // Search only if confidence < 70%
+          }
+        }
+      }
+    ]
+  }
+});
+
+console.log(response.text);
+
+if (!response.candidates[0].groundingMetadata) {
+  console.log('Model answered from its own knowledge (high confidence)');
+}
+```
+
+### Grounding Metadata Structure
+
+```typescript
+{
+  groundingMetadata: {
+    searchQueries: [
+      { text: "euro 2024 winner" }
+    ],
+    webPages: [
+      {
+        url: "https://example.com/euro-2024-results",
+        title: "UEFA Euro 2024 Final Results",
+        snippet: "Spain won UEFA Euro 2024..."
+      }
+    ],
+    citations: [
+      {
+        startIndex: 42,
+        endIndex: 47,
+        uri: "https://example.com/euro-2024-results"
+      }
+    ],
+    retrievalQueries: [
+      {
+        query: "who won euro 2024 final"
+      }
+    ]
+  }
+}
+```
+
+### Chat with Grounding (SDK)
+
+```typescript
+const chat = await ai.chats.create({
+  model: 'gemini-2.5-flash',
+  config: {
+    tools: [{ googleSearch: {} }]
+  }
+});
+
+let response = await chat.sendMessage('What are the latest developments in quantum computing?');
+console.log(response.text);
+
+// Check grounding sources
+if (response.candidates[0].groundingMetadata) {
+  const sources = response.candidates[0].groundingMetadata.webPages || [];
+  console.log(`Sources used: ${sources.length}`);
+  sources.forEach(source => {
+    console.log(`- ${source.title}: ${source.url}`);
+  });
+}
+
+// Follow-up still has grounding enabled
+response = await chat.sendMessage('Which company made the biggest breakthrough?');
+console.log(response.text);
+```
+
+### Combining Grounding with Function Calling
+
+```typescript
+const weatherFunction = {
+  name: 'get_current_weather',
+  description: 'Get current weather for a location',
+  parametersJsonSchema: {
+    type: 'object',
+    properties: {
+      location: { type: 'string', description: 'City name' }
+    },
+    required: ['location']
+  }
+};
+
+const response = await ai.models.generateContent({
+  model: 'gemini-2.5-flash',
+  contents: 'What is the weather like in the city that won Euro 2024?',
+  config: {
+    tools: [
+      { googleSearch: {} },
+      { functionDeclarations: [weatherFunction] }
+    ]
+  }
+});
+
+// Model will:
+// 1. Use Google Search to find Euro 2024 winner
+// 2. Call get_current_weather function with the city
+// 3. Combine both results in response
+```
+
+### Checking if Grounding was Used
+
+```typescript
+const response = await ai.models.generateContent({
+  model: 'gemini-2.5-flash',
+  contents: 'What is 2+2?', // Model knows this without search
+  config: {
+    tools: [{ googleSearch: {} }]
+  }
+});
+
+if (!response.candidates[0].groundingMetadata) {
+  console.log('Model answered from its own knowledge (no search needed)');
+} else {
+  console.log('Search was performed');
+}
+```
+
+### Key Points
+
+**When to Use Grounding:**
+- Current events and news
+- Real-time data (stock prices, sports scores, weather)
+- Fact-checking and verification
+- Questions about recent developments
+- Information beyond model's training cutoff
+
+**When NOT to Use:**
+- General knowledge questions
+- Mathematical calculations
+- Code generation
+- Creative writing
+- Tasks requiring internal reasoning only
+
+**Cost Considerations:**
+- Grounding adds latency (search takes time)
+- Additional token costs for retrieved content
+- Use `dynamicThreshold` to control when searches happen (Gemini 1.5)
+
+**Important Notes:**
+- Grounding requires **Google Cloud project** (not just API key)
+- Search results quality depends on query phrasing
+- Citations may not cover all facts in response
+- Search is performed automatically based on confidence
+
+**Gemini 2.5 vs 1.5:**
+- **Gemini 2.5**: Use `googleSearch` (simple, recommended)
+- **Gemini 1.5**: Use `googleSearchRetrieval` with `dynamicThreshold`
+
+**Best Practices:**
+- Always check `groundingMetadata` to see if search was used
+- Display citations to users for transparency
+- Use specific, well-phrased questions for better search results
+- Combine with function calling for hybrid workflows
+
+---
+
 ## Error Handling
 
 ### Common Errors
@@ -1272,21 +2030,6 @@ const response = await chat.sendMessage(message);
 
 ---
 
-## Relationship to Phase 2 Features
-
-This skill (Phase 1) covers **core Gemini API features**. Future Phase 2 will add:
-
-### Phase 2 (Future)
-- **Context Caching**: Reduce costs by caching frequently used context (up to 90% savings)
-- **Code Execution**: Built-in Python code interpreter for data analysis
-- **Grounding with Google Search**: Connect model to real-time web information
-- **Embeddings API**: text-embedding-004 for vector search and RAG
-- **Advanced Multimodal**: File API for large files (>2GB), advanced vision patterns
-
-**For now**: Use this skill for all text generation, multimodal, function calling, and streaming needs.
-
----
-
 ## Quick Reference
 
 ### Installation
@@ -1343,5 +2086,5 @@ config: {
 ---
 
 **Last Updated**: 2025-10-25
-**Production Validated**: Templates tested with @google/genai@1.27.0
-**Phase**: 1 (Core Features Complete)
+**Production Validated**: All features tested with @google/genai@1.27.0
+**Phase**: 2 Complete ✅ (All Core + Advanced Features)

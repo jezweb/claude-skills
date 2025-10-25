@@ -1,6 +1,6 @@
 # Top Errors and Solutions
 
-15+ common Gemini API errors with solutions.
+22 common Gemini API errors with solutions (Phase 1 + Phase 2).
 
 ---
 
@@ -154,8 +154,137 @@
 
 ---
 
+## Phase 2 Errors
+
+### 16. Invalid Model Version for Caching
+
+**Error**: `Invalid model name for caching`
+
+**Cause**: Using `gemini-2.5-flash` instead of `gemini-2.5-flash-001`
+
+**Solution**: Must use explicit version suffix when creating caches
+
+```typescript
+// ✅ Correct
+model: 'gemini-2.5-flash-001'
+
+// ❌ Wrong
+model: 'gemini-2.5-flash'
+```
+
+**Source**: https://ai.google.dev/gemini-api/docs/caching
+
+---
+
+### 17. Cache Expired or Not Found
+
+**Error**: `Cache not found` or `Cache expired`
+
+**Cause**: Trying to use cache after TTL expiration
+
+**Solution**: Check expiration before use or recreate cache
+
+```typescript
+const cache = await ai.caches.get({ name: cacheName });
+if (new Date(cache.expireTime) < new Date()) {
+  // Recreate cache
+  cache = await ai.caches.create({ ... });
+}
+```
+
+---
+
+### 18. Cannot Update Expired Cache TTL
+
+**Error**: `Cannot update expired cache`
+
+**Cause**: Trying to extend TTL after cache already expired
+
+**Solution**: Update TTL before expiration or create new cache
+
+```typescript
+// Update TTL before expiration
+await ai.caches.update({
+  name: cache.name,
+  config: { ttl: '7200s' }
+});
+```
+
+---
+
+### 19. Code Execution Timeout
+
+**Error**: `Execution timed out after 30 seconds` with `OUTCOME_FAILED`
+
+**Cause**: Python code taking too long to execute
+
+**Solution**: Simplify computation or reduce data size
+
+```typescript
+// Check outcome before using results
+if (part.codeExecutionResult?.outcome === 'OUTCOME_FAILED') {
+  console.error('Execution failed:', part.codeExecutionResult.output);
+}
+```
+
+**Source**: https://ai.google.dev/gemini-api/docs/code-execution
+
+---
+
+### 20. Python Package Not Available
+
+**Error**: `ModuleNotFoundError: No module named 'requests'`
+
+**Cause**: Trying to import package not in sandbox
+
+**Solution**: Use only available packages (numpy, pandas, matplotlib, seaborn, scipy)
+
+**Available Packages**:
+- Standard library: math, statistics, json, csv, datetime
+- Data science: numpy, pandas, scipy
+- Visualization: matplotlib, seaborn
+
+---
+
+### 21. Code Execution on Flash-Lite
+
+**Error**: Code execution not working
+
+**Cause**: `gemini-2.5-flash-lite` doesn't support code execution
+
+**Solution**: Use `gemini-2.5-flash` or `gemini-2.5-pro`
+
+```typescript
+// ✅ Correct
+model: 'gemini-2.5-flash' // Supports code execution
+
+// ❌ Wrong
+model: 'gemini-2.5-flash-lite' // NO code execution support
+```
+
+---
+
+### 22. Grounding Requires Google Cloud Project
+
+**Error**: `Grounding requires Google Cloud project configuration`
+
+**Cause**: Using API key not associated with GCP project
+
+**Solution**: Set up Google Cloud project and enable Generative Language API
+
+**Steps**:
+1. Create Google Cloud project
+2. Enable Generative Language API
+3. Configure billing
+4. Use API key from that project
+
+**Source**: https://ai.google.dev/gemini-api/docs/grounding
+
+---
+
 ## Quick Debugging Checklist
 
+### Phase 1 (Core)
 - [ ] Using @google/genai (NOT @google/generative-ai)
 - [ ] Model name is gemini-2.5-pro/flash/flash-lite
 - [ ] API key is set correctly
@@ -164,4 +293,12 @@
 - [ ] System instruction at top level
 - [ ] Streaming endpoint is streamGenerateContent
 - [ ] MIME types are correct for multimodal
+
+### Phase 2 (Advanced)
+- [ ] Caching: Using explicit model version (e.g., gemini-2.5-flash-001)
+- [ ] Caching: Cache not expired (check expireTime)
+- [ ] Code Execution: Not using Flash-Lite
+- [ ] Code Execution: Using only available Python packages
+- [ ] Grounding: Google Cloud project configured
+- [ ] Grounding: Checking groundingMetadata for search results
 

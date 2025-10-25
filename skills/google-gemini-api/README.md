@@ -2,9 +2,9 @@
 
 **Google Gemini API Skill** for Claude Code CLI
 
-**Status**: Production Ready ✅
+**Status**: Phase 2 Complete ✅
 **Latest SDK**: @google/genai@1.27.0 (⚠️ NOT @google/generative-ai which is DEPRECATED)
-**API Coverage**: Text Generation, Multimodal, Function Calling, Streaming, Thinking Mode
+**API Coverage**: Text Generation, Multimodal, Function Calling, Streaming, Thinking Mode, **Context Caching**, **Code Execution**, **Grounding with Google Search**
 
 ---
 
@@ -23,6 +23,7 @@ This skill provides comprehensive knowledge for building applications with **Goo
 
 ### Key Capabilities
 
+### Phase 1 - Core Features
 ✅ **Text Generation** with Gemini 2.5 Pro/Flash/Flash-Lite (GA models)
 ✅ **Streaming** with Server-Sent Events (SSE) and async iteration
 ✅ **Multimodal inputs** (text + images + video + audio + PDFs)
@@ -32,6 +33,11 @@ This skill provides comprehensive knowledge for building applications with **Goo
 ✅ **Multi-turn chat** (conversation history management)
 ✅ Both **Node.js SDK** (@google/genai) and **fetch-based** (Cloudflare Workers) approaches
 ✅ **Accurate context windows**: 1,048,576 input / 65,536 output tokens (NOT 2M for 2.5 models!)
+
+### Phase 2 - Advanced Features
+✅ **Context Caching** (cost optimization with TTL-based caching - up to 90% savings)
+✅ **Code Execution** (built-in Python sandbox for data analysis and computation)
+✅ **Grounding with Google Search** (real-time web information + citations)
 
 ---
 
@@ -115,6 +121,43 @@ This skill provides comprehensive knowledge for building applications with **Goo
 - `generation config gemini`
 - `response mime type gemini`
 
+### Context Caching (Phase 2)
+- `context caching gemini`
+- `gemini caching`
+- `gemini cache ttl`
+- `prompt caching gemini`
+- `cache tokens gemini`
+- `gemini cost optimization`
+- `reduce cost gemini`
+- `gemini cache video`
+- `cache documents gemini`
+- `90% savings gemini`
+
+### Code Execution (Phase 2)
+- `code execution gemini`
+- `gemini python`
+- `gemini code interpreter`
+- `run code gemini`
+- `executable code gemini`
+- `gemini data analysis`
+- `gemini calculations`
+- `gemini pandas`
+- `gemini numpy`
+- `gemini matplotlib`
+- `generate and run code`
+
+### Grounding with Google Search (Phase 2)
+- `grounding gemini`
+- `google search gemini`
+- `gemini grounding`
+- `real-time information gemini`
+- `gemini search retrieval`
+- `gemini citations`
+- `fact-checking gemini`
+- `gemini sources`
+- `web search gemini`
+- `current events gemini`
+
 ### SDK Migration
 - `@google/generative-ai deprecated`
 - `migrate gemini sdk`
@@ -144,6 +187,17 @@ This skill provides comprehensive knowledge for building applications with **Goo
 - `thinking mode not supported`
 - `deprecated sdk error`
 - `@google/generative-ai not found`
+
+### Error Keywords - Phase 2
+- `cache not found gemini`
+- `cache ttl expired`
+- `invalid model version gemini`
+- `code execution failed gemini`
+- `execution timeout gemini`
+- `python package not available gemini`
+- `grounding requires google cloud`
+- `grounding not working gemini`
+- `no grounding metadata`
 
 ### Integration Keywords
 - `nextjs gemini`
@@ -176,10 +230,8 @@ This skill provides comprehensive knowledge for building applications with **Goo
 - Need to **migrate from deprecated** @google/generative-ai
 
 ### ❌ Don't Use google-gemini-api When:
-- You specifically need **embeddings** (use Gemini Embeddings API - covered in Phase 2)
-- You need **code execution** (built-in Python interpreter - covered in Phase 2)
-- You need **context caching** (cost optimization - covered in Phase 2)
-- You need **grounding with Google Search** (covered in Phase 2)
+- You specifically need **embeddings** (see separate `google-gemini-embeddings` skill for text-embedding-004)
+- You're using a different AI API provider (OpenAI, Anthropic Claude, etc.)
 
 ---
 
