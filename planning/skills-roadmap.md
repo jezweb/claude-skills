@@ -1421,82 +1421,76 @@ Result: Integrated solution from atomic skills
 ---
 
 #### 26. google-gemini-api
-**Status**: Planned
+**Status**: ✅ Complete (2025-10-25) - Phase 1
 **Priority**: Critical
 **Dependencies**: None
-**Estimated Dev Time**: 8-10 hours
+**Actual Dev Time**: 5 hours (Phase 1)
 **Token Savings**: ~65%
 **Errors Prevented**: 15+
 
-**What It Does**:
-- Complete Google GenAI SDK coverage (@google/generative-ai)
-- Models: Gemini 2.5 Pro (2M context), Gemini 2.5 Flash, Gemini 2.5 Lite
-- Text generation with streaming (real-time token delivery)
-- Multimodal inputs (text + images + video + audio + PDFs in one prompt):
+**What It Does** (Phase 1):
+- ✅ Complete Google GenAI SDK coverage using **CORRECT SDK** (@google/genai v1.27+ NOT deprecated @google/generative-ai)
+- ✅ Models: Gemini 2.5 Pro/Flash/Flash-Lite with **ACCURATE context windows** (1,048,576 input tokens NOT 2M!)
+- ✅ Text generation (basic + streaming with async iteration)
+- ✅ Multimodal inputs (text + images + video + audio + PDFs):
   - Images (JPEG, PNG, WebP, up to 20MB)
-  - Video (MP4, MOV, AVI, up to 2GB)
+  - Video (MP4, MOV, AVI, up to 2GB, inline < 2 min)
   - Audio (WAV, MP3, FLAC, up to 20MB)
-  - PDFs (native parsing, up to 30MB)
-- File API (upload/manage large files up to 2GB)
-- Long context (2M tokens for Pro model - entire codebases or books)
-- Structured output (JSON mode with schema validation)
-- Function calling (tool use with parallel execution)
-- Embeddings (text-embedding-004 with 768 dimensions)
-- Code execution (built-in Python code interpreter)
-- Safety settings (harm categories: harassment, hate speech, sexually explicit, dangerous content)
-- Grounding with Google Search (real-time web information)
-- Context caching (cost optimization, up to 90% savings)
-- Both Cloudflare Workers (fetch-based) and Node.js (@google/generative-ai)
+  - PDFs (up to 30MB)
+- ✅ Function calling (basic + parallel execution)
+- ✅ System instructions & multi-turn chat
+- ✅ Thinking mode configuration (default enabled on 2.5 models)
+- ✅ Generation parameters (temperature, top-p, top-k, stop sequences)
+- ✅ Both Node.js SDK (@google/genai) AND fetch-based (Cloudflare Workers)
+- ✅ Complete SDK migration guide (from deprecated SDK)
 
-**Files to Create**:
-- README.md (comprehensive auto-trigger keywords)
-- SKILL.md (complete API reference, 1200+ lines)
-- templates/text-generation.ts
-- templates/streaming-chat.ts
-- templates/vision.ts
-- templates/video-understanding.ts
-- templates/audio-understanding.ts
-- templates/pdf-parsing.ts
-- templates/file-api.ts
-- templates/long-context.ts
-- templates/structured-output.ts
-- templates/function-calling.ts
-- templates/embeddings.ts
-- templates/code-execution.ts
-- templates/safety-settings.ts
-- templates/grounding.ts
-- templates/context-caching.ts
-- templates/cloudflare-worker.ts
+**Phase 2** (Future):
+- Context caching (cost optimization)
+- Code execution (Python interpreter)
+- Grounding with Google Search
+- Embeddings API (text-embedding-004)
+- File API (large files >2GB)
+
+**Files Created** (22 total):
+- README.md (comprehensive keywords, migration warnings)
+- SKILL.md (1200+ lines, complete Phase 1 API reference)
 - templates/package.json
-- references/models-guide.md (Pro/Flash/Lite comparison)
-- references/multimodal-guide.md
-- references/file-api-guide.md
-- references/long-context-patterns.md
-- references/structured-output-guide.md
+- templates/text-generation-basic.ts
+- templates/text-generation-fetch.ts (Cloudflare Workers)
+- templates/streaming-chat.ts
+- templates/streaming-fetch.ts (SSE parsing)
+- templates/multimodal-image.ts
+- templates/multimodal-video-audio.ts
+- templates/function-calling-basic.ts
+- templates/function-calling-parallel.ts
+- templates/thinking-mode.ts
+- templates/cloudflare-worker.ts
+- references/models-guide.md (ACCURATE 2.5 model specs)
+- references/sdk-migration-guide.md (deprecated → current)
 - references/function-calling-patterns.md
-- references/embeddings-guide.md
-- references/code-execution-guide.md
-- references/safety-settings-guide.md
-- references/grounding-guide.md
-- references/cost-optimization.md
-- references/top-errors.md (15 common issues)
-- scripts/check-versions.sh
+- references/multimodal-guide.md
+- references/thinking-mode-guide.md
+- references/generation-config.md
+- references/streaming-patterns.md
+- references/top-errors.md (15+ errors with solutions)
+- scripts/check-versions.sh (warns about deprecated SDK)
 
-**Known Issues to Prevent**:
-1. File API quota limits (storage and upload rate)
-2. Long context token counting errors (2M tokens)
-3. Multimodal format issues (video/audio encoding)
-4. PDF parsing failures (unsupported layouts)
-5. JSON schema validation errors (structured output)
-6. Function calling format mismatches (tool schemas)
-7. Safety filter blocking responses (strict settings)
-8. Context caching not activating (cache key mismatches)
-9. Grounding quota limits (Google Search API)
-10. Code execution security issues (sandboxing)
-11. Embedding dimensions mismatch (768 dimensions)
-12. Rate limit handling (429 errors)
-13. Video processing timeout errors (large files)
-14. Audio format incompatibility (codec support)
+**Known Issues Prevented** (15+):
+1. Using deprecated SDK (@google/generative-ai instead of @google/genai)
+2. Wrong context window claims (claiming 2M for Gemini 2.5 models)
+3. Model not found errors (using old/wrong model names)
+4. Chat not working with fetch (SDK-only feature)
+5. Function calling on Flash-Lite (not supported!)
+6. Invalid API key (401) errors
+7. Rate limit exceeded (429) errors
+8. Streaming parse errors (incorrect SSE parsing)
+9. Multimodal format errors (wrong base64/MIME types)
+10. Function schema errors (invalid OpenAPI subset)
+11. Thinking mode on old models (only 2.5 supports it)
+12. Parameter conflicts (using unsupported params)
+13. Token counting errors (multimodal estimation)
+14. System instruction placement (wrong position)
+15. Parallel function call errors (dependency handling)
 15. Large file upload failures (network interruptions)
 
 **Production Validated**: Based on official Google AI documentation and Gemini API usage patterns
