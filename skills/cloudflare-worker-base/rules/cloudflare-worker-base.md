@@ -1,3 +1,7 @@
+---
+paths: wrangler.jsonc, wrangler.toml, src/server/**/*.ts, src/worker/**/*.ts, "**/*.worker.ts", vite.config.*
+---
+
 # Cloudflare Workers Corrections
 
 Claude's training may reference older Workers patterns. This project uses current (2025) conventions.

@@ -1,3 +1,7 @@
+---
+paths: "**/*.css", "**/*.tsx", "**/*.jsx", tailwind.config.*, components.json, postcss.config.*
+---
+
 # Tailwind v4 + shadcn/ui Corrections
 
 Claude's training may reference Tailwind v3 patterns. This project uses **Tailwind v4** with different syntax.

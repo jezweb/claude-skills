@@ -108,87 +108,22 @@ ls SESSION.md
 
 ### 3.5. Create Session Protocol Rule
 
-**Create `.claude/rules/` directory:**
+**Create `.claude/rules/` directory and copy session protocol:**
 ```bash
 mkdir -p .claude/rules
 ```
 
-**Create `.claude/rules/session-protocol.md`** with project-specific context:
-
-```markdown
-# Session Protocol
-
-This project uses SESSION.md for progress tracking across work sessions.
-
-## Key Files
-
-- **SESSION.md** - Current progress, next action, known issues (project root)
-- **docs/IMPLEMENTATION_PHASES.md** - Full phase specifications
-[- **docs/DATABASE_SCHEMA.md** - Database design] (if exists)
-[- **docs/API_ENDPOINTS.md** - API reference] (if exists)
-
-## Status Icons
-
-- ⏸️ = Not started (pending)
-- 🔄 = In progress
-- ✅ = Complete
-- 🚫 = Blocked
-
-## Stages Within a Phase
-
-1. **Implementation** - Writing code for tasks
-2. **Verification** - Testing against phase criteria
-3. **Debugging** - Fixing issues found
-
-## When Reading SESSION.md
-
-1. Check "Current Phase" and "Current Stage"
-2. Review "Progress" checklist for completed/pending tasks
-3. Read "Next Action" for specific task (file + line + action)
-4. Note any "Known Issues"
-
-## When Updating SESSION.md
-
-1. Mark completed tasks with `[x]`
-2. Update "Current Stage" if changed
-3. Set concrete "Next Action": file path + line number + specific task
-4. Document any new issues in "Known Issues"
-5. If phase complete: Change 🔄 to ✅, collapse to summary
-
-## Next Action Format
-
-Always be concrete:
-
-<!-- ❌ Vague -->
-**Next Action**: Continue working on API
-
-<!-- ✅ Concrete -->
-**Next Action**: Implement PATCH /api/tasks/:id in src/routes/tasks.ts:47, add ownership validation
-
-## Git Checkpoints
-
-After significant progress or before clearing context:
-
-checkpoint: Phase [N] [Status] - [Brief Description]
-
-Phase: [N] - [Phase Name]
-Status: [Complete/In Progress/Paused]
-Session: [What was accomplished]
-
-Files Changed:
-- path/to/file.ts (what changed)
-
-Next: [Concrete next action]
-
-## Session Workflow
-
-**Ending session**: Update SESSION.md → git checkpoint → note Next Action
-
-**Resuming**: Read SESSION.md → check Next Action → continue from that point
+**Copy session protocol from skill** (if project-session-management skill is installed):
+```bash
+cp ~/.claude/skills/project-session-management/rules/session-protocol.md .claude/rules/
 ```
 
+**If skill not installed**, create the rule manually by reading the template from:
+`skills/project-session-management/rules/session-protocol.md`
+
 **Customize for this project:**
-- List only the planning docs that were actually created
+- Update "Key Files" section to list only the planning docs that were actually created
+- Add any project-specific files or conventions
 - This rule will be committed with the project and work across all environments (local, Claude Code online, team members)
 
 ### 4. Create Initial Git Commit (If Not Already Committed)
