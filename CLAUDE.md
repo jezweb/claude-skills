@@ -181,6 +181,7 @@ This repository has three types of files:
 - `skills/*/references/` - Reference documentation
 - `skills/*/scripts/` - Helper scripts
 - `skills/*/assets/` - Images, diagrams
+- `skills/*/rules/` - Correction rules (copied to projects)
 
 **Commands**:
 - `commands/*.md` - Slash command definitions
@@ -395,6 +396,52 @@ After optimizing 20+ skills, these patterns work best:
 - Over-compression that hurts readability
 
 **Examples:** See ai-sdk-core, auto-animate, cloudflare-mcp-server
+
+### 5. Project Rules (Portable Context)
+
+Skills can include `rules/` directories containing correction rules that get copied into projects. These rules:
+
+- **Bridge training cutoffs**: Correct outdated patterns Claude may suggest (e.g., Tailwind v3 → v4 syntax)
+- **Are project-portable**: Committed to the project repo, work in any environment (local CLI, Claude Code online, team members)
+- **Reduce user-level dependency**: Project carries its own intelligence instead of relying on user's `~/.claude/CLAUDE.md`
+
+**How rules differ from skills:**
+
+| Aspect | Skills | Rules |
+|--------|--------|-------|
+| **Location** | `~/.claude/skills/` (user-level) | `.claude/rules/` (project-level) |
+| **Content** | Rich bundles (templates, scripts, references) | Single markdown files |
+| **Loading** | Triggered by keywords | Always loaded for matching paths |
+| **Purpose** | Teach Claude how to use a technology | Correct specific patterns |
+
+**Rule Types:**
+
+1. **Correction Rules** (e.g., `tailwind-v4-shadcn.md`): Bridge training cutoff gaps with current syntax
+2. **Session Protocol** (e.g., `session-protocol.md`): Project-specific session management conventions
+
+**Adding rules to a skill:**
+
+```
+skills/my-skill/
+├── SKILL.md
+├── rules/                    # ← NEW
+│   └── my-skill.md           # Correction rule (matches skill name)
+├── templates/
+└── references/
+```
+
+**Copying rules to a project:**
+
+Rules are copied to projects via `/plan-project` command or manually:
+```bash
+mkdir -p .claude/rules
+cp ~/.claude/skills/tailwind-v4-shadcn/rules/tailwind-v4-shadcn.md .claude/rules/
+```
+
+**Current skills with rules:**
+- `tailwind-v4-shadcn` - v3→v4 syntax corrections
+- `cloudflare-worker-base` - Export patterns, wrangler.jsonc, ES modules
+- `project-session-management` - Session protocol template
 
 ---
 

@@ -106,18 +106,103 @@ ls docs/IMPLEMENTATION_PHASES.md
 ls SESSION.md
 ```
 
+### 3.5. Create Session Protocol Rule
+
+**Create `.claude/rules/` directory:**
+```bash
+mkdir -p .claude/rules
+```
+
+**Create `.claude/rules/session-protocol.md`** with project-specific context:
+
+```markdown
+# Session Protocol
+
+This project uses SESSION.md for progress tracking across work sessions.
+
+## Key Files
+
+- **SESSION.md** - Current progress, next action, known issues (project root)
+- **docs/IMPLEMENTATION_PHASES.md** - Full phase specifications
+[- **docs/DATABASE_SCHEMA.md** - Database design] (if exists)
+[- **docs/API_ENDPOINTS.md** - API reference] (if exists)
+
+## Status Icons
+
+- ⏸️ = Not started (pending)
+- 🔄 = In progress
+- ✅ = Complete
+- 🚫 = Blocked
+
+## Stages Within a Phase
+
+1. **Implementation** - Writing code for tasks
+2. **Verification** - Testing against phase criteria
+3. **Debugging** - Fixing issues found
+
+## When Reading SESSION.md
+
+1. Check "Current Phase" and "Current Stage"
+2. Review "Progress" checklist for completed/pending tasks
+3. Read "Next Action" for specific task (file + line + action)
+4. Note any "Known Issues"
+
+## When Updating SESSION.md
+
+1. Mark completed tasks with `[x]`
+2. Update "Current Stage" if changed
+3. Set concrete "Next Action": file path + line number + specific task
+4. Document any new issues in "Known Issues"
+5. If phase complete: Change 🔄 to ✅, collapse to summary
+
+## Next Action Format
+
+Always be concrete:
+
+<!-- ❌ Vague -->
+**Next Action**: Continue working on API
+
+<!-- ✅ Concrete -->
+**Next Action**: Implement PATCH /api/tasks/:id in src/routes/tasks.ts:47, add ownership validation
+
+## Git Checkpoints
+
+After significant progress or before clearing context:
+
+checkpoint: Phase [N] [Status] - [Brief Description]
+
+Phase: [N] - [Phase Name]
+Status: [Complete/In Progress/Paused]
+Session: [What was accomplished]
+
+Files Changed:
+- path/to/file.ts (what changed)
+
+Next: [Concrete next action]
+
+## Session Workflow
+
+**Ending session**: Update SESSION.md → git checkpoint → note Next Action
+
+**Resuming**: Read SESSION.md → check Next Action → continue from that point
+```
+
+**Customize for this project:**
+- List only the planning docs that were actually created
+- This rule will be committed with the project and work across all environments (local, Claude Code online, team members)
+
 ### 4. Create Initial Git Commit (If Not Already Committed)
 
 **Check if planning docs are committed:**
 ```bash
-git status --short docs/ SESSION.md
+git status --short docs/ SESSION.md .claude/rules/
 ```
 
 **If uncommitted planning docs exist:**
 
-Stage all planning docs:
+Stage all planning docs and rules:
 ```bash
-git add docs/ SESSION.md
+git add docs/ SESSION.md .claude/rules/
 ```
 
 Check if this is initial commit:
@@ -144,6 +229,7 @@ Generated planning documentation:
 [- ARCHITECTURE.md]
 [- other docs...]
 - SESSION.md (session tracking)
+- .claude/rules/session-protocol.md (session rules)
 
 Next: Start Phase 1 - [Phase 1 Name]
 
@@ -165,6 +251,7 @@ Generated planning docs:
 [- API_ENDPOINTS.md]
 [- other docs...]
 - SESSION.md (session tracking)
+- .claude/rules/session-protocol.md (session rules)
 
 Next: Start Phase 1 - [Phase 1 Name]
 
@@ -198,6 +285,7 @@ PLANNING DOCS CREATED:
 
 ✅ IMPLEMENTATION_PHASES.md ([N] phases)
 ✅ SESSION.md (progress tracker)
+✅ .claude/rules/session-protocol.md (session rules)
 [✅ DATABASE_SCHEMA.md] (if created)
 [✅ API_ENDPOINTS.md] (if created)
 [✅ ARCHITECTURE.md] (if created)
@@ -330,6 +418,7 @@ git push
 ✅ project-planning skill invoked successfully
 ✅ IMPLEMENTATION_PHASES.md created with validated phases
 ✅ SESSION.md created with Phase 1 as current
+✅ .claude/rules/session-protocol.md created (portable session rules)
 ✅ Planning docs committed to git (if git repo exists)
 ✅ User has clear "Next Action" to start Phase 1
 ✅ User knows where to find all planning docs
