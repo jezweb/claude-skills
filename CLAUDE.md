@@ -438,10 +438,19 @@ mkdir -p .claude/rules
 cp ~/.claude/skills/tailwind-v4-shadcn/rules/tailwind-v4-shadcn.md .claude/rules/
 ```
 
-**Current skills with rules:**
+**Current skills with rules:** 36 skills have rules (run `ls skills/*/rules/*.md | wc -l` to verify)
+
+**Key examples:**
 - `tailwind-v4-shadcn` - v3→v4 syntax corrections
 - `cloudflare-worker-base` - Export patterns, wrangler.jsonc, ES modules
-- `project-session-management` - Session protocol template
+- `ai-sdk-core` - v4→v5 breaking changes
+- `clerk-auth` - v6 async auth(), API version changes
+- `openai-api` - GPT-5.1 reasoning defaults, model names
+
+**Strategic guidance:** See [planning/SKILLS_VS_RULES.md](planning/SKILLS_VS_RULES.md) for:
+- When to put content in skills vs rules
+- Decision framework (teaching vs correcting)
+- Rule extraction opportunities for existing skills
 
 ---
 
