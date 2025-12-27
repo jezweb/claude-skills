@@ -438,7 +438,7 @@ mkdir -p .claude/rules
 cp ~/.claude/skills/tailwind-v4-shadcn/rules/tailwind-v4-shadcn.md .claude/rules/
 ```
 
-**Current skills with rules:** 36 skills have rules (run `ls skills/*/rules/*.md | wc -l` to verify)
+**Current skills with rules:** Most skills have rules (run `ls skills/*/rules/*.md | wc -l` to count)
 
 **Key examples:**
 - `tailwind-v4-shadcn` - v3→v4 syntax corrections

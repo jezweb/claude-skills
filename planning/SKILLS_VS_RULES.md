@@ -540,7 +540,7 @@ Based on analysis of existing skills, here are specific opportunities to move co
 - Templates reference
 
 #### 2. ai-sdk-core
-**Current State**: 850-line SKILL.md with extensive v4→v5 migration guide. Rule has 116 lines.
+**Current State**: ~850-line SKILL.md with extensive v4→v5 migration guide. Rule has ~115 lines.
 
 **Extract to Rule**:
 - Lines 213-337: Migration examples → Expand rule's Quick Fixes table
@@ -554,7 +554,7 @@ Based on analysis of existing skills, here are specific opportunities to move co
 - Error solutions needing full context
 
 #### 3. cloudflare-worker-base
-**Current State**: 195-line SKILL.md with 8 known issues. No rule yet for most issues.
+**Current State**: ~195-line SKILL.md with 8 known issues. Has 140-line rule covering some patterns.
 
 **Extract to Rule**:
 - Issue #1 (export syntax) → Add pattern to rule
@@ -570,7 +570,7 @@ Based on analysis of existing skills, here are specific opportunities to move co
 ### Medium Priority (Some Overlap)
 
 #### 4. openai-api
-**Current State**: 872-line SKILL.md, 104-line rule. Rule could be expanded.
+**Current State**: ~870-line SKILL.md, ~100-line rule. Rule could be expanded.
 
 **Extract to Rule**:
 - GPT-5.1 reasoning defaults (partially covered)
@@ -584,7 +584,7 @@ Based on analysis of existing skills, here are specific opportunities to move co
 - When to use vs openai-responses
 
 #### 5. clerk-auth
-**Current State**: 381-line SKILL.md, 102-line rule. Good balance but some overlap.
+**Current State**: ~380-line SKILL.md, ~100-line rule. Good balance but some overlap.
 
 **Extract to Rule**:
 - JWT size patterns (partially covered)
