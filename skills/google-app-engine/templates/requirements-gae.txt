@@ -1,0 +1,19 @@
+# Google App Engine Dependencies
+# Add these to your requirements.txt
+
+# WSGI server (required for App Engine)
+gunicorn>=22.0.0
+
+# Google Cloud services
+google-cloud-secret-manager>=2.20.0
+google-cloud-storage>=2.14.0
+
+# Django storage backend (for Cloud Storage static/media files)
+django-storages[google]>=1.14.0
+
+# Database drivers (choose one)
+psycopg2-binary>=2.9.9  # PostgreSQL
+# mysqlclient>=2.2.0    # MySQL
+
+# Optional: Cloud Logging integration
+# google-cloud-logging>=3.10.0

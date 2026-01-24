@@ -1,0 +1,54 @@
+# Google App Engine - Flexible Environment
+# Use when you need: custom Docker, longer timeouts, or background threads
+
+runtime: python
+env: flex
+
+runtime_config:
+  runtime_version: "3.12"
+
+# Application entrypoint
+entrypoint: gunicorn -b :$PORT myproject.wsgi:application
+
+# Environment variables (NOT for secrets - use Secret Manager)
+env_variables:
+  DJANGO_SETTINGS_MODULE: "myproject.settings.production"
+  GOOGLE_CLOUD_PROJECT: "your-project-id"
+
+# Cloud SQL connection
+beta_settings:
+  cloud_sql_instances: "your-project:your-region:your-instance"
+
+# Resource allocation
+resources:
+  cpu: 1
+  memory_gb: 0.5
+  disk_size_gb: 10
+
+# Scaling (min 1 instance in Flexible - always costs money)
+automatic_scaling:
+  min_num_instances: 1
+  max_num_instances: 5
+  cool_down_period_sec: 120
+  cpu_utilization:
+    target_utilization: 0.65
+
+# Health checks
+liveness_check:
+  path: "/_ah/health"
+  check_interval_sec: 30
+  timeout_sec: 4
+  failure_threshold: 3
+  success_threshold: 2
+
+readiness_check:
+  path: "/_ah/health"
+  check_interval_sec: 5
+  timeout_sec: 4
+  failure_threshold: 2
+  success_threshold: 2
+
+# Network configuration (optional)
+# network:
+#   name: default
+#   subnetwork_name: default
