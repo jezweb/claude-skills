@@ -1,0 +1,56 @@
+# =============================================================================
+# Django on Google App Engine with Cloud SQL PostgreSQL
+# =============================================================================
+# Verified: 2026-01-24
+# Python: 3.10+
+# =============================================================================
+
+# Core Django
+Django>=5.1,<6.0
+
+# PostgreSQL adapter
+# Use psycopg2-binary for simplicity; psycopg2 requires libpq-dev
+psycopg2-binary>=2.9.9
+
+# WSGI server for App Engine
+gunicorn>=23.0.0
+
+# Static file serving (production)
+whitenoise>=6.7.0
+
+# =============================================================================
+# Optional: Google Cloud integrations
+# =============================================================================
+
+# Secret Manager (for production secrets)
+# google-cloud-secret-manager>=2.20.0
+
+# Cloud SQL Python Connector (alternative to Auth Proxy for local dev)
+# cloud-sql-python-connector[pg8000]>=1.12.0
+
+# Cloud Logging (structured logging on GCP)
+# google-cloud-logging>=3.11.0
+
+# =============================================================================
+# Development dependencies (uncomment for local dev)
+# =============================================================================
+
+# python-dotenv>=1.0.0    # Load .env files locally
+# django-debug-toolbar>=4.4.0  # Debug toolbar (disable in prod!)
+
+# =============================================================================
+# Installation
+# =============================================================================
+#
+# Create virtual environment:
+#   python -m venv venv
+#   source venv/bin/activate  # Linux/macOS
+#   venv\Scripts\activate     # Windows
+#
+# Install dependencies:
+#   pip install -r requirements.txt
+#
+# For development with optional packages:
+#   pip install -r requirements.txt python-dotenv django-debug-toolbar
+#
+# =============================================================================
