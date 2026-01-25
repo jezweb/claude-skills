@@ -1,0 +1,111 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // ============================================
+    // HELPER FUNCTIONS
+    // ============================================
+
+    // Check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Check if user owns the resource
+    function isOwner(userId) {
+      return request.auth.uid == userId;
+    }
+
+    // Validate image file
+    function isValidImage() {
+      return request.resource.contentType.matches('image/(png|jpeg|gif|webp)')
+        && request.resource.size < 5 * 1024 * 1024; // 5MB max
+    }
+
+    // Validate document file
+    function isValidDocument() {
+      return request.resource.contentType.matches('application/(pdf|msword|vnd.openxmlformats-officedocument.*)')
+        && request.resource.size < 10 * 1024 * 1024; // 10MB max
+    }
+
+    // Validate any allowed file type
+    function isValidFile() {
+      return request.resource.size < 25 * 1024 * 1024; // 25MB max
+    }
+
+    // ============================================
+    // USER PRIVATE FILES
+    // ============================================
+
+    // User's private files - only owner can access
+    match /users/{userId}/private/{allPaths=**} {
+      allow read: if isOwner(userId);
+      allow write: if isOwner(userId) && isValidFile();
+    }
+
+    // ============================================
+    // USER PUBLIC FILES
+    // ============================================
+
+    // User's public files - anyone can read, owner can write
+    match /users/{userId}/public/{allPaths=**} {
+      allow read: if true;
+      allow write: if isOwner(userId) && isValidFile();
+    }
+
+    // ============================================
+    // PROFILE PICTURES
+    // ============================================
+
+    // Profile avatars - public read, owner write
+    match /profiles/{userId}/avatar.{ext} {
+      allow read: if true;
+      allow write: if isOwner(userId)
+        && request.resource.contentType.matches('image/(png|jpeg|gif|webp)')
+        && request.resource.size < 2 * 1024 * 1024; // 2MB max
+    }
+
+    // ============================================
+    // PUBLIC UPLOADS
+    // ============================================
+
+    // Public images - authenticated users can upload
+    match /public/images/{fileName} {
+      allow read: if true;
+      allow create: if isAuthenticated() && isValidImage();
+      allow delete: if false; // Only admin can delete public images
+    }
+
+    // ============================================
+    // SHARED CONTENT
+    // ============================================
+
+    // Shared files with explicit permissions stored in Firestore
+    // (You'd check Firestore for permission in a Cloud Function)
+    match /shared/{fileId} {
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated() && isValidFile();
+    }
+
+    // ============================================
+    // TEMP UPLOADS
+    // ============================================
+
+    // Temporary uploads (should be cleaned up by Cloud Function)
+    match /temp/{userId}/{fileName} {
+      allow read: if isOwner(userId);
+      allow create: if isOwner(userId) && isValidFile();
+      allow delete: if isOwner(userId);
+    }
+
+    // ============================================
+    // DEFAULT DENY
+    // ============================================
+
+    // Deny all other access by default
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

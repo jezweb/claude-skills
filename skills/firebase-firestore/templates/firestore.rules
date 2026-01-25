@@ -1,0 +1,114 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ============================================
+    // HELPER FUNCTIONS
+    // ============================================
+
+    // Check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Check if user owns the resource
+    function isOwner(userId) {
+      return request.auth.uid == userId;
+    }
+
+    // Check if user has admin custom claim
+    function isAdmin() {
+      return request.auth.token.admin == true;
+    }
+
+    // Validate required fields exist
+    function hasRequiredFields(fields) {
+      return request.resource.data.keys().hasAll(fields);
+    }
+
+    // Validate field is a string
+    function isString(field) {
+      return request.resource.data[field] is string;
+    }
+
+    // Validate field is a timestamp
+    function isTimestamp(field) {
+      return request.resource.data[field] is timestamp;
+    }
+
+    // ============================================
+    // USERS COLLECTION
+    // ============================================
+
+    match /users/{userId} {
+      // Anyone authenticated can read user profiles
+      allow read: if isAuthenticated();
+
+      // Users can only create their own profile
+      allow create: if isAuthenticated()
+        && isOwner(userId)
+        && hasRequiredFields(['name', 'email', 'createdAt'])
+        && isString('name')
+        && isString('email');
+
+      // Users can only update their own profile
+      allow update: if isOwner(userId)
+        && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['email', 'createdAt']);
+
+      // Users can only delete their own profile
+      allow delete: if isOwner(userId);
+    }
+
+    // ============================================
+    // POSTS COLLECTION
+    // ============================================
+
+    match /posts/{postId} {
+      // Public posts readable by anyone, private posts only by author
+      allow read: if resource.data.published == true
+        || (isAuthenticated() && isOwner(resource.data.authorId));
+
+      // Authenticated users can create posts (must be their own)
+      allow create: if isAuthenticated()
+        && request.resource.data.authorId == request.auth.uid
+        && hasRequiredFields(['title', 'content', 'authorId', 'createdAt']);
+
+      // Only author can update/delete
+      allow update, delete: if isAuthenticated()
+        && isOwner(resource.data.authorId);
+
+      // Comments subcollection
+      match /comments/{commentId} {
+        // Anyone can read comments on published posts
+        allow read: if get(/databases/$(database)/documents/posts/$(postId)).data.published == true
+          || isAuthenticated();
+
+        // Authenticated users can create comments
+        allow create: if isAuthenticated()
+          && request.resource.data.authorId == request.auth.uid;
+
+        // Only comment author can update/delete
+        allow update, delete: if isAuthenticated()
+          && isOwner(resource.data.authorId);
+      }
+    }
+
+    // ============================================
+    // ADMIN-ONLY COLLECTION
+    // ============================================
+
+    match /admin/{document=**} {
+      allow read, write: if isAdmin();
+    }
+
+    // ============================================
+    // DEFAULT DENY
+    // ============================================
+
+    // Deny all other access by default
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

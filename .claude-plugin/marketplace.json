@@ -5,9 +5,9 @@
     "email": "jeremy@jezweb.net"
   },
   "metadata": {
-    "description": "Production-tested skills for Claude Code - Cloudflare, AI, React, Tailwind v4, and modern web development",
-    "version": "3.1.0",
-    "updated": "2026-01-14"
+    "description": "Production-tested skills for Claude Code - Cloudflare, Firebase, AI, React, Tailwind v4, and modern web development",
+    "version": "3.2.0",
+    "updated": "2026-01-25"
   },
   "plugins": [
     {
@@ -118,6 +118,16 @@
         "./skills/neon-vercel-postgres",
         "./skills/vercel-kv",
         "./skills/vercel-blob"
+      ]
+    },
+    {
+      "name": "firebase",
+      "description": "Firebase platform skills - Firestore NoSQL database, Authentication, and Cloud Storage. 3 production-tested skills for building Firebase applications.",
+      "source": "./",
+      "skills": [
+        "./skills/firebase-firestore",
+        "./skills/firebase-auth",
+        "./skills/firebase-storage"
       ]
     },
     {
