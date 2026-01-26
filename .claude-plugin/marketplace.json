@@ -67,7 +67,7 @@
     },
     {
       "name": "frontend",
-      "description": "Frontend and UI skills - Tailwind v4, shadcn/ui, TanStack suite, animations, and React Native. 13 skills for modern web and mobile UIs.",
+      "description": "Frontend and UI skills - Tailwind v4, shadcn/ui, TanStack suite, jQuery 4, animations, and React Native. 14 skills for modern web and mobile UIs.",
       "source": "./",
       "skills": [
         "./skills/tailwind-v4-shadcn",
@@ -82,7 +82,8 @@
         "./skills/auto-animate",
         "./skills/motion",
         "./skills/tiptap",
-        "./skills/react-native-expo"
+        "./skills/react-native-expo",
+        "./skills/jquery-4"
       ]
     },
     {
