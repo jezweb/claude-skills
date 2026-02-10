@@ -8,6 +8,9 @@
   },
   "license": "MIT",
   "repository": "https://github.com/jezweb/claude-skills",
-  "keywords": ["keyword1","keyword2","error-message-fragment"],
-  "agents": "./agents/"
+  "keywords": [
+    "keyword1",
+    "keyword2",
+    "error-message-fragment"
+  ]
 }
