@@ -55,9 +55,9 @@ If true, git is available. Capture the repo name from the directory or `git remo
 
 | Source | Location | Notes |
 |---|---|---|
-| Basalt Cortex | `~/Documents/basalt-cortex/` | Clients, contacts, knowledge — grep to search |
+| Personal knowledge vault | Obsidian, `~/Documents/notes/`, or any local markdown folder | Clients, contacts, knowledge — grep to search |
 
-**What to capture**: Whether Basalt Cortex vault exists and has relevant data.
+**What to capture**: Whether a personal knowledge vault exists and has relevant data.
 
 ## Discovery Output
 
