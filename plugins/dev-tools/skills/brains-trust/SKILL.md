@@ -5,20 +5,21 @@ description: >
   Queries models via OpenRouter, Gemini, or OpenAI APIs. Supports single opinion, multi-model consensus,
   and devil's advocate patterns. Trigger with 'brains trust', 'second opinion', 'ask gemini', 'ask gpt',
   'peer review', 'consult', 'challenge this', or 'devil's advocate'.
-triggers:
-  - brains trust
-  - second opinion
-  - ask gemini
-  - ask gpt
-  - peer review
-  - consult
-  - challenge this
-  - devil's advocate
-  - what does gemini think
-  - what does gpt think
-user-invocable: true
-argument-hint: "[question or topic]"
 compatibility: claude-code-only
+metadata:
+  user-invocable: "true"
+  argument-hint: "[question or topic]"
+  triggers:
+    - brains trust
+    - second opinion
+    - ask gemini
+    - ask gpt
+    - peer review
+    - consult
+    - challenge this
+    - devil's advocate
+    - what does gemini think
+    - what does gpt think
 ---
 
 # Brains Trust
