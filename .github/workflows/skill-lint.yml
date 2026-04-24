@@ -31,3 +31,12 @@ jobs:
       - name: Run skill-lint
         if: steps.changed.outputs.skip != 'true'
         run: ./bin/skill-lint ${{ steps.changed.outputs.dirs }}
+
+      - name: Run skills-ref validate (agentskills.io spec)
+        if: steps.changed.outputs.skip != 'true'
+        env:
+          DIRS: ${{ steps.changed.outputs.dirs }}
+        run: |
+          for dir in $DIRS; do
+            npx -y skills-ref@0.1.5 validate "$dir"
+          done
