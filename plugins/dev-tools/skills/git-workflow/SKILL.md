@@ -1,7 +1,7 @@
 ---
 name: git-workflow
 description: "Guided git workflows: prepare PRs, clean up branches, resolve merge conflicts, handle monorepo tags, squash-and-merge patterns. Use when asked to prepare a PR, clean branches, resolve conflicts, or tag a release."
-compatibility: claude-code-only
+compatibility: Designed for Claude Code (or similar products)
 ---
 
 # Git Workflow

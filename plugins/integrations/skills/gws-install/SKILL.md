@@ -6,7 +6,7 @@ description: >
   Use when setting up gws on a new computer, reinstalling after a fresh OS, or
   configuring a second workstation. Triggers: "install gws", "gws on new machine",
   "gws install", "set up gws again".
-compatibility: claude-code-only
+compatibility: Designed for Claude Code (or similar products)
 ---
 
 # Google Workspace CLI — Quick Install

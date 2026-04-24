@@ -6,7 +6,7 @@ description: >
   Use when editing Elementor pages, updating text in Elementor widgets,
   applying or managing Elementor templates, or making content changes
   to pages built with Elementor page builder.
-compatibility: claude-code-only
+compatibility: Designed for Claude Code (or similar products)
 ---
 
 # WordPress Elementor

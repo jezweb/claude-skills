@@ -1,7 +1,7 @@
 ---
 name: onboarding-ux
 description: "Audit and generate in-app user guidance — onboarding flows, empty states, tooltips, feature tours, contextual help, defaults, and inline hints. Browses the app to find where new users would get stuck, then produces the actual content and code to fix it. Pairs with ux-audit: audit finds problems, this skill builds the solutions. Triggers: 'onboarding', 'help content', 'empty states', 'user guidance', 'first run experience', 'feature tour', 'app is confusing', 'new user experience', 'make the app welcoming'."
-compatibility: claude-code-only
+compatibility: Designed for Claude Code (or similar products)
 ---
 
 # Onboarding UX

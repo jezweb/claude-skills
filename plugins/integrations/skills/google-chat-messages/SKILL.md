@@ -1,7 +1,7 @@
 ---
 name: google-chat-messages
 description: "Send Google Chat messages via webhook — text, rich cards (cardsV2), threaded replies. Includes TypeScript types, card builder utility, and widget reference."
-compatibility: claude-code-only
+compatibility: Designed for Claude Code (or similar products)
 ---
 
 # Google Chat Messages

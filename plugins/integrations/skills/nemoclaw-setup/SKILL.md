@@ -6,7 +6,7 @@ description: >
   remote access via Cloudflare Tunnel, and known bug workarounds.
   Triggers: "install nemoclaw", "setup nemoclaw", "nvidia nemoclaw", "openclaw setup",
   "nemoclaw on spark", "nemoclaw on dgx".
-compatibility: claude-code-only
+compatibility: Designed for Claude Code (or similar products)
 ---
 
 # NemoClaw Setup

@@ -1,7 +1,7 @@
 ---
 name: google-apps-script
 description: "Build Google Apps Script automation for Sheets and Workspace apps. Produces scripts with custom menus, triggers, dialogs, email automation, PDF export, and external API integration."
-compatibility: claude-code-only
+compatibility: Designed for Claude Code (or similar products)
 ---
 
 # Google Apps Script

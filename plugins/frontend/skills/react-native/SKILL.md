@@ -1,7 +1,7 @@
 ---
 name: react-native
 description: "React Native and Expo patterns for building performant mobile apps. Covers list performance, animations with Reanimated, navigation, UI patterns, state management, platform-specific code, and Expo workflows. Use when building or reviewing React Native code. Triggers: 'react native', 'expo', 'mobile app', 'react native performance', 'flatlist', 'reanimated', 'expo router', 'mobile development', 'ios app', 'android app'."
-compatibility: claude-code-only
+compatibility: Designed for Claude Code (or similar products)
 allowed-tools:
   - Read
   - Write

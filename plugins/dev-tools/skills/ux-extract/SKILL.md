@@ -1,7 +1,7 @@
 ---
 name: ux-extract
 description: "Exhaustively extract UX patterns from a reference web app. Walks every screen, captures screenshots of every state, records interaction patterns, copy verbatim, keyboard shortcuts, responsive treatments, motion, and empty/error/loading states. Produces a reusable pattern library that other audits can compare against. The inverse of ux-audit — asks 'what is the bar?' rather than 'does this match the bar?'. Trigger with 'learn from X', 'extract patterns from X', 'study X's UX', 'reverse engineer the UX of X', 'build a pattern library from X'."
-compatibility: claude-code-only
+compatibility: Designed for Claude Code (or similar products)
 ---
 
 # UX Extract

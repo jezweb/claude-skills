@@ -1,7 +1,7 @@
 ---
 name: d1-migration
 description: "Cloudflare D1 migration workflow: generate with Drizzle, inspect SQL for gotchas, apply to local and remote, fix stuck migrations, handle partial failures. Use when running migrations, fixing migration errors, or setting up D1 schemas."
-compatibility: claude-code-only
+compatibility: Designed for Claude Code (or similar products)
 ---
 
 # D1 Migration Workflow

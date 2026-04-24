@@ -1,7 +1,7 @@
 ---
 name: fork-discipline
 description: "Audit and enforce the core/client boundary in multi-client projects. Detects where shared platform code is tangled with client-specific code, finds hardcoded client checks, config files that replace instead of merge, scattered client code, migration conflicts, and missing extension points. Produces a boundary map, violation report, and refactoring plan. Optionally generates FORK.md documentation and restructuring scripts. Triggers: 'fork discipline', 'check the boundary', 'is this core or client', 'platform audit', 'client separation', 'fork test', 'refactor for multi-client', 'clean up the fork'."
-compatibility: claude-code-only
+compatibility: Designed for Claude Code (or similar products)
 allowed-tools:
   - Read
   - Write

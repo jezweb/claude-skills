@@ -6,7 +6,7 @@ description: >
   manifest. Use when initialising websites, replacing CMS default favicons, converting
   logos to favicons, creating branded icons from initials, or troubleshooting favicon
   not displaying, iOS black square, or missing manifest.
-compatibility: claude-code-only
+compatibility: Designed for Claude Code (or similar products)
 ---
 
 # Favicon Generator

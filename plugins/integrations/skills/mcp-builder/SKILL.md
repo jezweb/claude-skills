@@ -6,7 +6,7 @@ description: >
   Use when creating MCP servers, exposing tools/resources/prompts to LLMs,
   building Claude integrations, or troubleshooting FastMCP module-level server,
   storage, lifespan, middleware, OAuth, or deployment errors.
-compatibility: claude-code-only
+compatibility: Designed for Claude Code (or similar products)
 ---
 
 # MCP Builder

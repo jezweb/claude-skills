@@ -6,7 +6,7 @@ description: >
   and Tailwind v4 CSS output. Includes WCAG contrast checking.
   Use when setting up design systems, creating Tailwind themes, building brand
   colours from a hex value, or checking colour accessibility.
-compatibility: claude-code-only
+compatibility: Designed for Claude Code (or similar products)
 ---
 
 # Colour Palette Generator

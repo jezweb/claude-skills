@@ -5,7 +5,7 @@ description: >
   Workflow: install CLI, authenticate, create custom app, store access token, verify.
   Use when connecting to a Shopify store, setting up API access, or troubleshooting
   auth issues with Shopify CLI or Admin API tokens.
-compatibility: claude-code-only
+compatibility: Designed for Claude Code (or similar products)
 ---
 
 # Shopify Setup

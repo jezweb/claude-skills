@@ -1,7 +1,7 @@
 ---
 name: hono-api-scaffolder
 description: "Scaffold Hono API routes for Cloudflare Workers. Produces route files, middleware, typed bindings, Zod validation, error handling, and API_ENDPOINTS.md documentation. Use after a project is set up with cloudflare-worker-builder or vite-flare-starter, when you need to add API routes, create endpoints, or generate API documentation."
-compatibility: claude-code-only
+compatibility: Designed for Claude Code (or similar products)
 ---
 
 # Hono API Scaffolder

@@ -1,7 +1,7 @@
 ---
 name: cloudflare-api
 description: "Hit the Cloudflare REST API directly for operations that wrangler and MCP can't handle well. Bulk DNS, custom hostnames, email routing, cache purge, WAF rules, redirect rules, zone settings, Worker routes, D1 cross-database queries, R2 bulk operations, KV bulk read/write, Vectorize queries, Queues, and fleet-wide resource audits. Produces curl commands or scripts. Triggers: 'cloudflare api', 'bulk dns', 'custom hostname', 'email routing', 'cache purge', 'waf rule', 'd1 query', 'r2 bucket', 'kv bulk', 'vectorize query', 'audit resources', 'fleet operation'."
-compatibility: claude-code-only
+compatibility: Designed for Claude Code (or similar products)
 allowed-tools:
   - Read
   - Write
