@@ -1,5 +1,5 @@
 ---
-description: Exhaustively audit a web app — threads, elements, 8 scenarios, fix-and-verify loop
+description: Exhaustively audit a web app — threads, elements, visual polish (AI-tells), 8 scenarios, fix-and-verify loop
 argument-hint: "[optional: persona or scope, e.g. 'as a busy broker' or 'the dashboard only']"
 allowed-tools: "*"
 ---

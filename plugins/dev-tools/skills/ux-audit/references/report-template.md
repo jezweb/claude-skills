@@ -26,6 +26,7 @@ Write incrementally — open the file at the start of the audit, append as you g
 | Interactive elements | 187 | 203 | 92% |
 | Threads walked | 4 | 4 | 100% |
 | Scenarios completed | 7 | 8 | 88% (Destructive Confidence skipped — no test account) |
+| Pages with visual polish sweep | 11 | 14 | 79% (3 modal-only pages folded into parent route reviews) |
 
 **Elements not tested** (and why):
 - /app/billing — 16 elements — requires paid plan, not available on test account
@@ -169,6 +170,29 @@ Write incrementally — open the file at the start of the audit, append as you g
 |-------|------|------|-----|-----|------------|-----------|-------|
 | / | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ (text invisible) | |
 | /app/clients | ✓ | ✓ | ✗ (overflow) | ✗ | ✓ | ✓ | |
+
+## Visual Polish (AI-tell sweep)
+
+For each page audited, mark which AI-tells were found:
+
+| Route | Optical centring | Nested radius | Off-scale spacing | Vibe greys | Border drift | Shadow direction | Anim timings | Hover delta | Underline / uppercase | Symmetry / pacing |
+|-------|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| / | ✓ | ✓ | ✗ (22px gap) | ✗ (#5a6168 raw) | ✓ | ✓ | ✗ (187ms drop) | ✓ | ✓ | ✓ |
+| /app/clients | ✗ (button text 2px high) | ✓ | ✓ | ✗ (3 raw greys) | ✓ | ✓ | ✓ | ✗ (3% delta) | ✓ | ✓ |
+
+**Per-component findings**:
+
+- **Buttons (primary)** — text mathematically centred across all uses; needs ~1px upward optical correction
+- **Sidebar dividers** — 2 raw grey values mixed (`#d4d4d8` and `#dfe1e6`); should consolidate to `--border` token
+- **Modal shadow direction** — `-2px x-offset` on settings modal disagrees with app-wide `0 x-offset` light source
+
+**Severity tally**:
+
+| Severity | Count | Pattern type |
+|----------|-------|-------------|
+| High | 2 | Stacked AI-tells on primary CTA component (text + radius + grey + spacing) |
+| Medium | 4 | Pattern-level (raw greys app-wide, animation timings off canonical) |
+| Low | 7 | Single-instance (one-off underline offset, single off-scale value) |
 
 ## What Works Well
 
