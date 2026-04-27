@@ -1,7 +1,7 @@
 ---
 name: ux-audit
-description: "Exhaustive UX audit of a web app. Walks every thread a real user would follow, tests every interactive element, runs scenario battery (keyboard-only, heavy data, destructive actions, second user, interrupted workflow, wrong turn, returning user, first contact), produces ranked findings with screenshots, then offers a fix-and-verify loop. Requires a persona. Trigger with 'ux audit', 'dogfood this', 'audit the app', 'qa sweep', 'exhaustive test', 'check all pages'."
-compatibility: claude-code-only
+description: "Exhaustive UX audit of a web app. Walks every thread a real user would follow, tests every interactive element including all six component states (default, skeleton, empty, partial, error, disabled), runs nine-scenario battery (first contact, interrupted workflow, wrong turn, returning user, keyboard only, heavy data, destructive confidence, second user role, lifecycle position), produces ranked findings with screenshots, then offers a fix-and-verify loop. Requires a persona. Trigger with 'ux audit', 'dogfood this', 'audit the app', 'qa sweep', 'exhaustive test', 'check all pages'."
+compatibility: Designed for Claude Code (or similar products)
 ---
 
 # UX Audit
@@ -11,7 +11,7 @@ Exhaustively audit a web app from the perspective of a real user. Two lenses, co
 - **Flow lens** — walk the 3–5 real tasks a user would do ("threads"). Count clicks, mark dead ends, screenshot every state change.
 - **Element lens** — after threads, sweep every interactive element not already hit. Forms, menus, toggles, edge data volumes.
 
-Then run an eight-scenario battery (first contact, interrupted workflow, wrong turn recovery, returning user, keyboard only, heavy data, destructive confidence, second user) and close with a fix-and-verify loop for critical findings.
+Then run a nine-scenario battery (first contact, interrupted workflow, wrong turn recovery, returning user, keyboard only, heavy data, destructive confidence, second user by role, lifecycle position) and close with a fix-and-verify loop for critical findings.
 
 This is the thorough one. There is no quick mode. If the user wants a targeted check ("audit the dashboard"), scope the audit to that area — but within that area, still go exhaustive. Runtime is unbounded: assume a long-running session, write findings to the report incrementally, don't batch.
 
@@ -168,6 +168,23 @@ For **every list/table**, test at these volumes if data permits:
 - 100 items (pagination)
 - 1000+ items (virtualisation, search, filter performance)
 
+### Component state matrix
+
+For each major content component (list, card, table, dashboard widget, form, detail panel), capture all six visual states. Most teams design the default state in detail and ship the others by default — that's where the bugs hide.
+
+| State | What to verify | Common findings |
+|-------|----------------|-----------------|
+| **Default** | Loaded, idle | Baseline |
+| **Loading (skeleton)** | Shape parity with loaded layout — same column widths, same row heights, same number of placeholder elements. Skeleton stays for the *minimum* of (real load time, ~300ms) so it never flashes. | Spinner-on-blank-container instead of a skeleton; skeleton shape doesn't match what loads (layout shift); skeleton flashes for 50ms then disappears. |
+| **Empty** | Helpful copy + CTA. Speaks to the user's *next action*, not just "no data". | Blank void; column headers with zero rows; copy that says "no data" without explaining how to get some. |
+| **Partial loaded** | First batch usable while later batches arrive. No pretending the whole thing loaded when half is still pending. | Misleading "complete" framing while data still streams in; no progress indication on long loads; blocking UI on data that should be progressive. |
+| **Error** | Recoverable? Retry available? Distinguishes *can't reach* from *forbidden* from *invalid input*. | Generic "Something went wrong"; raw stack trace leaked; no retry path; permission errors styled identically to network errors. |
+| **Disabled** | Why disabled is *visible* (tooltip, helper text, or adjacent copy). Path to enable is implied or stated. | Greyed-out button with no tooltip; user has no idea what unlocks it. |
+
+Skeleton loaders deserve a specific check — a spinner on top of a blank container is **not** a skeleton. The skeleton's job is to *prevent layout shift* and *signal what's coming*. Verify both: throttle the network (DevTools → Network → Slow 3G or offline) to force the loading state to stay visible long enough to inspect.
+
+Hover, focus, and active visual states fall under thread traversal's filmstrip — capture them there, not here, since they're meaningful only in the context of pointer/keyboard interaction.
+
 Write findings to the report as you go. Don't hold them in memory.
 
 ## Responsive Sweep
@@ -190,7 +207,7 @@ Run the automated layout-detection JS (overflow, clipping, invisible text) at ea
 
 ## Scenario Battery
 
-Eight scenarios. All eight, always. They catch what screen-by-screen testing misses. Full protocols in [references/scenario-tests.md](references/scenario-tests.md).
+Nine scenarios. All nine, always. They catch what screen-by-screen testing misses. Full protocols in [references/scenario-tests.md](references/scenario-tests.md).
 
 1. **First Contact** — figure out the app with zero prior knowledge, then write a 2-minute plain-English guide to each thread. Gaps in the guide are UX gaps.
 2. **Interrupted Workflow** — start a task, close the tab, refresh, navigate away mid-form. Does state survive?
@@ -199,7 +216,62 @@ Eight scenarios. All eight, always. They catch what screen-by-screen testing mis
 5. **Keyboard Only** — unplug the mouse. Can every thread complete keyboard-only? Focus visible? Tab order logical? Escape closes?
 6. **Heavy Data** — seed with 500+ records. Lists virtualise? Search returns the right thing? Filters narrow meaningfully?
 7. **Destructive Confidence** — for every delete, send, publish, pay, share: is consent clear? Does confirm copy tell you what's about to happen? Undo available?
-8. **Second User** — log in as a restricted role (viewer not editor, client not staff). Read-only views coherent? Permissions errors make sense?
+8. **Second User (Role)** — log in as a restricted role (viewer not editor, client not staff). Read-only views coherent? Permissions errors make sense?
+9. **Lifecycle Position** — same role, different position in time. Test as user #1 (founder, fresh org, sets everything up), user #2 (first invitee, lands in partial state, no setup wizard), and user #N (later joiner, fully populated workspace). Each sees a different reality. Onboarding flows, empty/partial/full state copy, defaults, and peer-feature UIs (mentions, assignments, activity feeds) all differ.
+
+## Live Interaction Smoke
+
+Code reading verifies a button exists and has an `onClick`. It does not
+verify that clicking the button actually **does something observable**.
+Bugs of this shape — "the handler runs, fires a call into an SDK, but
+the flow never completes" — are invisible to static analysis and
+require a live click + network check.
+
+Run these for every **interactive control** on every page:
+
+1. **Click it.** Pointer moves, element highlights, click lands.
+2. **Watch the Network tab.** Did a request fire? To the right URL?
+   Correct method + body shape?
+3. **Watch the DOM.** Did something visibly change — new element,
+   removed element, state transition (loading spinner, toast, route
+   change)?
+4. **If nothing changed in (2) or (3), that's a bug.** The control
+   LOOKS alive but isn't doing its job. Log it.
+
+### Known control categories that silently fail
+
+| Control category | Silent-failure mode to watch for |
+|---|---|
+| Approve / Deny buttons on tool-call cards | Handler fires but server never hears about it (SDK needs a separate "send on state change" callback). See `rules/ai-sdk-tool-approval-autosubmit.md`. |
+| "Connect X" OAuth buttons inside dialogs | `window.open()` silently popup-blocked when click originates in a modal. Must use `window.location.href`. See `rules/oauth-popup-blocked-in-dialogs.md`. |
+| Save / update buttons on forms with async validation | Button disables during mutation but the mutation itself silently 5xx'd. No toast, no error state, form just sits there. |
+| Delete / archive actions | Optimistic UI removes the row but server rejected — after refresh, the row is back. |
+| Pagination / "Load more" buttons | Fires request but response empty due to off-by-one offset. |
+| Filter chips on list views | Query param updates but query key doesn't — TanStack Query serves stale cached results. |
+| "Reply" / "Forward" in email-style UIs | Opens compose pane but Message-ID headers not set — reply threads orphan in recipient's inbox. |
+
+### SDK contract check
+
+When the page uses a third-party SDK with its own state model, verify
+the SDK's required options are passed. Silent failures usually trace
+to an undocumented-but-required option.
+
+Common SDK contracts to verify:
+
+| SDK | Option that silently breaks behaviour if missing |
+|---|---|
+| `@ai-sdk/react` useChat with `needsApproval: true` tools | `sendAutomaticallyWhen: lastAssistantMessageIsCompleteWithApprovalResponses` |
+| `@ai-sdk/react` useChat with custom transport | `prepareSendMessagesRequest` reading latest refs (otherwise pinned to initial values) |
+| better-auth `createAuthClient` | `sessionOptions.refetchOnWindowFocus: false` for SPAs that route on session state |
+| TanStack Query `QueryClient` | `refetchOnWindowFocus: false` if your app redirects on empty query results |
+| React Router v7 `createBrowserRouter` | `loader` / `action` defined for routes that need data (not just component) |
+| Radix Dialog | `modal: true` + `onEscapeKeyDown` handler if Escape should do more than close |
+| zodResolver | `as any` around schema if using Zod v4 and resolver is older — silent validation miss |
+
+**If the page uses an SDK not on this list**, spend 2 minutes reading
+its "useX" export's options. Anything named `*On*Change`, `*On*Finish`,
+`*SendAutomatically*`, `*RefetchOn*`, or `*Configure*` is a prime
+suspect for "silent failure because it's undefined."
 
 ## Passive Error Sweeps
 
@@ -283,7 +355,6 @@ Three principles for audit runs that catch the most bugs:
 1. **Drive the audit from the main session, not a sub-agent.** Sub-agents are fine for bounded analysis tasks (reviewing a batch of captured screenshots, summarising a thread). But the audit *itself* — the navigation, the noticing, the "this button looks off after the previous interaction" kind of judgement — must happen in the session that's been watching the app. Cross-interaction state lives in that session's working memory; a fresh sub-agent starts cold and misses second-order findings.
 
 2. **Use the browser tool directly.** Chrome MCP or Playwright MCP via the main session's tool calls. Don't hand screenshots to a fresh agent and ask for opinions — that loses the state-dependence that makes audits catch logic errors, business-logic issues, and odd edge cases.
-
 3. **Loop to exhaustion with variations.** Don't stop after one pass through the checklist. After each pass, generate a new angle — different persona, different workflow, different input volume, different starting point, different validation lens — and re-walk. Stop only when a full pass produces no new findings. Single-pass audits by definition miss the second-order issues.
 
 For audits expected to run longer than 30 minutes, set up a 15-min `/loop` check-in alongside the main session — it journals findings, grounds the session, and provides a natural termination signal. See [references/long-running-check-in-pattern.md](references/long-running-check-in-pattern.md).

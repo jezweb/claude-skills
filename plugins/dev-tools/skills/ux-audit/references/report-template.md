@@ -25,7 +25,8 @@ Write incrementally — open the file at the start of the audit, append as you g
 | Routes | 14 | 14 | 100% |
 | Interactive elements | 187 | 203 | 92% |
 | Threads walked | 4 | 4 | 100% |
-| Scenarios completed | 7 | 8 | 88% (Destructive Confidence skipped — no test account) |
+| Scenarios completed | 8 | 9 | 89% (Destructive Confidence skipped — no test account) |
+| Component states sampled | 4/6 | 6 | 67% (Partial loaded + Disabled not reproducible on tested components) |
 
 **Elements not tested** (and why):
 - /app/billing — 16 elements — requires paid plan, not available on test account
@@ -143,11 +144,34 @@ Write incrementally — open the file at the start of the audit, append as you g
 | Delete client | [copy quality] | Y/N | Y/N | |
 | Send invoice | [copy] | Y/N | Y/N | |
 
-### Second User ([role tested])
+### Second User — Role ([role tested])
 
 | Thread | Completable as [role] | Broken pages | Leaked data | Error quality |
 |--------|----------------------|--------------|-------------|--------------|
 | Thread 1 | Y/N | [list] | [list] | [assessment] |
+
+### Lifecycle Position
+
+| Position | Setup flow shown? | Onboarding gap | Wayfinding works? | Empty/partial UI helpful? |
+|----------|-------------------|----------------|-------------------|--------------------------|
+| User #1 (founder) | Y/N + quality | [list] | Y/N + detail | Y/N + detail |
+| User #2 (first invitee) | Y/N + quality | [list] | Y/N + detail | Y/N + detail |
+| User #N (later joiner) | Y/N + quality | [list] | Y/N + detail | Y/N + detail |
+
+- **Same-screen-three-faces coherence**: [pages where empty / partial / full all looked considered, vs pages where one looked unfinished]
+- **Onboarding scope creep**: [setup UI that bleeds into screens it shouldn't]
+- **Peer-feature dignity** (mentions, assignments, activity feeds with 1 / 2 / 50 users): [findings]
+- **Default landing differentiation**: [does it adapt by lifecycle position, or one-size-fits-most]
+
+## Component States
+
+For each major component sampled, capture which of the six states were verified:
+
+| Component | Default | Skeleton | Empty | Partial | Error | Disabled | Notes |
+|-----------|---------|----------|-------|---------|-------|----------|-------|
+| Clients list | ✓ | ✗ (spinner not skeleton) | ✓ | n/a | ✓ | n/a | Spinner-on-blank, no shape signal |
+| Dashboard widgets | ✓ | ✓ | ✗ (blank void) | ✓ | ✗ (silent fail) | n/a | Empty + Error need work |
+| Save button (forms) | ✓ | n/a | n/a | n/a | ✓ | ✓ (no tooltip) | Disabled state has no "why" |
 
 ## Network Errors (detected during browsing)
 
