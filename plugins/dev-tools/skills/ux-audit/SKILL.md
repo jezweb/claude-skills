@@ -46,6 +46,12 @@ These auto-fail the audit. They cannot be downgraded.
 
 A console warning is High *minimum*. A 5xx is Critical *automatically*. There is no "Medium console error" — that category does not exist in this skill.
 
+### Allowlist for known noise
+
+Some apps have known-noisy console / network categories that aren't bugs (Sentry info logs in dev, browser-extension chatter, expected 401 on auth-check probes). The audit reads `.jez/audit-config.yml` (or `.json`) before Phase 3 and applies the allowlist when classifying findings. Allowlisted entries stay in the Interaction Manifest (transparency) but suppress from the findings count. The verdict block always shows both raw and allowlisted counts — `Console warnings: 3 (1 allowlisted, 2 reportable)`.
+
+Default without a config: every console error / warning is a finding. Allowlist is opt-in per project, not a global escape hatch. Full format, semantics, surface overrides, and quarterly-audit discipline in [references/audit-config.md](references/audit-config.md).
+
 ## Phases (in order)
 
 1. **Pre-flight** — Persona Lock, browser tool, URL, viewport, capability tests
@@ -249,6 +255,24 @@ Known silent-failure controls (Approve/Deny on tool-call cards, OAuth-in-dialog 
 
 Layout-detection JS at every width (overflow, clipping, invisible text). Capture transition points. Combined with multi-pane stress above for full coverage.
 
+### Auth-expired mid-audit
+
+A long audit (30+ min) can outlast the session expiry. If during the walkthrough a navigation OR an API call returns 401/403 on a route that previously authenticated, the session has dropped.
+
+**Don't try to silently re-auth.** From this point onward, every observation is potentially corrupted (signed-out user sees different surfaces, hits different gates, gets different copy).
+
+Protocol:
+
+1. **Stop** immediately on the first unexpected 401/403 in the manifest.
+2. **Capture** the exact step that broke (network log + screenshot) — that itself is evidence for a possible "session expired without warning" finding.
+3. **Terminate the audit** with verdict `Incomplete`, cause = `auth expired mid-audit at <step>`.
+4. **Note in the Verdict block** how far the audit got: which pages had complete manifest, which were mid-flight.
+5. **Recommend next steps**: re-auth in Chrome (or re-run test-auth `/cookies` if headless) and resume from the point of failure with a fresh session.
+
+This is intentional: silently re-authenticating mid-audit hides session-expiry bugs (the very thing the user might want to know about) AND mixes pre-expiry and post-expiry observations into one report.
+
+If the audit is running headless via test-auth cookies and the cookies expire mid-walkthrough, the same protocol applies — re-mint cookies, restart the audit. Do not stitch two halves together.
+
 ## Phase 4 — Polish
 
 ### Visual Polish Sweep
@@ -320,10 +344,10 @@ Surfaces audited: N / M routes
 Interaction Manifest: complete / incomplete (X of Y required entries)
 
 Hard Gates:
-  Console errors:        [count]   [GREEN/RED]
-  Console warnings:      [count]   [GREEN/RED]
+  Console errors:        [count]   [GREEN/RED]   ([N] allowlisted)
+  Console warnings:      [count]   [GREEN/RED]   ([N] allowlisted)
   Network 5xx:           [count]   [GREEN/RED]
-  Network 403/404 auth:  [count]   [GREEN/RED]
+  Network 403/404 auth:  [count]   [GREEN/RED]   ([N] allowlisted)
   Layout collapse:       [count]   [GREEN/RED]
 
 Findings:
@@ -393,6 +417,10 @@ If a pattern library exists at `.jez/artifacts/ux-extracts/<ref>.md` or `docs/ux
 
 After v2 produces a verdict, consider running `dev-tools:brains-trust` to get a second-opinion review from a different model. v2 catches a class; brains-trust catches what your specific model habit misses. Recommended cadence: every 4-6 weeks.
 
+When merging brains-trust findings back into the audit report, **dedup by `(reproduction-steps, suspected-location)`**. Same bug surfaced by a second model is one finding with two confirmations, not two findings. The merged finding gets a `Confirmed by:` line listing the models that flagged it — useful signal for prioritising fixes (a bug both models found is high-confidence).
+
+Anti-pattern: appending the second model's report verbatim to the first. Produces a noisy report with the same Critical bug listed twice and inflates the perceived severity.
+
 ## The 30-Second Dogfood Drill (project-level rule)
 
 The audit is heavy. For per-change pre-deploy checks, recommend a project rule in CLAUDE.md:
@@ -431,6 +459,7 @@ For audits expected to run > 30 minutes, set up a 15-min `/loop` check-in alongs
 | When | Read |
 |------|------|
 | Persona library + writing protocol | [references/persona-lock.md](references/persona-lock.md) |
+| Audit-config allowlist format + semantics + surface overrides | [references/audit-config.md](references/audit-config.md) |
 | Interaction Manifest template + replay protocol | [references/interaction-manifest.md](references/interaction-manifest.md) |
 | Multi-pane stress matrix + automation snippets | [references/multi-pane-stress.md](references/multi-pane-stress.md) |
 | Per-screen evaluation questions, layout-detection JS | [references/walkthrough-checklist.md](references/walkthrough-checklist.md) |

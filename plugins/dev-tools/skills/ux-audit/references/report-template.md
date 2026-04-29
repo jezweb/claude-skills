@@ -20,10 +20,10 @@ Surfaces audited: N / M routes
 Interaction Manifest: [complete / incomplete: X of Y required entries]
 
 Hard Gates:
-  Console errors:        [count]   [GREEN ✓ / RED ✗]
-  Console warnings:      [count]   [GREEN ✓ / RED ✗]
+  Console errors:        [count]   [GREEN ✓ / RED ✗]   ([N] allowlisted)
+  Console warnings:      [count]   [GREEN ✓ / RED ✗]   ([N] allowlisted)
   Network 5xx:           [count]   [GREEN ✓ / RED ✗]
-  Network 403/404 auth:  [count]   [GREEN ✓ / RED ✗]
+  Network 403/404 auth:  [count]   [GREEN ✓ / RED ✗]   ([N] allowlisted)
   Layout collapse:       [count]   [GREEN ✓ / RED ✗]
 
 Findings:
