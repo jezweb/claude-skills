@@ -25,12 +25,37 @@ Hard Gates:
   Network 5xx:           [count]   [GREEN ✓ / RED ✗]
   Network 403/404 auth:  [count]   [GREEN ✓ / RED ✗]   ([N] allowlisted)
   Layout collapse:       [count]   [GREEN ✓ / RED ✗]
+  axe-core Critical:     [count]   [GREEN ✓ / RED ✗]   ([N] allowlisted)
+  axe-core Serious:      [count]   [GREEN ✓ / RED ✗]   ([N] allowlisted)
+
+Performance (pragmatic, sampled on /[representative-route]):
+  LCP:   [N]s    [GREEN ✓ / RED ✗]   (threshold 4.0s)
+  CLS:   [N]     [GREEN ✓ / RED ✗]   (threshold 0.25)
+  INP:   [N]ms   [GREEN ✓ / RED ✗]   (threshold 500ms)
+  TTI:   [N]s    [GREEN ✓ / RED ✗]   (threshold 5.0s)
 
 Findings:
   Critical: [count]
   High:     [count]
   Medium:   [count]
   Low:      [count]
+
+Time per phase (audit-the-audit meta-check):
+  Phase 1 (pre-flight):   [N]m
+  Phase 2 (discovery):    [N]m
+  Phase 3 (walkthrough):  [N]m   ← exhaustive must be ≥ 5m
+  Phase 4 (polish):       [N]m
+  Phase 5 (stress):       [N]m
+  Total:                  [N]m
+
+Manifest plausibility:
+  Manifest entries:       [N]
+  Time span first→last:   [N]m
+  Median gap between:     [N]s   ← if < 0.5s, audit didn't actually
+                                   interact; verdict → Incomplete
+  Screenshots captured:   [N]    ← ≥ 2 per audited route
+  Console reads:          [N]    ← ≥ 1 per audited route
+  Network probes:         [N]    ← ≥ 1 per audited route
 ═══════════════════════════════════════════════════════════
 
 **Date**: YYYY-MM-DD

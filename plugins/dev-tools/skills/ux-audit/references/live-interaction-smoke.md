@@ -31,6 +31,8 @@ This is a Hard Gate during Phase 3 walkthrough — silent-failure controls produ
 | **Theme switcher / dark mode toggle** | Updates state but doesn't persist; reload reverts. | Toggle, refresh, verify state survived. |
 | **Notification dismiss** | Hides locally but server doesn't mark as read. | Refresh, verify notification stays dismissed. |
 | **"Try again" / Retry on error states** | Re-fires but with same stale params (the error params, not fresh). | Capture retry call payload. |
+| **Cross-page mutation (A→B mutates, return to A)** | Mutation on B invalidates only B's query key; A's parent query is stale on return. Looks like data loss to the user — they retry or give up. See `references/round-trip-workflows.md`. | Walk the round-trip; verify A reflects new state without reload. |
+| **Header badge / unread count after action elsewhere** | Bell-pip / pending-tab-count consumed by `['notifications']` etc., but the action that should decrement only invalidates its local list. | After every list mutation, verify the relevant header badge updates. |
 
 ## SDK contract checks
 
@@ -43,6 +45,7 @@ When the page uses a third-party SDK with its own state model, verify the SDK's 
 | better-auth `createAuthClient` | `sessionOptions.refetchOnWindowFocus: false` for SPAs that route on session state |
 | TanStack Query `QueryClient` | `refetchOnWindowFocus: false` if your app redirects on empty query results |
 | TanStack Query `useQuery` | `queryKey` includes ALL filter params (otherwise stale results) |
+| TanStack Query `useMutation` | `onSuccess` / `onSettled` invalidates EVERY query key that consumes the mutated data (parent lists, header badges, related views — not just the local list). The most common silent failure across pages. |
 | React Router v7 `createBrowserRouter` | `loader` / `action` defined for routes that need data (not just component) |
 | Radix Dialog | `modal: true` + `onEscapeKeyDown` handler if Escape should do more than close |
 | Radix Select | `value` prop wired to controlled state (uncontrolled + controlled mix breaks) |
@@ -51,6 +54,37 @@ When the page uses a third-party SDK with its own state model, verify the SDK's 
 | `react-hook-form` | `mode: 'onBlur'` for blur-validation; default `'onSubmit'` won't show inline errors |
 
 **If the page uses an SDK not on this list**, spend 2 minutes reading its `useX` export's options. Anything named `*On*Change`, `*On*Finish`, `*SendAutomatically*`, `*RefetchOn*`, or `*Configure*` is a prime suspect for "silent failure because it's undefined."
+
+## Optimistic-UI rollback verification (mandatory for list mutations)
+
+The catalogue above mentions "Optimistic UI commits, server rejects, no rollback" as a Critical severity. The protocol below forces the failure scenario so the audit actually exercises the rollback path — not just the happy path.
+
+For every mutation that uses optimistic UI (TanStack Query `onMutate` setQueryData / setState in a handler / etc), force a server failure and verify the rollback:
+
+```
+1. Identify the optimistic mutation (look for setQueryData in onMutate, or
+   immediate state updates in click handlers).
+2. Block the underlying network request — Playwright route override:
+   await page.route('**/api/inbox/*', route =>
+     route.fulfill({ status: 500, body: 'Forced 500 for audit' })
+   )
+3. Trigger the action.
+4. Verify:
+   - UI updates optimistically (row removed / status changed / value updated)
+   - After ~1s, UI rolls back to the pre-mutation state (row reappears /
+     status reverts / value restored)
+   - Error toast / alert appears
+   - The user knows the action failed
+
+If the UI rolls back BUT no error toast: Medium finding (silent failure).
+If the UI does NOT roll back: Critical finding (looks succeeded, server says
+no — re-loading reveals the lie).
+If the UI rolls back AND toast appears: Pass.
+```
+
+Apply this check to: bulk-mark-read in inbox, approve/reject in approvals, star/unstar lists, delete actions, drag-and-drop reorder, edit-in-place fields. Anywhere a mutation completes faster than network round-trip.
+
+For the `429 / rate-limit` variant — same pattern, return 429 + retryable error. Verify the UI surfaces "rate limited, try again in N seconds" cleanly.
 
 ## Investigation workflow
 

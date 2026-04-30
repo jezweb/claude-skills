@@ -1,6 +1,6 @@
 ---
 name: ux-audit
-description: "Walk through a live web app AS a real user to find usability + behavioural bugs that static reviews miss. REQUIRES proof of interaction (typing, clicking, sending, observing) before any verdict — a sweep that didn't interact terminates with verdict 'Incomplete'. Walks threads, exercises every element, runs the multi-pane stress matrix, visual polish sweep, component perfection checklist, scenario battery (9 scenarios), and stress recipes. Hard gates: console errors/warnings = 0, network 5xx = 0, layout collapse = 0. Each finding has reproduction steps, evidence path, and suspected code location. Trigger with 'ux audit', 'walkthrough', 'qa sweep', 'audit the app', 'dogfood this', 'check all pages', 'find what's broken', 'stress the UI'."
+description: "Walk through a live web app AS a real user to find usability + behavioural bugs that static reviews miss. REQUIRES proof of interaction (typing, clicking, sending, observing) before any verdict — a sweep that didn't interact terminates with verdict 'Incomplete'. Walks threads, exercises every element, runs the multi-pane stress matrix, visual polish sweep, component perfection checklist, automated a11y (axe-core), pragmatic performance budget (LCP/CLS/INP), scenario battery (10 scenarios), and stress recipes including the real-flavour data battery. Hard gates: console errors/warnings = 0, network 5xx = 0, layout collapse = 0, axe Critical/Serious = 0, perf budget green. Audit-the-audit meta-check rejects rushed reports. Each finding has reproduction steps, evidence path, and suspected code location. Trigger with 'ux audit', 'walkthrough', 'qa sweep', 'audit the app', 'dogfood this', 'check all pages', 'find what's broken', 'stress the UI'."
 compatibility: claude-code-only
 ---
 
@@ -27,9 +27,9 @@ The audit ends in exactly one of:
 - **Pass** — Critical = 0, High = 0, all hard gates green, Interaction Manifest complete.
 - **Conditional Pass** — Critical = 0, High = 0, all hard gates green, but Medium/Low present.
 - **Fail** — at least one Critical or High finding, OR a hard gate red.
-- **Incomplete** — Interaction Manifest missing required entries, or a phase wasn't run. Not legal to upgrade to Pass even if everything observed looked fine.
+- **Incomplete** — Interaction Manifest missing required entries, a phase wasn't run, OR the audit-the-audit meta-check fires (manifest timestamps clustered < 0.5s apart, screenshots fewer than 2 × routes, console reads fewer than 1 × routes, Phase 3 took < 1m for an exhaustive audit). Not legal to upgrade to Pass even if everything observed looked fine.
 
-If the work doesn't include a complete Interaction Manifest, the only legal verdict is **Incomplete**. "It looked OK" is not Pass.
+If the work doesn't include a complete Interaction Manifest, the only legal verdict is **Incomplete**. "It looked OK" is not Pass. A clean Pass with implausible timings is rejected — the agent must redo the audit with real interaction.
 
 ## Hard gates
 
@@ -42,9 +42,17 @@ These auto-fail the audit. They cannot be downgraded.
 | Network 5xx | > 0 | Critical |
 | Network 403 / 404 on authenticated pages | > 0 | High |
 | Layout collapse at any tested viewport / pane combo | > 0 | High |
+| axe-core Critical violations on any audited page | > 0 | Critical |
+| axe-core Serious violations on any audited page | > 0 | High |
+| LCP on representative route (pragmatic budget) | > 4.0s | High |
+| CLS on representative route | > 0.25 | High |
+| INP on representative route | > 500ms | High |
 | Required Interaction Manifest entry missing | n/a | Incomplete |
+| Manifest median gap between entries < 0.5s | n/a | Incomplete (didn't actually interact) |
 
 A console warning is High *minimum*. A 5xx is Critical *automatically*. There is no "Medium console error" — that category does not exist in this skill.
+
+axe-core thresholds are run **per page** (>1 violation on any single page fails). Performance thresholds are run **once on a representative route** (per-page is overkill); pragmatic budget is well above broken, well below CWV-strict. Full thresholds + rationale in [references/performance-budget.md](references/performance-budget.md). Full a11y wiring + severity mapping in [references/a11y-automation.md](references/a11y-automation.md).
 
 ### Allowlist for known noise
 
@@ -58,7 +66,7 @@ Default without a config: every console error / warning is a finding. Allowlist 
 2. **Discovery** — sitemap, thread inventory, element inventory
 3. **Walkthrough** — Interaction Manifest, threads, element exhaustion, multi-pane stress, first-time-user lens, live interaction smoke
 4. **Polish** — visual polish sweep, component perfection checklist
-5. **Stress** — scenario battery (9 scenarios) + extended stress recipes
+5. **Stress** — scenario battery (10 scenarios) + extended stress recipes
 6. **Verdict** — verdict state, hard-gate scorecard, perfection roadmap, findings with reproduction
 7. **Fix-and-verify** — patch findings, re-walk affected slices, update report
 
@@ -150,24 +158,7 @@ For each route as you reach it, list every interactive element. Build inventorie
 
 ### Interaction Manifest (MANDATORY)
 
-Every walkthrough produces a manifest. Without it, verdict = Incomplete.
-
-```
-INTERACTION MANIFEST — /dashboard/spaces/marketing-pod
-  Persona: SME owner, time-pressed, low tech comfort
-  [✓] 14:32:01 Typed "@assistant test" into message input (textarea[placeholder*="message"])
-  [✓] 14:32:03 Picked @assistant from autocomplete (li[data-mention-id="assistant"])
-  [✓] 14:32:05 Clicked Send (button[aria-label="Send"])
-  [✓] 14:32:06 Verified input cleared within 1000ms (textarea.value === "")
-  [✓] 14:32:08 Verified message appeared in transcript ([data-message-id] count +1)
-  [✓] 14:32:12 Opened thread on the message ([data-thread-trigger])
-  [✓] 14:32:13 Verified main column width ≥ 200px after thread open (getBoundingClientRect().width)
-  [✓] Console read after each step (0 warnings, 0 errors)
-  [✓] Screenshot before + after each step
-  [✓] Network requests inventoried (0 5xx, 0 403/404 on auth pages)
-```
-
-Every checkbox needs a tool call (a click, a screenshot, a console read) and the timestamps + selectors are logged. The agent cannot produce a "Pass" report without a complete manifest.
+Every walkthrough produces a manifest. Without it, verdict = Incomplete. Each entry needs a tool call (a click, a screenshot, a console read) with timestamp + selector + result logged. Verbose worked example + replay protocol in [references/interaction-manifest.md](references/interaction-manifest.md).
 
 **Required entries per page audited**:
 
@@ -202,24 +193,7 @@ For **every list/table**, test at volumes 0 / 1 / 100 / 1000+ if data permits.
 
 ### Multi-Pane Stress (mandatory for apps with collapsible UI)
 
-Pane combinations are where the worst layout bugs hide — including the 2026-04-29 vertical-text-in-spaces bug, which only manifested at 1024-1280px with all three panes open. Skipping this phase means missing this class of bug entirely.
-
-For apps with sidebars, members panels, threads, drawers, sheets:
-
-| Viewport | Panes | What to capture |
-|----------|-------|-----------------|
-| 1920 | All open | Baseline — should always work |
-| 1440 | All open | Common dev resolution |
-| 1280 | All open | Where layout collapses start |
-| 1024 | All open | Tablet landscape — high-bug zone |
-| 1024 | 2-pane (drop one) | Verify graceful degradation |
-| 1024 | 1-pane (mobile-style) | Should fold cleanly |
-| 768 | All collapsible closed | Tablet portrait |
-| 375 | Mobile baseline | Mobile |
-
-For each combination: scroll the longest content, capture a screenshot, run the layout-detection JS to flag overflow / clipping / vertical-text-stacks (every character on its own line), and verify min-content widths.
-
-Detail + automation snippets in [references/multi-pane-stress.md](references/multi-pane-stress.md).
+Pane combinations hide the worst layout bugs — the 2026-04-29 vertical-text-in-spaces bug only manifested at 1024-1280px with all three panes open. For apps with sidebars / members / threads / drawers / sheets, run the matrix: 1920 / 1440 / **1280 (high-bug)** / **1024 (catastrophic-bug)** / 768 / 375 × all-open, 2-pane, 1-pane, default. For each combination: scroll the longest content, capture a screenshot, run layout-detection JS for overflow / clipping / vertical-text-stacks (every character on its own line). Full matrix + JS snippets + automation in [references/multi-pane-stress.md](references/multi-pane-stress.md).
 
 ### First-time-user lens (mandatory)
 
@@ -251,27 +225,17 @@ Code reading verifies a button exists and has an `onClick`. It does not verify c
 
 Known silent-failure controls (Approve/Deny on tool-call cards, OAuth-in-dialog popup-blocked, async-validation forms, optimistic-UI delete, off-by-one pagination, filter chips with stale TanStack Query, Reply/Forward without Message-ID): see [references/live-interaction-smoke.md](references/live-interaction-smoke.md) for the full silent-failure catalogue and SDK contract checks (`@ai-sdk/react`, better-auth, TanStack Query, React Router v7, Radix Dialog, zodResolver).
 
+### Round-trip Workflow Integrity (mandatory)
+
+For every A → B → A workflow, walk the full round-trip: capture A's state, trigger action that goes to B, complete mutation, navigate back via discoverable affordance (not reload), verify A reflects the new state including any header badges. Stale A or hidden back-affordance is High — looks like data loss to the user. Reload that "fixes" the stale state is the smoking gun. Particular smells: header badges (bell, unread counts, pending pips) that depend on data multiple pages can mutate. Full protocol, surface inventory format, and findings template in [references/round-trip-workflows.md](references/round-trip-workflows.md).
+
 ### Responsive Sweep
 
 Layout-detection JS at every width (overflow, clipping, invisible text). Capture transition points. Combined with multi-pane stress above for full coverage.
 
 ### Auth-expired mid-audit
 
-A long audit (30+ min) can outlast the session expiry. If during the walkthrough a navigation OR an API call returns 401/403 on a route that previously authenticated, the session has dropped.
-
-**Don't try to silently re-auth.** From this point onward, every observation is potentially corrupted (signed-out user sees different surfaces, hits different gates, gets different copy).
-
-Protocol:
-
-1. **Stop** immediately on the first unexpected 401/403 in the manifest.
-2. **Capture** the exact step that broke (network log + screenshot) — that itself is evidence for a possible "session expired without warning" finding.
-3. **Terminate the audit** with verdict `Incomplete`, cause = `auth expired mid-audit at <step>`.
-4. **Note in the Verdict block** how far the audit got: which pages had complete manifest, which were mid-flight.
-5. **Recommend next steps**: re-auth in Chrome (or re-run test-auth `/cookies` if headless) and resume from the point of failure with a fresh session.
-
-This is intentional: silently re-authenticating mid-audit hides session-expiry bugs (the very thing the user might want to know about) AND mixes pre-expiry and post-expiry observations into one report.
-
-If the audit is running headless via test-auth cookies and the cookies expire mid-walkthrough, the same protocol applies — re-mint cookies, restart the audit. Do not stitch two halves together.
+If a navigation or API call returns 401/403 on a previously-authenticated route, the session dropped. **Don't silently re-auth** — every subsequent observation is corrupted. Stop, capture the breaking step (the silent expiry is itself a finding), terminate with verdict `Incomplete`, recommend re-auth + restart. Full protocol + finding criteria for silent-expiry bugs in [references/auth-expired-handling.md](references/auth-expired-handling.md).
 
 ## Phase 4 — Polish
 
@@ -300,11 +264,30 @@ Each checkbox in the report cites a proof artefact (screenshot, console line, DO
 
 Full checklist in [references/perfection-checklist.md](references/perfection-checklist.md).
 
+### Automated accessibility (axe-core, mandatory)
+
+Manual keyboard-only walks (Scenario 5) catch focus traps and tab-order. They miss ~80% of structural a11y bugs (heading skips, hover/focus contrast failures, missing aria-labels, role mismatches). axe-core covers that 80% in <1 second per page.
+
+For every audited page:
+
+1. Inject axe-core via CDN (one script tag).
+2. Run `axe.run()` after the page settles.
+3. Map violations → audit findings (axe `critical` → audit Critical, axe `serious` → audit High, etc).
+4. Hard-gate: > 0 axe Critical OR > 0 axe Serious on any page = audit Fails.
+
+Total runtime for a 16-route audit is ~16 seconds. Allowlist via `.jez/audit-config.yml` for builder-mode reference pages (Components, Style guide). Full snippet, severity mapping, and findings format in [references/a11y-automation.md](references/a11y-automation.md).
+
+### Performance budget (pragmatic, mandatory)
+
+Run the Performance API capture once on a representative route (the page real users hit most — usually dashboard or main work surface). Pragmatic thresholds (LCP < 4.0s, CLS < 0.25, INP < 500ms) sit well above broken and well below Google's CWV "Good" tier. CWV-strict is for landing pages and marketing teams; for app interiors that real users sit inside, pragmatic is the right bar.
+
+Add to verdict block. Hard-gate any threshold breach. Diagnose with Chrome DevTools Performance trace (large hero, late font, heavy click handler, hydration cost). Full measurement snippet, throttling spec, and common offenders in [references/performance-budget.md](references/performance-budget.md).
+
 ## Phase 5 — Stress
 
-### Scenario Battery (9 scenarios)
+### Scenario Battery (10 scenarios)
 
-All nine, always. They catch what screen-by-screen testing misses. Full protocols in [references/scenario-tests.md](references/scenario-tests.md).
+All ten, always. They catch what screen-by-screen testing misses. Full protocols in [references/scenario-tests.md](references/scenario-tests.md).
 
 1. **First Contact** — figure out the app with zero prior knowledge, write a 2-min plain-English guide to each thread.
 2. **Interrupted Workflow** — start a task, close the tab, refresh, navigate away mid-form. Does state survive?
@@ -315,6 +298,7 @@ All nine, always. They catch what screen-by-screen testing misses. Full protocol
 7. **Destructive Confidence** — every delete/send/publish/pay/share: consent clear, copy specific, undo available.
 8. **Second User (Role)** — restricted role (viewer not editor, client not staff). Read-only views, permission errors.
 9. **Lifecycle Position** — same role at user #1 (founder), #2 (first invitee, partial state), #N (later joiner, populated workspace). Each sees a different reality.
+10. **Round-Trip Workflow Integrity** — every A→B→A flow: complete mutation on B, verify A reflects new state on return without reload. Discoverable back affordance. Header badges update. The single biggest "the project is just empty when I go back" source.
 
 ### Extended Stress Recipes
 
@@ -330,6 +314,7 @@ Beyond scenarios, run every relevant recipe in [references/stress-test-recipes.m
 | Offline mode | Retry / queue / dirty-state UX |
 | Print stylesheet | Forgotten media query |
 | High-contrast mode | Forced-colors media query handling |
+| **Real-flavour data battery** (mandatory for any form-accepting app) | Validation that strips characters silently (apostrophe, accents, RTL); length truncation without warning; SQL/XSS canaries not escaped; file uploads that don't fit (.heic, 8000×8000 PNG, 50MB PDF). AI-built UIs are notoriously dev-data clean. |
 
 ## Phase 6 — Verdict
 
@@ -349,42 +334,53 @@ Hard Gates:
   Network 5xx:           [count]   [GREEN/RED]
   Network 403/404 auth:  [count]   [GREEN/RED]   ([N] allowlisted)
   Layout collapse:       [count]   [GREEN/RED]
+  axe-core Critical:     [count]   [GREEN/RED]   ([N] allowlisted)
+  axe-core Serious:      [count]   [GREEN/RED]   ([N] allowlisted)
+
+Performance (sampled on /[representative-route]):
+  LCP:   [N]s    [GREEN/RED]   (threshold 4.0s)
+  CLS:   [N]     [GREEN/RED]   (threshold 0.25)
+  INP:   [N]ms   [GREEN/RED]   (threshold 500ms)
 
 Findings:
   Critical: [count]
   High:     [count]
   Medium:   [count]
   Low:      [count]
+
+Time per phase:
+  Phase 3 (walkthrough):  [N]m   ← exhaustive ≥ 5m
+  Total:                  [N]m
+
+Manifest plausibility:
+  Entries:                [N]    ← ≥ 6 per audited route
+  Median gap:             [N]s   ← if < 0.5s, agent didn't actually
+                                   interact; verdict → Incomplete
+  Screenshots:            [N]    ← ≥ 2 per audited route
 ═══════════════════════════════════════════════════════════
 ```
 
+### Audit-the-audit meta-check
+
+The verdict block's "Time per phase" + "Manifest plausibility" rows are not decoration — they're a forcing function against the agent (or a rushed human) claiming Pass without doing the work.
+
+Auto-Incomplete triggers:
+
+| Signal | Implies | Action |
+|---|---|---|
+| Phase 3 took < 1m for an exhaustive audit | Agent skipped the walkthrough | Verdict → Incomplete |
+| Median gap between manifest entries < 0.5s | Entries logged in bulk, no real interaction | Verdict → Incomplete |
+| Screenshots fewer than 2 × routes audited | Most pages didn't get before/after captures | Verdict → Incomplete |
+| Console reads fewer than 1 × routes audited | Pages weren't checked for warnings | Verdict → Incomplete |
+| Manifest first→last span < 5m for exhaustive | Whole audit was rushed | Verdict → Incomplete |
+
+These are non-negotiable. A clean Pass with implausible timings is rejected — the agent must redo the audit with real interaction.
+
+The reviewer (the human supervising the audit, or you reading the report later) can spot-check: do timestamps in the manifest cluster suspiciously? Do screenshot file mtimes align with manifest timestamps? Did the agent actually press keys and wait for state changes, or did it batch-emit a fictional log?
+
 ### Findings format (mandatory per finding)
 
-Every finding must include:
-
-```
-ID: H-2
-Layer: Interaction
-Severity: High
-Surface: /dashboard/spaces/:id (lg viewport, all 3 panes open)
-Persona: SME owner
-
-Reproduce:
-  1. Sign in
-  2. Open any existing space
-  3. Open the members panel (md+ default)
-  4. Click any message → opens thread aside
-  5. Look at the timeline column
-
-Observed: message text wraps one character per line (vertical column).
-Expected: message text wraps at word boundaries within the available column width.
-Evidence: .jez/audit-evidence/2026-04-29/spaces-vertical-text.png
-          .jez/audit-evidence/2026-04-29/spaces-vertical-text-devtools.png
-Suspected location: src/client/modules/spaces/pages/SpacePage.tsx:200 (main flex-1 min-w-0)
-Suggested fix: add min-w-[260px] to prevent the catastrophic squeeze, or hide one pane at lg.
-```
-
-A finding without reproduction + evidence + suspected location is rejected. Forces real pinning, not gestures. Layer is one of: Architecture / Interaction / Visual / Feedback / Delight (see Five-Layer Hierarchy in [references/perfection-checklist.md](references/perfection-checklist.md)).
+Every finding must include: **ID** (severity-letter + number), **Layer** (Architecture / Interaction / Visual / Feedback / Delight), **Severity**, **Surface** (route + viewport + panes), **Persona**, **Reproduce** (numbered steps), **Observed**, **Expected**, **Evidence** (screenshot paths + console / network captures), **Suspected location** (`file:line`), **Suggested fix**. A finding without reproduction + evidence + suspected location is rejected. Worked example + Five-Layer Hierarchy in [references/report-template.md](references/report-template.md) and [references/perfection-checklist.md](references/perfection-checklist.md).
 
 ### Perfection Roadmap (mandatory)
 
@@ -464,7 +460,7 @@ For audits expected to run > 30 minutes, set up a 15-min `/loop` check-in alongs
 | Multi-pane stress matrix + automation snippets | [references/multi-pane-stress.md](references/multi-pane-stress.md) |
 | Per-screen evaluation questions, layout-detection JS | [references/walkthrough-checklist.md](references/walkthrough-checklist.md) |
 | Wayfinding, mental model, page-to-page continuity | [references/workflow-comprehension.md](references/workflow-comprehension.md) |
-| Full protocol for each of the 9 scenarios | [references/scenario-tests.md](references/scenario-tests.md) |
+| Full protocol for each of the 10 scenarios | [references/scenario-tests.md](references/scenario-tests.md) |
 | Extended stress recipes (race, slow network, reduced motion, i18n) | [references/stress-test-recipes.md](references/stress-test-recipes.md) |
 | Component-level perfection checklist (6 categories + 6 states) | [references/perfection-checklist.md](references/perfection-checklist.md) |
 | AI-tell catalogue, optical centring, design-token discipline | [references/visual-polish.md](references/visual-polish.md) |
@@ -472,6 +468,10 @@ For audits expected to run > 30 minutes, set up a 15-min `/loop` check-in alongs
 | Playwright killer-flow test starters | [references/playwright-killer-flows.md](references/playwright-killer-flows.md) |
 | Report format, verdict block, severity rubric, reproduction-step format | [references/report-template.md](references/report-template.md) |
 | Browser tool commands and viewport notes | [references/browser-tools.md](references/browser-tools.md) |
+| Round-trip workflow integrity (A→B→A pattern) | [references/round-trip-workflows.md](references/round-trip-workflows.md) |
+| Automated accessibility (axe-core injection + severity mapping) | [references/a11y-automation.md](references/a11y-automation.md) |
+| Pragmatic performance budget (LCP/CLS/INP via Performance API) | [references/performance-budget.md](references/performance-budget.md) |
+| Auth expiry mid-audit — protocol + headless test-auth resumption | [references/auth-expired-handling.md](references/auth-expired-handling.md) |
 | Long-running audit supervision via 15-min `/loop` | [references/long-running-check-in-pattern.md](references/long-running-check-in-pattern.md) |
 
 ## Tips

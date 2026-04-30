@@ -381,6 +381,53 @@ Plus:
 
 ---
 
+## 10. Round-Trip Workflow Integrity
+
+**Premise**: Real users navigate A → B → A constantly. Open a project, type a prompt, get dropped into chat, agent replies, back to project — does the project show what just happened? When mutations on B affect data shown on A, the cache invalidation often gets missed and A serves stale state. Looks like data loss.
+
+**How to run**:
+
+For every workflow that traverses pages:
+
+1. Capture A's state — count of items, latest timestamp, badge values.
+2. Trigger an action on A that navigates to B.
+3. Complete a mutation on B (send a message, create a thing, approve an item, save a draft).
+4. Navigate back to A using the discoverable back affordance — NOT a hard reload.
+5. Verify A reflects the new state (incremented count, new row, updated timestamp, decremented badge).
+6. Verify the back affordance was discoverable (visible without hover, labelled with parent name, sized like a control, sidebar still highlights parent).
+
+If the round-trip leaves A stale, log a finding (severity High — looks like data loss). Reload that "fixes" the staleness is the smoking gun.
+
+**Cross-page mutation surfaces to test**:
+
+| Outbound (A → B) | Mutation on B | What A must reflect on return |
+|---|---|---|
+| Project page → Start chat | Conversation created | New conversation in project's list |
+| Item list → detail page edit | Item updated | List shows new title / status |
+| Bulk-action page → batch process | Items processed | List + count + header badge update |
+| Inbox → click finding | Finding marked-read | Unread count on bell decrements |
+| Approvals page → approve | Approval decided | Pending tab + Inbox unified view both update |
+| Settings → API tokens → create | Token created | List populates |
+| Connections → OAuth → callback | Connection persisted | Connection list shows new entry |
+| Routines /new → submit | Routine created | Sidebar + routines list show new row |
+
+**What to report**:
+
+| Round-trip | Stale on return? | Reload reveals data? | Back affordance discoverable? |
+|---|---|---|---|
+| project → chat → project | Y/N | Y/N | Y/N — describe (size, label, location) |
+| (etc) | | | |
+
+**Severity guide**: Stale parent on return is **High** (looks like data loss). Missing/hidden back affordance is **Medium** (recoverable but disorienting). Header badge that doesn't update is **High** (lies to the user about pending work).
+
+**Code-level companion check**: grep for every `useMutation` and check the keys it invalidates against the keys consumed by parent / sibling views. The classic miss: mutation invalidates `['inbox']` only, but the same data also appears under `['notifications']` (badge) + `['approvals']` (sibling tab). Audit each mutation: "what query keys consume the data this mutation affects?" — invalidate them all.
+
+Full protocol, surface inventory, detection heuristics, and findings template in [round-trip-workflows.md](round-trip-workflows.md).
+
+**Why this exists as its own scenario**: it doesn't fit "Wrong Turn Recovery" (user goes correctly, not wrongly), it doesn't fit "Returning User" (test runs in one sitting), and it's invisible to static analysis. It's the single biggest source of "I'm not sure how I got there / the project is just empty when I go back" UX feedback in real apps.
+
+---
+
 ## Running the Battery
 
 Recommended order:
@@ -395,5 +442,6 @@ Recommended order:
 8. **Destructive Confidence** — ask the user before running. Use a test account if possible.
 9. **Second User (Role)** — log out, log in as a restricted role.
 10. **Lifecycle Position** — fresh org as user #1, invited as user #2, joining a populated org as user #N.
+11. **Round-Trip Workflow Integrity** — exercise every A → B → A flow. Verify A reflects new state on return without reload. The single biggest source of "I'm not sure how I got there / the project is just empty when I go back" feedback.
 
-The First Contact output goes directly into the report and doubles as user documentation draft. The Destructive Confidence, Second User, and Lifecycle Position results often surface the highest-severity findings in the whole audit.
+The First Contact output goes directly into the report and doubles as user documentation draft. The Destructive Confidence, Second User, Lifecycle Position, and Round-Trip Integrity results often surface the highest-severity findings in the whole audit.

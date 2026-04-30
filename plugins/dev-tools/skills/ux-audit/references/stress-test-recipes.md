@@ -222,6 +222,112 @@ Run all relevant recipes during Phase 5 of the audit. Skip recipes that genuinel
 
 **Especially relevant for**: apps that have been deployed for > 6 months with persistent client-state.
 
+## 16. Real-flavour data battery
+
+AI-built UIs are notoriously dev-data clean. Every form accepts "Test User" and "test@example.com" but breaks on real names, real lengths, real edge cases. Use the fixture below across every form and every list during element exhaustion.
+
+### Fixture — paste each into appropriate fields
+
+```
+NAMES (test in name fields, mention pickers, member lists):
+  O'Brien                          // apostrophe
+  María                            // diacritic
+  François                         // diacritic + cedilla
+  朴기철                           // CJK + Hangul
+  محمد بن سلمان                  // RTL Arabic
+  Schöngeist-Holzhäusermeisterin   // 30+ char German compound
+  X Æ A-12                         // unusual punctuation
+  ' OR 1=1; --                     // SQL injection canary (must escape)
+  <script>alert(1)</script>        // XSS canary (must escape)
+  (200 chars of "a")               // length stress
+
+EMAIL ADDRESSES (sign-up, invite, sharing):
+  user+filter@example.com          // plus-addressing
+  user.name@sub.domain.example.co.uk
+  "user with space"@example.com    // quoted local-part (RFC 5321 valid)
+  user@127.0.0.1                   // IP literal
+  user@xn--80akhbyknj4f.xn--p1ai   // punycode
+
+PHONE NUMBERS (contact forms):
+  +61 4 1234 5678                  // AU mobile
+  (02) 1234 5678                   // AU landline w/ area code
+  04-1234-5678                     // AU mobile w/ dashes
+  +1-555-555-5555 ext 1234         // US with extension
+  +44 20 7946 0958                 // UK landline
+
+ADDRESSES (shipping, billing):
+  1/12 O'Connell St, Newcastle NSW 2300         // unit prefix + apostrophe
+  Apt 4B "Rear Cottage", 123 Main St            // double-quote in line
+  PO Box 1234                                   // PO box variant
+  Lot 7 RMB 142, Williamtown NSW 2318           // rural mail bag
+
+PASTE BOMBS (textareas, message fields):
+  - 5,000-character paragraph (stress textarea height + serialisation)
+  - 200-line paste with mixed indentation
+  - Tab characters (preserves vs collapses?)
+  - RTF clipboard paste from Word (does the editor keep formatting it didn't ask for?)
+  - Smart quotes "" ‹›『』 (does the form normalise?)
+
+FILES (uploads):
+  - 8000×8000 PNG (memory blow-out test)
+  - 50 MB PDF (size limit test)
+  - "résumé (final)(2).pdf" (filename with spaces, parens, accent)
+  - .heic photo (iOS native — does the app convert or reject cleanly?)
+  - 0-byte file (edge: does upload code crash on empty buffer?)
+  - .exe / .dmg (security: must reject)
+
+NUMBERS (currency, quantities):
+  $1,234.56                        // formatted
+  1,234.56                         // ambiguous (1234.56 or 1.23456?)
+  €1.234,56                        // EU format
+  ¥1234                            // no decimals
+  1.5e6                            // scientific notation
+  -0                               // signed zero
+  Infinity                         // edge
+
+DATES (date pickers, timestamps):
+  29 Feb 2024                      // valid leap year
+  29 Feb 2025                      // INVALID — must reject
+  31 Apr 2025                      // INVALID — only 30 days in April
+  1 Jan 1900                       // far past
+  31 Dec 2099                      // far future
+```
+
+### Where to use it
+
+For every form discovered in element exhaustion:
+
+1. Find the field type (name, email, address, etc).
+2. Paste the most relevant fixture string.
+3. Submit + verify:
+   - Render after submit displays the input intact (no character loss / corruption)
+   - Stored value round-trips on edit (open the saved record, re-edit, verify the field still contains the input exactly)
+   - Validation errors are CLEAR (not "Invalid input" — say what's wrong: "Apostrophes not allowed" if that's the rule)
+   - SQL/XSS canaries are escaped, not executed
+
+### What it catches
+
+- Validation that strips characters silently (apostrophe → `?`, accents → blank)
+- Length truncation without warning (200-char name → first 50)
+- Server-side encoding mismatches (utf8 → utf8mb4 issues)
+- Search/sort that doesn't normalise diacritics ("Maria" doesn't find "María")
+- File-type filters that reject legitimate formats (.heic, .webp)
+- Clipboard paste that injects HTML / inline styles when not wanted
+- Number/date parsers that silently coerce wrong values
+
+### Severity guide
+
+| Failure mode | Severity |
+|---|---|
+| User input silently lost / corrupted on save | Critical |
+| User input rejected without clear error message | High |
+| Display renders mangled (HTML entities visible, encoding garbage) | High |
+| Search misses normalised matches (Maria/María) | Medium |
+| File upload rejects legitimate format | Medium |
+| Filename special chars displayed weirdly but file otherwise works | Low |
+
+This recipe is **mandatory for any app accepting user content**. Skip only for builder-mode reference pages and read-only displays.
+
 ## Severity reference
 
 A stress test produces findings whose severity follows these defaults:
