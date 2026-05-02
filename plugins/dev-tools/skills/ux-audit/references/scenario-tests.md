@@ -1,6 +1,6 @@
 # Scenario Tests
 
-Nine structured tests that go beyond page-by-page evaluation. Each simulates a real-world situation that exposes problems traditional QA misses. Run all nine during an exhaustive audit.
+Eleven structured tests that go beyond page-by-page evaluation. Each simulates a real-world situation that exposes problems traditional QA misses. Run all eleven during an exhaustive audit (skip only ones that genuinely don't apply — e.g. Data Seasoning on a one-shot calculator).
 
 ---
 
@@ -428,6 +428,52 @@ Full protocol, surface inventory, detection heuristics, and findings template in
 
 ---
 
+## 11. Data Seasoning
+
+**Premise**: 100 fresh-seeded rows behave differently from 100 rows accumulated over 30 days. Time-shaped data tests UI patterns that quantity-only seeding misses: time dividers ("Today" / "Yesterday" / "Last week"), recency-based sort order, cron-driven side effects, notification badge overflow, signal-vs-noise pressure, chart bucketing.
+
+This catches the bugs that surface "after using the app for a while" — invisible to fresh-seeded audits.
+
+**How to run**: seed the test-auth user with synthetic data at four horizons (Day 0 / 1 / 7 / 30). Walk seasoning-sensitive surfaces at each horizon, capturing screenshots labelled by horizon.
+
+| Horizon | What it stresses |
+|---------|------------------|
+| **Day 0** (empty) | Empty states, onboarding affordances, "Open X" CTAs, dimmed placeholders |
+| **Day 1** (light) | Today/Yesterday dividers, single-item pluralisation, returning-user feel |
+| **Day 7** (modest) | Pagination breakpoints, "older than X" boundaries, cron-fired data (~50-150 routine runs), weekly summaries |
+| **Day 30** (seasoned) | Notification badges at 47/99+, sort order signal-vs-noise, TanStack Query invalidation cascade depth, chart bucketing (per-day → per-week), search performance with history |
+
+**Surfaces this applies to**: lists, queues (Inbox / Approvals / Pending), observability (agent_runs, audit logs), history (Memory, conversations), notification surfaces (header bell, tab counters), charts, dashboards, mention/assignee pickers.
+
+**What to report** per surface × horizon:
+
+| Surface | Day 0 | Day 1 | Day 7 | Day 30 |
+|---------|:---:|:---:|:---:|:---:|
+| Inbox | ✓ | ✓ | ✗ pagination breaks | ✗ badge overflow at 47 |
+| Approvals | ✓ | ✓ | ✓ | ✗ "snooze" affordance missing |
+| agent_runs observability | ✓ | ✓ | ✗ 168 entries melt scroll | (skipped — too slow) |
+| Memory search | ✓ | ✓ | ✓ | ✗ 750ms latency at 500 items |
+
+**Severity guide**:
+- Notification badge overflows / breaks visually at 47+ unread → **High**
+- Pagination breaks at Day 7 horizon → **High**
+- Sort order becomes meaningless at Day 30 (recent buried) → **High**
+- Charts unreadable at Day 30 (no per-week / per-month bucketing) → **High**
+- TanStack Query invalidation cascades > 2s at Day 30 → **High**
+- Empty-state CTA wrong for Day 30 (e.g. shown after mark-all-read) → **High**
+- Missing Today / Yesterday dividers when data warrants → **Medium**
+- Single-item pluralisation off (`1 messages`) → **Medium**
+- Search latency >500ms at 500+ saved items → **Medium**
+- Activity feed feels hollow at Day 1 (one entry) → **Low** (hard to fix without diluting signal)
+
+**If the project has no seasoning seed scripts** (`pnpm seed:day-{0,1,7,30}` or equivalent): note that Scenario 11 was attempted but couldn't run; recommend the project write seeds (cite [data-seasoning.md](data-seasoning.md) for the architecture). Verdict can still be Pass on other grounds with Scenario 11 coverage = 0. Don't try to manually create 250 inbox items via the UI — that's not the audit's job, and it produces unrealistic time distributions anyway.
+
+Full protocol, project-side seed-script architecture (`scripts/seed/horizons/day-N.ts` pattern, factory layout, CLI entrypoints), surface-by-surface what to look for at each horizon, and composition with other scenarios in [data-seasoning.md](data-seasoning.md).
+
+**Why this exists as its own scenario**: Heavy Data (Scenario 6) is pure quantity. Lifecycle Position (Scenario 9) is *person* time (founder / invitee / joiner). Data Seasoning is *data* time — the app's content has a temporal distribution that a fresh seed can't simulate. Three orthogonal axes; you need all three.
+
+---
+
 ## Running the Battery
 
 Recommended order:
@@ -442,6 +488,7 @@ Recommended order:
 8. **Destructive Confidence** — ask the user before running. Use a test account if possible.
 9. **Second User (Role)** — log out, log in as a restricted role.
 10. **Lifecycle Position** — fresh org as user #1, invited as user #2, joining a populated org as user #N.
-11. **Round-Trip Workflow Integrity** — exercise every A → B → A flow. Verify A reflects new state on return without reload. The single biggest source of "I'm not sure how I got there / the project is just empty when I go back" feedback.
+11. **Round-Trip Workflow Integrity** — exercise every A → B → A flow. Verify A reflects new state on return without reload.
+12. **Data Seasoning** — Day 0 / 1 / 7 / 30 seed horizons. Walk seasoning-sensitive surfaces at each. The single biggest source of "the app feels different after a few weeks" feedback.
 
 The First Contact output goes directly into the report and doubles as user documentation draft. The Destructive Confidence, Second User, Lifecycle Position, and Round-Trip Integrity results often surface the highest-severity findings in the whole audit.

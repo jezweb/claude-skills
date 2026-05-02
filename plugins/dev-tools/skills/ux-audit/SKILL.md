@@ -1,6 +1,6 @@
 ---
 name: ux-audit
-description: "Walk through a live web app AS a real user to find usability + behavioural bugs that static reviews miss. REQUIRES proof of interaction (typing, clicking, sending, observing) before any verdict — a sweep that didn't interact terminates with verdict 'Incomplete'. Walks threads, exercises every element, runs the multi-pane stress matrix, visual polish sweep, component perfection checklist, automated a11y (axe-core), pragmatic performance budget (LCP/CLS/INP), scenario battery (10 scenarios), and stress recipes including the real-flavour data battery. Hard gates: console errors/warnings = 0, network 5xx = 0, layout collapse = 0, axe Critical/Serious = 0, perf budget green. Audit-the-audit meta-check rejects rushed reports. Each finding has reproduction steps, evidence path, and suspected code location. Trigger with 'ux audit', 'walkthrough', 'qa sweep', 'audit the app', 'dogfood this', 'check all pages', 'find what's broken', 'stress the UI'."
+description: "Walk through a live web app AS a real user to find usability + behavioural bugs that static reviews miss. REQUIRES proof of interaction (typing, clicking, sending, observing) before any verdict — a sweep that didn't interact terminates with verdict 'Incomplete'. Walks threads, exercises every element, runs the multi-pane stress matrix, visual polish sweep, component perfection checklist, automated a11y (axe-core), pragmatic performance budget (LCP/CLS/INP), scenario battery (11 scenarios incl. data seasoning at Day 0/1/7/30), and stress recipes including the real-flavour data battery. Hard gates: console errors/warnings = 0, network 5xx = 0, layout collapse = 0, axe Critical/Serious = 0, perf budget green. Audit-the-audit meta-check rejects rushed reports. Each finding has reproduction steps, evidence path, and suspected code location. Trigger with 'ux audit', 'walkthrough', 'qa sweep', 'audit the app', 'dogfood this', 'check all pages', 'find what's broken', 'stress the UI'."
 compatibility: claude-code-only
 ---
 
@@ -66,7 +66,7 @@ Default without a config: every console error / warning is a finding. Allowlist 
 2. **Discovery** — sitemap, thread inventory, element inventory
 3. **Walkthrough** — Interaction Manifest, threads, element exhaustion, multi-pane stress, first-time-user lens, live interaction smoke
 4. **Polish** — visual polish sweep, component perfection checklist
-5. **Stress** — scenario battery (10 scenarios) + extended stress recipes
+5. **Stress** — scenario battery (11 scenarios) + extended stress recipes
 6. **Verdict** — verdict state, hard-gate scorecard, perfection roadmap, findings with reproduction
 7. **Fix-and-verify** — patch findings, re-walk affected slices, update report
 
@@ -285,9 +285,9 @@ Add to verdict block. Hard-gate any threshold breach. Diagnose with Chrome DevTo
 
 ## Phase 5 — Stress
 
-### Scenario Battery (10 scenarios)
+### Scenario Battery (11 scenarios)
 
-All ten, always. They catch what screen-by-screen testing misses. Full protocols in [references/scenario-tests.md](references/scenario-tests.md).
+All eleven, always. They catch what screen-by-screen testing misses. Full protocols in [references/scenario-tests.md](references/scenario-tests.md).
 
 1. **First Contact** — figure out the app with zero prior knowledge, write a 2-min plain-English guide to each thread.
 2. **Interrupted Workflow** — start a task, close the tab, refresh, navigate away mid-form. Does state survive?
@@ -299,6 +299,7 @@ All ten, always. They catch what screen-by-screen testing misses. Full protocols
 8. **Second User (Role)** — restricted role (viewer not editor, client not staff). Read-only views, permission errors.
 9. **Lifecycle Position** — same role at user #1 (founder), #2 (first invitee, partial state), #N (later joiner, populated workspace). Each sees a different reality.
 10. **Round-Trip Workflow Integrity** — every A→B→A flow: complete mutation on B, verify A reflects new state on return without reload. Discoverable back affordance. Header badges update. The single biggest "the project is just empty when I go back" source.
+11. **Data Seasoning** — Day 0 / 1 / 7 / 30 seed horizons. Time-shaped data catches what quantity-only seeds miss: time dividers, recency sort, cron-fired side effects, notification badge overflow, search-with-history performance, chart bucketing. Skip only if no time-distributed data exists.
 
 ### Extended Stress Recipes
 
@@ -460,7 +461,8 @@ For audits expected to run > 30 minutes, set up a 15-min `/loop` check-in alongs
 | Multi-pane stress matrix + automation snippets | [references/multi-pane-stress.md](references/multi-pane-stress.md) |
 | Per-screen evaluation questions, layout-detection JS | [references/walkthrough-checklist.md](references/walkthrough-checklist.md) |
 | Wayfinding, mental model, page-to-page continuity | [references/workflow-comprehension.md](references/workflow-comprehension.md) |
-| Full protocol for each of the 10 scenarios | [references/scenario-tests.md](references/scenario-tests.md) |
+| Full protocol for each of the 11 scenarios | [references/scenario-tests.md](references/scenario-tests.md) |
+| Data seasoning horizons (Day 0 / 1 / 7 / 30) + project seed-script architecture | [references/data-seasoning.md](references/data-seasoning.md) |
 | Extended stress recipes (race, slow network, reduced motion, i18n) | [references/stress-test-recipes.md](references/stress-test-recipes.md) |
 | Component-level perfection checklist (6 categories + 6 states) | [references/perfection-checklist.md](references/perfection-checklist.md) |
 | AI-tell catalogue, optical centring, design-token discipline | [references/visual-polish.md](references/visual-polish.md) |
