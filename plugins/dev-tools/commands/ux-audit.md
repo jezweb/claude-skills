@@ -1,5 +1,5 @@
 ---
-description: "Walk a live web app AS a real user — interaction-first methodology. Hard gates (console / network / layout-collapse), Persona Lock, Interaction Manifest enforcement, multi-pane stress, visual polish, perfection checklist, 9 scenarios, stress recipes. Verdict: Pass / Conditional Pass / Fail / Incomplete (no manifest = Incomplete)."
+description: "Walk a live web app AS a real user — interaction-first methodology. Hard gates (console / network / layout-collapse), Persona Lock, Interaction Manifest enforcement, multi-pane stress, visual polish, perfection checklist, 11 scenarios (judgement-density-ordered), Top 5 + self-critique pass + smallest-possible-patch + hold-this-in-your-hands closing per audit-output-discipline, stress recipes. Verdict: Pass / Conditional Pass / Fail / Incomplete (no manifest = Incomplete)."
 argument-hint: "[optional: persona or scope, e.g. 'as a busy broker' or 'the dashboard only']"
 allowed-tools: "*"
 ---

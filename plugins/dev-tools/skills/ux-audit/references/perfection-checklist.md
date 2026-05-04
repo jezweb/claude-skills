@@ -2,6 +2,17 @@
 
 Component-level audit that page-level audits miss. Adapted from the v2 audit-skill-gemini methodology with enforcement: every checkbox cites a proof artefact (screenshot, console line, DOM selector, code reference). No proof = doesn't count.
 
+## No vibe-PASS
+
+Every `[✓]` PASS row needs:
+1. The check name
+2. **One sentence on *why* it passes**, with concrete evidence
+3. A proof artefact (screenshot path / DOM selector / computed style readout / code reference)
+
+`[✓] Hover delta perceptible` is a vibe-PASS — rejected by the audit-the-audit meta-check. The same row with sentence proof: `[✓] Hover delta perceptible — primary button background shifts hsl(220 100% 45%) → hsl(220 100% 38%), ~7% lightness drop. Proof: evidence/btn-hover.png`. That counts.
+
+The discipline applies symmetrically to FAIL rows — they get reproduction + evidence + suspected location (the standard findings format). See [audit-output-discipline.md](audit-output-discipline.md) Rule 4 for the full pattern.
+
 ## Five-Layer Hierarchy
 
 Every finding in the perfection checklist is tagged with one of:

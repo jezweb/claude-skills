@@ -108,9 +108,27 @@ Mid-audit, watch for these signs of drift:
 
 When drift is detected: stop, re-read the persona file, re-walk the affected slice with the locked persona's eyes.
 
-## Multi-persona audits
+## Multi-persona audits (persona-overload pattern)
 
 For apps with materially different user types (B2B SaaS with admin + staff + client), run separate audits per persona. One report per persona file, then a synthesis pass at the end. Don't try to audit "as a generic user" — that produces no findings worth shipping.
+
+**This is the persona-overload pattern, validated in production**: 2026-05-04 vite-flare-starter overnight audit ran 4 persona-locked passes (P1-P4), produced 56 distinct findings with implicit cross-pass deduplication, and 21/21 Critical+High fixed inline. ~14 findings/pass converged toward consistent quality across personas without inflating to 4 × single-pass count.
+
+For thorough audits on substantial apps, this is the recommended default — not an alternative to single-persona audits but a stronger version of them. Run order:
+
+1. Lock persona A → run audit → file report at `.jez/artifacts/ux-audit-<date>-<persona-slug>.md`
+2. Reset state (clear cookies, fresh test-auth user, fresh seed if needed)
+3. Lock persona B → run audit → file report
+4. Repeat for personas C, D, ...
+5. **Synthesis pass**: pass all per-persona reports to a fresh sub-agent with this prompt:
+
+> *"Read these N persona-locked audit reports. For each finding across all reports, mark KEEP / DUPLICATE / GENERIC. KEEP findings list which personas surfaced them. DUPLICATE findings (same root cause, different persona) get merged with a 'Surfaced by:' list. GENERIC findings get dropped. Output a single consolidated findings list."*
+
+The synthesis pass is the same shape as the single-audit self-critique pass (see [audit-output-discipline.md](audit-output-discipline.md) Rule 2) — applied across reports instead of within one. Output: one consolidated report with merged Top 5, deduplicated findings, and a "Surfaced by" annotation per finding showing which personas hit it.
+
+Findings surfaced by multiple personas are higher-confidence — they're not persona-specific quirks. Findings surfaced by only one persona are signals that persona has different needs (often the highest-judgement findings).
+
+Cost: roughly N × single-audit time minus dedup savings. For an app with 3-4 distinct user types, this is the right level of investment.
 
 ## Persona vs role vs lifecycle position
 
