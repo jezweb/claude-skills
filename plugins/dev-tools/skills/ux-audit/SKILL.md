@@ -338,10 +338,7 @@ Hard Gates:
   axe-core Critical:     [count]   [GREEN/RED]   ([N] allowlisted)
   axe-core Serious:      [count]   [GREEN/RED]   ([N] allowlisted)
 
-Performance (sampled on /[representative-route]):
-  LCP:   [N]s    [GREEN/RED]   (threshold 4.0s)
-  CLS:   [N]     [GREEN/RED]   (threshold 0.25)
-  INP:   [N]ms   [GREEN/RED]   (threshold 500ms)
+Performance (on /[route]): LCP [N]s / CLS [N] / INP [N]ms — thresholds 4.0s / 0.25 / 500ms
 
 Findings:
   Critical: [count]
@@ -349,39 +346,43 @@ Findings:
   Medium:   [count]
   Low:      [count]
 
-Time per phase:
-  Phase 3 (walkthrough):  [N]m   ← exhaustive ≥ 5m
-  Total:                  [N]m
+Self-critique pass (sub-agent):
+  Drafted: [N]    Kept: [N]    Generic: [N]    Duplicate: [N]
 
-Manifest plausibility:
-  Entries:                [N]    ← ≥ 6 per audited route
-  Median gap:             [N]s   ← if < 0.5s, agent didn't actually
-                                   interact; verdict → Incomplete
-  Screenshots:            [N]    ← ≥ 2 per audited route
+Time per phase: Phase 3 [N]m / Total [N]m   (Phase 3 ≥ 5m for exhaustive)
+Manifest plausibility: [N] entries (≥ 6/route), median gap [N]s (< 0.5s = Incomplete), [N] screenshots (≥ 2/route)
+
+TOP 5 (ranked by impact × ease, senior-designer pick):
+  1-5. [F-id] Title — one-sentence reason this edges out the others
 ═══════════════════════════════════════════════════════════
 ```
 
-### Audit-the-audit meta-check
-
-The verdict block's "Time per phase" + "Manifest plausibility" rows are not decoration — they're a forcing function against the agent (or a rushed human) claiming Pass without doing the work.
-
-Auto-Incomplete triggers:
-
-| Signal | Implies | Action |
-|---|---|---|
-| Phase 3 took < 1m for an exhaustive audit | Agent skipped the walkthrough | Verdict → Incomplete |
-| Median gap between manifest entries < 0.5s | Entries logged in bulk, no real interaction | Verdict → Incomplete |
-| Screenshots fewer than 2 × routes audited | Most pages didn't get before/after captures | Verdict → Incomplete |
-| Console reads fewer than 1 × routes audited | Pages weren't checked for warnings | Verdict → Incomplete |
-| Manifest first→last span < 5m for exhaustive | Whole audit was rushed | Verdict → Incomplete |
-
-These are non-negotiable. A clean Pass with implausible timings is rejected — the agent must redo the audit with real interaction.
-
-The reviewer (the human supervising the audit, or you reading the report later) can spot-check: do timestamps in the manifest cluster suspiciously? Do screenshot file mtimes align with manifest timestamps? Did the agent actually press keys and wait for state changes, or did it batch-emit a fictional log?
+Top 5, Self-critique pass, and the Hold-this-in-your-hands closing paragraph (after Phase 7) are mandatory. Without them the verdict is `Incomplete`. Full discipline + format + anti-patterns in [references/audit-output-discipline.md](references/audit-output-discipline.md).
 
 ### Findings format (mandatory per finding)
 
-Every finding must include: **ID** (severity-letter + number), **Layer** (Architecture / Interaction / Visual / Feedback / Delight), **Severity**, **Surface** (route + viewport + panes), **Persona**, **Reproduce** (numbered steps), **Observed**, **Expected**, **Evidence** (screenshot paths + console / network captures), **Suspected location** (`file:line`), **Suggested fix**. A finding without reproduction + evidence + suspected location is rejected. Worked example + Five-Layer Hierarchy in [references/report-template.md](references/report-template.md) and [references/perfection-checklist.md](references/perfection-checklist.md).
+Every finding must include: **ID** (severity-letter + number), **Layer** (Architecture / Interaction / Visual / Feedback / Delight), **Severity**, **Surface** (route + viewport + panes), **Persona**, **Reproduce** (numbered steps), **Observed**, **Expected**, **Evidence** (screenshot paths + console / network captures), **Suspected location** (`file:line`), **Smallest possible patch** (concrete + committable — *not* "Suggested fix" / "Consider X"). A finding without reproduction + evidence + suspected location is rejected. Filler patches ("improve X", "consider Y", "make Z better") get flipped to Incomplete by the self-critique pass. Worked example + Five-Layer Hierarchy in [references/report-template.md](references/report-template.md) and [references/perfection-checklist.md](references/perfection-checklist.md). Discipline rules in [references/audit-output-discipline.md](references/audit-output-discipline.md).
+
+### Self-critique pass (mandatory before publishing)
+
+After the findings draft, dispatch a fresh sub-agent with the draft list and this prompt:
+
+> *"Read these audit findings. For each, mark KEEP / GENERIC / DUPLICATE. KEEP = specific to this app, this persona, this surface. GENERIC = would apply to any web app. DUPLICATE = same root cause as another finding. Drop GENERIC and DUPLICATE before publishing."*
+
+A fresh sub-agent works because the original drafter is invested in its own output. Self-critique done in-context tends to defend rather than prune. Log the pass in the verdict block: `Drafted: 23  Kept: 14  Generic: 5  Duplicate: 4`.
+
+### Audit-the-audit triggers (non-negotiable, auto-flip to Incomplete)
+
+| Signal | Implies |
+|---|---|
+| Phase 3 took < 1m / manifest first→last span < 5m for exhaustive | Walkthrough skipped or rushed |
+| Median gap between manifest entries < 0.5s | Entries batch-emitted, no real interaction |
+| Screenshots fewer than 2 × routes / console reads fewer than 1 × routes | Pages weren't actually checked |
+| Top 5 missing or padded with filler slots | Discipline broken (see [audit-output-discipline.md](references/audit-output-discipline.md)) |
+| Self-critique pass not logged | Filler not pruned |
+| Findings use "Suggested fix" / "Consider X" / "Improve Y" | Filler-shaped patches, not committable |
+| `[✓]` PASS rows lack one-sentence proof + artefact | Vibe PASS |
+| Hold-this-in-your-hands paragraph missing | No holistic judgement applied |
 
 ### Perfection Roadmap (mandatory)
 
@@ -392,6 +393,10 @@ Group findings into:
 - **Advanced Polish (post-launch)** — micro-animations, skeleton variations, personalised empty states
 
 Full report structure in [references/report-template.md](references/report-template.md).
+
+### Hold this in your hands (mandatory closing paragraph)
+
+Every audit ends with one paragraph, no template, that answers: *if this app were a physical object, would I want to hold it?* This is the one place where vibe is the *point* — the holistic judgement no checklist surfaces. Format + worked examples in [references/audit-output-discipline.md](references/audit-output-discipline.md).
 
 ## Phase 7 — Fix-and-verify
 
@@ -455,6 +460,7 @@ For audits expected to run > 30 minutes, set up a 15-min `/loop` check-in alongs
 
 | When | Read |
 |------|------|
+| **Cross-skill output discipline** (Top 5, self-critique, smallest-patch, proof-PASS, hold-this) | [references/audit-output-discipline.md](references/audit-output-discipline.md) |
 | Persona library + writing protocol | [references/persona-lock.md](references/persona-lock.md) |
 | Audit-config allowlist format + semantics + surface overrides | [references/audit-config.md](references/audit-config.md) |
 | Interaction Manifest template + replay protocol | [references/interaction-manifest.md](references/interaction-manifest.md) |

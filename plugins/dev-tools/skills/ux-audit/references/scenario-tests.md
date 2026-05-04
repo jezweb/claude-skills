@@ -476,19 +476,28 @@ Full protocol, project-side seed-script architecture (`scripts/seed/horizons/day
 
 ## Running the Battery
 
-Recommended order:
+Recommended order — **judgement-density first** (do the highest-signal scenarios while attention is freshest, low-judgement scenarios last):
 
-1. **First Contact** — do this first, while you still have fresh eyes.
-2. **Thread traversal** — follow the main threads (already in the main audit flow).
-3. **Interrupted Workflow** — test mid-workflow during thread traversal.
-4. **Wrong Turn Recovery** — test after you know the right paths.
-5. **Heavy Data** — seed volume, rerun list/search/filter tests.
-6. **Returning User** — repeat threads, measure improvement, check the dashboard.
-7. **Keyboard Only** — unplug the mouse, re-walk the threads.
-8. **Destructive Confidence** — ask the user before running. Use a test account if possible.
-9. **Second User (Role)** — log out, log in as a restricted role.
-10. **Lifecycle Position** — fresh org as user #1, invited as user #2, joining a populated org as user #N.
-11. **Round-Trip Workflow Integrity** — exercise every A → B → A flow. Verify A reflects new state on return without reload.
-12. **Data Seasoning** — Day 0 / 1 / 7 / 30 seed horizons. Walk seasoning-sensitive surfaces at each. The single biggest source of "the app feels different after a few weeks" feedback.
+**High-judgement scenarios** (do these first — most senior-designer-shaped findings come from here):
 
-The First Contact output goes directly into the report and doubles as user documentation draft. The Destructive Confidence, Second User, Lifecycle Position, and Round-Trip Integrity results often surface the highest-severity findings in the whole audit.
+1. **Returning User** — repeat threads, measure improvement, check the dashboard. "The app doesn't get easier the second time" is a high-judgement finding.
+2. **Lifecycle Position** — user #1 / #2 / #N. "This empty state is wrong for the second user" class.
+3. **Round-Trip Workflow Integrity** — A → B → A. "I'm not sure how I got here / project is empty when I go back" class.
+4. **Data Seasoning** — Day 0 / 1 / 7 / 30 horizons. "App feels different after a few weeks" findings.
+
+**Mid-judgement scenarios**:
+
+5. **Wrong Turn Recovery** — deliberately click wrong, time the recovery.
+6. **Interrupted Workflow** — test mid-workflow.
+7. **Heavy Data** — seed volume, rerun list/search/filter.
+8. **Destructive Confidence** — ask the user before running.
+
+**Lower-judgement / structural scenarios** (run as completeness backstop — largely covered by other phases):
+
+9. **First Contact** — covered substantially by persona lock + first-time-user lens in Phase 3.
+10. **Keyboard Only** — covered substantially by axe-core a11y phase.
+11. **Second User (Role)** — covered if you do a persona-overload audit.
+
+**Why reordered**: in the prior chronological order, agents tended to phone in scenarios 4-11 when the first three felt productive. Front-loading judgement-density means the audit never runs out of attention before reaching the high-signal scenarios.
+
+The scenario *numbering* in the sections above (1 First Contact through 11 Data Seasoning) is the canonical scenario library — reports cite scenarios by their library number. The order above is the *running* order. Different concept, same scenarios.

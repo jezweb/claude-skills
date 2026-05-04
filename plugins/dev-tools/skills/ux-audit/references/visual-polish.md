@@ -4,6 +4,15 @@ A page-by-page micro-polish pass. Run after the Responsive Sweep, before the Sce
 
 This is the layer that separates a UI that's *technically correct* from one that *feels considered*. Most of the patterns below are invisible to functional testing and to most humans on first glance — but they pile up and form the unmistakable "machine-generated" smell.
 
+## Pick three, walk deeply
+
+The catalogue has 10 categories. **Don't enumerate completeness theatre** ("scanned all 10, found nothing on most"). On any given run, pick the **3 categories that produce the highest-impact findings on this app**, walk those 3 deeply with proof per finding, and note the others as `scanned, no findings`. Empty checks aren't findings; they're filler. The audit's self-critique pass (see [audit-output-discipline.md](audit-output-discipline.md)) drops them anyway.
+
+How to pick the 3:
+- Run a fast eyedropper sweep on the most-used page. Whichever category produces the first 2-3 visible findings is your winner.
+- Common winners: vibe greys (raw values mixed with tokens), off-scale spacing, hover-delta calibration. Common losers: drop shadow direction (most apps get this right by accident), uppercase letter-spacing.
+- The 3 categories can change run-to-run. Don't pre-commit.
+
 ## How to run
 
 1. Pick one major page at a time. Work in this order:

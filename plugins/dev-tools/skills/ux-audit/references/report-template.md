@@ -56,6 +56,16 @@ Manifest plausibility:
   Screenshots captured:   [N]    ← ≥ 2 per audited route
   Console reads:          [N]    ← ≥ 1 per audited route
   Network probes:         [N]    ← ≥ 1 per audited route
+
+Self-critique pass (sub-agent):
+  Drafted: [N]    Kept: [N]    Generic dropped: [N]    Duplicate merged: [N]
+
+TOP 5 (ranked by impact × ease, senior-designer pick):
+  1. [F-id] Title — one-sentence reason this edges out the others
+  2. [F-id] Title — one-sentence reason
+  3. [F-id] Title — one-sentence reason
+  4. [F-id] Title — one-sentence reason
+  5. [F-id] Title — one-sentence reason
 ═══════════════════════════════════════════════════════════
 
 **Date**: YYYY-MM-DD
@@ -402,6 +412,12 @@ Positive findings — patterns to preserve and replicate:
 | M-1 Raw grey divider | Medium | — | ⏳ deferred |
 
 **Summary of this session's fixes**: 2 Critical + 1 High fixed and verified. 4 deferred to next sprint.
+
+## Hold this in your hands
+
+[One paragraph, ~150 words, plain prose. No bullets. Persona's voice allowed if it sharpens the assessment. Says what the app is, what it nearly is, and what's between the two. Speaks to *use*, not *features* — "what is this like to live with?". Avoids both flattery and pile-on. Should feel earned. May reference findings but isn't an aggregation of them. Format + worked examples in [audit-output-discipline.md](audit-output-discipline.md).]
+
+> *Example*: "This app is a clipboard with a brain. The Inbox is the right primitive — every other surface earns its place by feeding into it. The dashboard could disappear and I'd lose nothing. The agents page feels like a settings screen for something more interesting than itself; once it has personality (names that aren't class names, model labels that aren't IDs, descriptions in plain English), the whole product comes into focus. Right now I'd recommend it cautiously to a developer friend; in two iterations I'd recommend it to my SME-owner sister."
 
 ## Killer-flow tests recommended
 
