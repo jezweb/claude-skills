@@ -103,7 +103,7 @@ Skip the scenario only if the app has zero time-distributed data — a one-shot 
 
 ## Project-side seed-script architecture
 
-The audit assumes the project provides seasoning seeds. Recommend this pattern:
+The audit assumes the project provides seasoning seeds. The example below uses **Cloudflare Workers + Drizzle + tsx**; for Prisma / TypeORM / Sequelize / ActiveRecord (Rails) / Django ORM / Laravel Eloquent / WordPress / raw SQL equivalents, see [project-adaptation.md](project-adaptation.md) "Seed-script architectures by ORM".
 
 ```
 scripts/

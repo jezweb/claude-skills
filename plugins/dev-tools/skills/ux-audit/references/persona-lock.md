@@ -74,7 +74,7 @@ all herself. Knows her business cold; isn't a software person.
 
 ## Persona library examples
 
-Common patterns the audit should adopt depending on the product:
+Common patterns the audit should adopt depending on the product. The personas below skew B2B-SaaS / dev-tooling — for consumer / e-commerce / CMS / mobile-first / WordPress / agency project types, see [project-adaptation.md](project-adaptation.md) "Persona library by app type".
 
 ### SME owner
 Time-pressed, low tech comfort, mobile-first, hates jargon. Wants tasks completed in 1-2 clicks. Triggers at acronyms.

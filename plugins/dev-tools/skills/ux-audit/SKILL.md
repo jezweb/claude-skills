@@ -56,7 +56,7 @@ axe-core thresholds are run **per page** (>1 violation on any single page fails)
 
 ### Allowlist for known noise
 
-Some apps have known-noisy console / network categories that aren't bugs (Sentry info logs in dev, browser-extension chatter, expected 401 on auth-check probes). The audit reads `.jez/audit-config.yml` (or `.json`) before Phase 3 and applies the allowlist when classifying findings. Allowlisted entries stay in the Interaction Manifest (transparency) but suppress from the findings count. The verdict block always shows both raw and allowlisted counts — `Console warnings: 3 (1 allowlisted, 2 reportable)`.
+Some apps have known-noisy console / network categories that aren't bugs (Sentry info logs in dev, browser-extension chatter, expected 401 on auth-check probes). The audit reads an audit-config file before Phase 3 and applies the allowlist when classifying findings. Path fallback chain: `.jez/audit-config.yml` → `audit-config.yml` (project root) → `.audit/config.yml`. Allowlisted entries stay in the Interaction Manifest (transparency) but suppress from the findings count. The verdict block always shows both raw and allowlisted counts — `Console warnings: 3 (1 allowlisted, 2 reportable)`.
 
 Default without a config: every console error / warning is a finding. Allowlist is opt-in per project, not a global escape hatch. Full format, semantics, surface overrides, and quarterly-audit discipline in [references/audit-config.md](references/audit-config.md).
 
@@ -83,7 +83,7 @@ The audit needs a persona before anything else. Without a locked persona, findin
 Source the persona in this order:
 
 1. **Argument** — if the user provided one ("ux audit as a busy insurance broker")
-2. **Project personas** — read `.jez/audit-personas/<slug>.md`, `.jez/personas/default.md`, or `.jez/personas/<app-name>.md` if they exist
+2. **Project personas** — read existing persona files (fallback chain: `.jez/audit-personas/<slug>.md` → `docs/personas/<slug>.md` → `personas/<slug>.md` → `.audit/personas/<slug>.md`). The first match wins.
 3. **Ask once** — *"Who uses this app and what are they trying to get done?"*
 
 Capture: role, tech comfort, time pressure, emotional state, device context. A good persona predicts what they'd miss ("A receptionist between phone calls won't scroll below the fold").
@@ -108,14 +108,7 @@ See [references/browser-tools.md](references/browser-tools.md) for commands.
 
 ### 3. URL
 
-Prefer the deployed/live version — that's what real users see.
-
-1. Check `wrangler.jsonc` for `pattern` or `custom_domain`
-2. Check CLAUDE.md, README, `package.json` `homepage` field
-3. Fall back to `lsof -i :5173 -i :3000 -i :8787 -t` for a running dev server
-4. Ask the user
-
-Live site has real auth, real latency, real CDN and CORS behaviour. Local misses deployment-specific bugs. Only use local if the user asks or the feature isn't deployed.
+Prefer the deployed/live version — real auth, real latency, real CDN and CORS. Discovery: read project CLAUDE.md / README for "URL" → check stack config (`wrangler.jsonc`, `vite.config.ts`, `next.config.js`, `config/database.yml`, `manage.py`, `.env` `APP_URL`, `wp-config.php`) → `lsof -i :PORT` (common: 5173 Vite, 3000 Next/Rails, 8000 Django/Laravel, 8787 Wrangler, 4321 Astro) → ask. Stack-specific guide in [references/project-adaptation.md](references/project-adaptation.md). Use local only if the user asks or the feature isn't deployed.
 
 ### 4. Viewport
 
@@ -292,7 +285,7 @@ For every audited page:
 3. Map violations → audit findings (axe `critical` → audit Critical, axe `serious` → audit High, etc).
 4. Hard-gate: > 0 axe Critical OR > 0 axe Serious on any page = audit Fails.
 
-Total runtime for a 16-route audit is ~16 seconds. Allowlist via `.jez/audit-config.yml` for builder-mode reference pages (Components, Style guide). Full snippet, severity mapping, and findings format in [references/a11y-automation.md](references/a11y-automation.md).
+Total runtime for a 16-route audit is ~16 seconds. Allowlist via the project's audit-config (path fallback chain in [references/audit-config.md](references/audit-config.md)) for builder-mode reference pages (Components, Style guide). Full snippet, severity mapping, and findings format in [references/a11y-automation.md](references/a11y-automation.md).
 
 ### Performance budget (pragmatic, mandatory)
 
@@ -420,7 +413,7 @@ Closes the loop in one session instead of waiting for tomorrow's audit.
 
 ## Cross-reference with ux-extract and brains-trust
 
-If a pattern library exists at `.jez/artifacts/ux-extracts/<ref>.md` or `docs/ux-extracts/<ref>.md`, read it before starting and use it as the bar for findings.
+If a pattern library exists (fallback chain: `.jez/artifacts/ux-extracts/<ref>.md` → `docs/ux-extracts/<ref>.md` → `audits/extracts/<ref>.md`), read it before starting and use it as the bar for findings.
 
 After v2 produces a verdict, consider running `dev-tools:brains-trust` to get a second-opinion review from a different model. v2 catches a class; brains-trust catches what your specific model habit misses. Recommended cadence: every 4-6 weeks.
 
@@ -466,6 +459,7 @@ For audits expected to run > 30 minutes, set up a 15-min `/loop` check-in alongs
 | When | Read |
 |------|------|
 | **Cross-skill output discipline** (Top 5, self-critique, smallest-patch, proof-PASS, hold-this) | [references/audit-output-discipline.md](references/audit-output-discipline.md) |
+| **Project adaptation** — non-default stacks (NextAuth/Lucia/Devise/Django auth, Prisma/TypeORM/ActiveRecord seeds, WordPress/Rails/Django URL discovery, persona library by app type) | [references/project-adaptation.md](references/project-adaptation.md) |
 | Persona library + writing protocol + persona-overload pattern | [references/persona-lock.md](references/persona-lock.md) |
 | Auth expiry mid-audit — protocol + headless test-auth resumption | [references/auth-expired-handling.md](references/auth-expired-handling.md) |
 | Data seasoning horizons (Day 0 / 1 / 7 / 30) + project seed-script architecture | [references/data-seasoning.md](references/data-seasoning.md) |

@@ -38,6 +38,8 @@ This is a Hard Gate during Phase 3 walkthrough — silent-failure controls produ
 
 When the page uses a third-party SDK with its own state model, verify the SDK's required options are passed. Silent failures usually trace to an undocumented-but-required option.
 
+The catalogue below is **React + TanStack + Radix + better-auth flavoured** — that's one stack of many. Vue, Svelte, Angular, vanilla, native browser, WordPress / PHP, mobile (iOS / SwiftUI) all have equivalent "undocumented option that silently breaks" patterns. See [project-adaptation.md](project-adaptation.md) "SDK contract examples by ecosystem" for the equivalents in each. The discipline is universal: any ecosystem's SDKs have a class of "if you don't pass this option, it silently does the wrong thing".
+
 | SDK | Option that silently breaks behaviour if missing |
 |---|---|
 | `@ai-sdk/react` useChat with `needsApproval: true` tools | `sendAutomaticallyWhen: lastAssistantMessageIsCompleteWithApprovalResponses` |

@@ -15,7 +15,9 @@ For public sites with no login, Playwright MCP is fine (and can run in parallel 
 
 If the project exposes a `/api/test-auth/cookies`-style endpoint (gated on a server-side `TEST_AUTH_TOKEN` secret), a headless agent can mint real session cookies and inject them into Playwright. This unlocks autonomous audits without requiring Chrome MCP.
 
-Pattern (project-agnostic — any better-auth project can expose this):
+The example below is **better-auth-specific**. NextAuth / Auth.js, Lucia, Rails Devise, Django auth, custom JWT, magic-link, and WordPress have different patterns — see [project-adaptation.md](project-adaptation.md) "Test-auth alternatives" for each. The general principle is the same across stacks: gate on a server-side env flag, use a token / shared secret, lock to email patterns like `*@test.<app>.local` to prevent real-user takeover.
+
+Pattern (better-auth example):
 
 ```bash
 # 1. Mint session cookies for a test user (creates if needed)

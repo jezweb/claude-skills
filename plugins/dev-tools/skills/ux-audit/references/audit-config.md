@@ -14,11 +14,16 @@ Without an escape hatch the audit drowns the report in non-findings, and the age
 
 The audit reads the first match in this order, before Phase 3 starts:
 
-1. `.jez/audit-config.yml`
+1. `.jez/audit-config.yml` (Jezweb convention)
 2. `.jez/audit-config.json`
-3. `audit-config.yml` (project root, only if `.jez/` doesn't exist)
+3. `audit-config.yml` (project root)
+4. `audit-config.json`
+5. `.audit/config.yml` (hidden-folder fallback)
+6. `.audit/config.json`
 
 If no file is found, default behaviour applies: every console error / warning is a finding, every 4xx on an auth page is a finding. The allowlist is opt-in per project, not a global escape hatch.
+
+For projects using a different convention (e.g. `quality/audit-config.yml` or `tests/audit/config.yml`), the audit honours whatever path is documented in the project's CLAUDE.md or README — the fallback chain above is for projects without an explicit convention.
 
 ## File format
 

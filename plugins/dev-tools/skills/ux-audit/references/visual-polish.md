@@ -183,7 +183,7 @@ Polished apps often break symmetry intentionally:
 **How to check**: hide content for a moment and look at structural composition.
 - Does the page feel composed, or laid out by a templater?
 - Is white space trapped (awkward) or shaped (intentional)?
-- Compare to reference apps: Linear (asymmetric editorial), Stripe Dashboard (deliberate hierarchy), Notion (intentional density), Vercel Dashboard (informational density with whitespace).
+- Compare to reference apps **in the same category**: Linear (asymmetric editorial), Stripe Dashboard (deliberate hierarchy), Notion (intentional density), Vercel Dashboard (informational density with whitespace). Different category = different references; see [project-adaptation.md](project-adaptation.md) "Reference apps by category" for B2C / e-commerce / CMS / mobile / WordPress equivalents.
 
 **Findings shape**: *"Settings page form is centred in 768px container. Other pages use a left-aligned 640px column with right rail for help/docs. Centred form on settings reads as orphaned and template-generated."*
 
