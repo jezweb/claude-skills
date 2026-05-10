@@ -1,7 +1,7 @@
 ---
 name: github-release
 description: "Prepare and publish GitHub releases. Sanitizes code for public release (secrets scan, personal artifacts, LICENSE/README validation), creates version tags, and publishes via gh CLI. Trigger with 'release', 'publish', 'open source', 'prepare for release', 'create release', or 'github release'."
-compatibility: claude-code-only
+compatibility: Designed for Claude Code (or similar products)
 ---
 
 # GitHub Release

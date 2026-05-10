@@ -5,7 +5,7 @@ description: >
   Workflow: determine content type, generate content, create via API or browser, verify.
   Use when creating pages, writing blog posts, updating navigation menus,
   managing redirects, or updating SEO metadata on a Shopify store.
-compatibility: claude-code-only
+compatibility: Designed for Claude Code (or similar products)
 ---
 
 # Shopify Content

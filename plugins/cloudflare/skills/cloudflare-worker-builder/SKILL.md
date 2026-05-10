@@ -5,7 +5,7 @@ description: >
   Workflow: describe project, scaffold structure, configure bindings, deploy.
   Use when creating Workers projects, setting up Hono/Vite, configuring D1/R2/KV bindings,
   or troubleshooting export syntax errors, API route conflicts, HMR issues, or deployment failures.
-compatibility: claude-code-only
+compatibility: Designed for Claude Code (or similar products)
 ---
 
 # Cloudflare Worker Builder

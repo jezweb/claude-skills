@@ -8,7 +8,7 @@ allowed-tools:
   - Bash
   - Glob
   - Grep
-compatibility: claude-code-only
+compatibility: Designed for Claude Code (or similar products)
 ---
 
 # Design System Extractor

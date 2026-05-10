@@ -1,7 +1,7 @@
 ---
 name: app-docs
 description: "Generate complete user documentation for a web app with screenshots. Browses the app via browser automation, screenshots every screen, and produces a structured user guide with step-by-step instructions, annotated screenshots, workflow diagrams, and reference tables. Supports quick (key screens), standard (all pages), thorough (every state and flow), and exhaustive (publishable documentation suite). Triggers: 'document the app', 'user guide', 'app documentation', 'screenshot docs', 'generate user docs', 'help docs', 'how-to guide', 'write the docs'."
-compatibility: claude-code-only
+compatibility: Designed for Claude Code (or similar products)
 ---
 
 # App Documentation Generator

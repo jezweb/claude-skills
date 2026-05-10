@@ -1,10 +1,17 @@
 # Claude Code Skills
 
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![agentskills.io compatible](https://img.shields.io/badge/agentskills.io-compatible-success)](https://agentskills.io)
 
-Production workflow skills for [Claude Code](https://claude.com/claude-code). Each skill guides Claude through a recipe to produce tangible output — scaffolded projects, generated assets, professional documents, deployed services.
+Production workflow skills for [Claude Code](https://claude.com/claude-code). Each skill guides an agent through a recipe to produce tangible output — scaffolded projects, generated assets, professional documents, deployed services.
 
 10 plugins. 60 skills. Every one produces something.
+
+## Compatibility
+
+These skills follow the [agentskills.io](https://agentskills.io) open standard (originally developed by Anthropic, now maintained as an open spec). Built and tested primarily for [Claude Code](https://claude.com/claude-code), they also load in any compatible agent runtime — the ecosystem currently includes Cursor, VS Code Copilot, OpenAI Codex, Gemini CLI, OpenHands, Goose, Letta, and ~30 others. Install mechanics differ per tool; the skill content is portable.
+
+Spec validation runs in CI via [`skills-ref`](https://github.com/agentskills/agentskills/tree/main/skills-ref) alongside our internal `bin/skill-lint`.
 
 ## Quick Start
 

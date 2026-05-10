@@ -1,7 +1,7 @@
 ---
 name: project-health
 description: "All-in-one project configuration and health management. Sets up new projects (settings.local.json, CLAUDE.md, .gitignore), audits existing projects (permissions, context quality, MCP coverage, leaked secrets, stale docs), tidies accumulated cruft, captures session learnings, and adds permission presets. Uses sub-agents for heavy analysis to keep main context clean. Trigger with 'project health', 'check project', 'setup project', 'kickoff', 'bootstrap', 'tidy permissions', 'clean settings', 'capture learnings', 'audit context', 'add python permissions', or 'init project'."
-compatibility: claude-code-only
+compatibility: Designed for Claude Code (or similar products)
 ---
 
 # Project Health

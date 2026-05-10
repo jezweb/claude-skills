@@ -1,7 +1,7 @@
 ---
 name: ux-compare
 description: "Compare UX patterns across multiple reference apps using pattern libraries produced by ux-extract. Reads 2+ pattern-library.md files, walks them category by category, identifies where apps converge (strong signal), where they diverge (genuine design choice), what's unique to one app, and what's absent across the set. Produces an opinionated comparison document with recommendations for a new build. No browser needed — pure markdown analysis. Trigger with 'compare UX patterns', 'how do top apps handle X', 'ux comparison', 'pattern comparison across reference apps'."
-compatibility: claude-code-only
+compatibility: Designed for Claude Code (or similar products)
 ---
 
 # UX Compare

@@ -5,7 +5,7 @@ description: >
   Workflow: check CLI, test SSH connection, set up auth, verify access, save config.
   Use when connecting to a WordPress site, setting up WP-CLI access, creating
   application passwords, or troubleshooting WordPress connection issues.
-compatibility: claude-code-only
+compatibility: Designed for Claude Code (or similar products)
 ---
 
 # WordPress Setup

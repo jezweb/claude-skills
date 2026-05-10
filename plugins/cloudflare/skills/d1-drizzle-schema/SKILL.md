@@ -1,7 +1,7 @@
 ---
 name: d1-drizzle-schema
 description: "Generate Drizzle ORM schemas for Cloudflare D1 databases with correct D1-specific patterns. Produces schema files, migration commands, type exports, and DATABASE_SCHEMA.md documentation. Handles D1 quirks: foreign keys always enforced, no native BOOLEAN/DATETIME types, 100 bound parameter limit, JSON stored as TEXT. Use when creating a new database, adding tables, or scaffolding a D1 data layer."
-compatibility: claude-code-only
+compatibility: Designed for Claude Code (or similar products)
 ---
 
 # D1 Drizzle Schema

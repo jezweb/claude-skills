@@ -1,7 +1,7 @@
 ---
 name: team-update
 description: "Post project updates to team chat, gather feedback, triage responses, and plan next steps. Adapts to available tools (chat, git, issues, tasks). First run discovers tools and saves a playbook; subsequent runs execute from the playbook. Trigger with 'team update', 'post update', 'sync with team', 'standup', 'check team chat', 'feedback loop', 'project update', 'what did the team say'."
-compatibility: claude-code-only
+compatibility: Designed for Claude Code (or similar products)
 allowed-tools: "*"
 ---
 

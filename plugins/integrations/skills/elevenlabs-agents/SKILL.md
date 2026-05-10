@@ -6,7 +6,7 @@ description: >
   Supports React, React Native, and Swift SDKs. Use when building voice agents,
   AI phone systems, or troubleshooting @11labs deprecated packages, webhook errors,
   CSP violations, localhost allowlist, or tool parsing errors.
-compatibility: claude-code-only
+compatibility: Designed for Claude Code (or similar products)
 ---
 
 # ElevenLabs Agent Builder

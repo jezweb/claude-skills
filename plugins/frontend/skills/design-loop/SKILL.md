@@ -8,7 +8,7 @@ allowed-tools:
   - Glob
   - Grep
   - Bash
-compatibility: claude-code-only
+compatibility: Designed for Claude Code (or similar products)
 ---
 
 # Design Loop — Autonomous Site Builder

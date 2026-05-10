@@ -6,7 +6,7 @@ description: >
   Use when setting up gws for the first time, configuring Google Workspace API access,
   or troubleshooting gws auth issues. Triggers: "set up gws", "google workspace cli",
   "gws setup", "install gws".
-compatibility: claude-code-only
+compatibility: Designed for Claude Code (or similar products)
 ---
 
 # Google Workspace CLI — First-Time Setup

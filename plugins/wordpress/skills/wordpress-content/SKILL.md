@@ -5,7 +5,7 @@ description: >
   Workflow: determine content type, choose method (WP-CLI or REST API), execute, verify.
   Use when creating blog posts, updating pages, uploading media, managing categories
   and tags, updating menus, or doing bulk content operations on WordPress sites.
-compatibility: claude-code-only
+compatibility: Designed for Claude Code (or similar products)
 ---
 
 # WordPress Content

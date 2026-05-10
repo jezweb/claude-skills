@@ -1,7 +1,7 @@
 ---
 name: stripe-payments
 description: "Add Stripe payments to a web app — Checkout Sessions, Payment Intents, subscriptions, webhooks, customer portal, and pricing pages. Covers the decision of which Stripe API to use, produces working integration code, and handles webhook verification. No MCP server needed — uses Stripe npm package directly. Triggers: 'add payments', 'stripe', 'checkout', 'subscription', 'payment form', 'pricing page', 'billing', 'accept payments', 'stripe webhook', 'customer portal'."
-compatibility: claude-code-only
+compatibility: Designed for Claude Code (or similar products)
 allowed-tools:
   - Read
   - Write

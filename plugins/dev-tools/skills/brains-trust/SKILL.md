@@ -18,7 +18,7 @@ triggers:
   - what does gpt think
 user-invocable: true
 argument-hint: "[question or topic]"
-compatibility: claude-code-only
+compatibility: Designed for Claude Code (or similar products)
 ---
 
 # Brains Trust

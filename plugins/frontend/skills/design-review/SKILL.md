@@ -1,7 +1,7 @@
 ---
 name: design-review
 description: "Review a web app or page for visual design quality — layout, typography, spacing, colour, hierarchy, consistency, interaction patterns, and responsive behaviour. Not a UX audit (that checks usability) — this checks whether it looks professional and polished. Produces a design findings report with screenshots. Triggers: 'design review', 'does this look good', 'review the design', 'check the layout', 'is this polished', 'visual review', 'design audit', 'make it look better', 'it looks off'."
-compatibility: claude-code-only
+compatibility: Designed for Claude Code (or similar products)
 ---
 
 # Design Review
