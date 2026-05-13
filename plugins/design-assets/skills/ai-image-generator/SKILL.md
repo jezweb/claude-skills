@@ -73,6 +73,26 @@ Feed reference images alongside your prompt — product shots, lifestyle scenes,
 
 3:1 ultra-wide through 1:3 ultra-tall, plus 1:1, 3:2, 2:3, 16:9, 9:16. Wider range than other models — useful for website banners (ultra-wide hero) or mobile story formats (ultra-tall).
 
+### Pixel size constraints
+
+The API requires both **width AND height to be divisible by 16**. Aspect ratio is free — any shape works — but the actual pixel dimensions must hit the 16-pixel grid. Requesting `1792x936` fails with HTTP 400 because `936 / 16 = 58.5`; `1792x944` works (`944 / 16 = 59`, gives 1.898:1).
+
+**Generate at your target aspect natively** — don't generate at one shape and crop to another. The model composes for the canvas it's given, and cropping post-hoc usually clips intentional elements (wordmarks, accents, edge motifs).
+
+Cheat sheet of useful sizes (both dimensions divisible by 16):
+
+| Aspect | Size | Use case |
+|---|---|---|
+| 1:1 | 1024×1024 | Instagram post, avatar |
+| 16:9 | 1792×1008 | X/Twitter card, near-OG |
+| 1.91:1 (OG canonical) | **1792×944** (=1.898:1) or 1216×640 | Facebook / LinkedIn OG |
+| 2:1 | 1536×768 | Banner |
+| 3:1 ultra-wide | 1536×512 | Hero strip |
+| 2:3 portrait | 1024×1536 | Story-style portrait |
+| 9:16 vertical | 1008×1792 | Instagram Story |
+
+For OG specifically: generate at `1792x944`, then resize to `1200x630` for serving. The 1.898 → 1.905 squish is imperceptible.
+
 ### Resolution
 
 Up to 2K on the long edge standard. 4K in beta.
@@ -385,5 +405,7 @@ export OPENAI_API_KEY="your-key-here"
 | Requesting transparent PNG from GPT Image 2 | GPT Image 2 **cannot do transparency** — fall back to `gpt-image-1.5` for this case only |
 | Using GPT Image 1.5 for text on images | GPT Image 1.5 text rendering is unreliable — use `gpt-image-2` for any readable text |
 | Blocking a request to GPT Image 2 | Generation can take up to 2 min on complex prompts — use 180s timeout, build async UX |
+| Submitting odd pixel dims to GPT Image 2 | Both width and height must be divisible by 16 (e.g. `1792x936` is rejected, `1792x944` works) |
+| Generating at one shape and cropping to another | Generate at the target aspect natively — cropping post-hoc clips intentional elements like wordmarks and accents |
 | American defaults for AU businesses | Explicitly specify "Australian" + local architecture, vegetation |
 | Generic data for model ID | Verify current model IDs — they change frequently |
