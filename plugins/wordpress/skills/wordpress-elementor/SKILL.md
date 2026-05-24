@@ -236,6 +236,32 @@ playwright-cli -s=verify close
 
 ---
 
+## REST API gotchas (when WP-CLI isn't an option)
+
+When the editing target is REST-only (Application Password auth without SSH), three quirks consistently bite — discovered while building `elementor-mcp-agent`:
+
+### 1. REST silently drops writes to unregistered postmeta keys
+
+`PUT /wp-json/wp/v2/pages/{id}` with `{meta: {_my_custom_key: "value"}}` returns 200 OK, but **the value is never persisted** unless `register_meta()` declared the key with `show_in_rest: true`. Plugins register their own canonical keys (`_elementor_data`, `_elementor_page_settings`) but nothing custom (like `_elementor_data_backup_2026-…`).
+
+**Implication for automated backups**: never trust REST for custom backup keys. Either:
+- Use `wp post meta update` over SSH (always works), or
+- Dump the value to a local JSON file.
+
+### 2. Default Kit shows up under `template_type=widget` filters
+
+`/wp-json/wp/v2/elementor_library?meta_key=_elementor_template_type&meta_value=widget` returns the **Default Kit** (a `kit` template) along with real widgets. Reason: REST `meta_value` filtering is unreliable for unregistered meta keys — it tends to fall back to `meta_key` presence check only.
+
+**Implication**: filter **client-side** after fetching, by checking `meta._elementor_template_type === 'widget'` on each result.
+
+### 3. `_elementor_page_settings` is an OBJECT via REST, a STRING via WP-CLI
+
+`GET /wp-json/wp/v2/pages/{id}?context=edit` returns `meta._elementor_page_settings` as a **parsed object**. `wp post meta get` returns it as a **serialised JSON string**. If you read with one and write with the other, types will mismatch and REST will reject the PUT with *"Le paramètre meta._elementor_page_settings n'est pas de type object"*.
+
+**Implication**: normalise on read. If you got a string, `JSON.parse()` it before writing back via REST. If you got an object, `JSON.stringify()` it before piping through WP-CLI.
+
+---
+
 ## Critical Patterns
 
 ### Elementor Data Format
