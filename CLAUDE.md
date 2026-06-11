@@ -16,7 +16,7 @@ Production workflow skills for Claude Code CLI. Each skill guides Claude through
 
 ```
 claude-skills/
-├── plugins/                                # 10 plugins, 63 skills
+├── plugins/                                # one folder per plugin; the folders are the truth, don't keep counts here
 │   ├── cloudflare/                         # Cloudflare Workers, Hono, D1/Drizzle, Vite, TanStack Start
 │   │   └── skills/
 │   │       ├── cloudflare-worker-builder/
@@ -41,7 +41,7 @@ claude-skills/
 │   │       ├── react-native/
 │   │       ├── design-loop/
 │   │       ├── design-system/
-│   │       └── walkthrough-video/
+│   │       └── (walkthrough-video removed — superseded by github.com/jezweb/walkabout)
 │   ├── design-assets/                      # Colour palettes, favicons, icons, image processing, AI images
 │   │   └── skills/
 │   │       ├── color-palette/
@@ -66,12 +66,10 @@ claude-skills/
 │   │       ├── project-docs/
 │   │       ├── app-docs/
 │   │       ├── github-release/
-│   │       ├── brains-trust/
 │   │       ├── git-workflow/
 │   │       ├── team-update/
 │   │       ├── ux-audit/
 │   │       ├── responsiveness-check/
-│   │       ├── agent-browser/
 │   │       ├── deep-research/
 │   │       ├── onboarding-ux/
 │   │       ├── fork-discipline/

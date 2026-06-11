@@ -144,13 +144,13 @@ Surface overrides are stricter than allowlists — they allow N noise items with
 
 ## Cross-project re-use
 
-If multiple projects in a team share the same noise patterns (Jezweb's better-auth + Sentry stack, for example), maintain a shared `audit-config-base.yml` in `~/Documents/.jez/playbooks/` and have project-local `.jez/audit-config.yml` files extend or override it.
+If multiple projects in a team share the same noise patterns (a shared better-auth + Sentry stack, for example), maintain a shared `audit-config-base.yml` in your cross-project folder and have project-local `.jez/audit-config.yml` files extend or override it.
 
 A simple include pattern:
 
 ```yaml
 # .jez/audit-config.yml
-extends: ~/Documents/.jez/playbooks/audit-config-base.yml
+extends: ~/path/to/shared/audit-config-base.yml
 console_allow:
   # project-specific additions
   - "[CustomComponent] missing prop X"

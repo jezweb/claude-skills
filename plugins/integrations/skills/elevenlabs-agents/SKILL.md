@@ -381,14 +381,7 @@ if (signature !== hmac) { /* reject */ }
 
 ## Cost Optimisation
 
-| Model | Cost/1M tokens | Speed | Best For |
-|-------|---------------|-------|----------|
-| GPT-4o | $5 | Medium | Complex reasoning |
-| GPT-4o-mini | $0.15 | Fast | Most use cases |
-| Claude Sonnet 4.5 | $3 | Medium | Long context |
-| Gemini 2.5 Flash | $0.075 | Fastest | Simple tasks |
-
-**Start with gpt-4o-mini** for all agents. Upgrade only if quality requires it.
+Model lineups and pricing rot fast — check the live list in the ElevenLabs dashboard (Agent → LLM dropdown) or docs before picking, and don't hardcode a model id you haven't verified this session. The durable picks: a current cheap-fast model for most agents (upgrade only where quality demands it), a long-context model when the knowledge base is large.
 
 Key savings:
 - **LLM caching**: up to 90% on repeated prompts (enable in config)

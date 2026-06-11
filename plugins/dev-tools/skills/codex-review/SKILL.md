@@ -1,6 +1,6 @@
 ---
 name: codex-review
-description: "Run an independent code review using the OpenAI Codex CLI in headless mode. Gets a second opinion from a different model family (GPT-5/o3) on recent changes, a PR, a commit, or the whole app — covering bugs, regressions, security, data consistency, UX/state bugs, performance risks, and testing gaps. Saves a severity-prioritised report to .jez/reviews/. Triggers: 'codex review', 'review with codex', 'second opinion on this code', 'independent code review', 'what does codex think', 'get codex to review'."
+description: "Run an independent code review using the OpenAI Codex CLI in headless mode. Gets a second opinion from a different model family (the current Codex models) on recent changes, a PR, a commit, or the whole app — covering bugs, regressions, security, data consistency, UX/state bugs, performance risks, and testing gaps. Saves a severity-prioritised report to .jez/reviews/. Triggers: 'codex review', 'review with codex', 'independent code review', 'what does codex think', 'get codex to review'."
 compatibility: Designed for Claude Code (or similar products)
 ---
 

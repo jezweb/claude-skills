@@ -297,7 +297,7 @@ Each icon object needs:
 **Minimum**: 192x192 and 512x512
 
 ### Validation
-Test manifest at: https://manifest-validator.appspot.com/
+Test manifest at: Chrome DevTools → Application → Manifest (the validator service is gone)
 
 ---
 
@@ -390,7 +390,7 @@ All files should be in site root:
 
 ### Validation Tools
 - **Favicon test**: https://realfavicongenerator.net/favicon_checker
-- **Manifest validator**: https://manifest-validator.appspot.com/
+- **Manifest validator**: Chrome DevTools → Application → Manifest (the validator service is gone)
 - **ICO inspection**: `identify favicon.ico` (ImageMagick)
 - **SVG validation**: https://validator.w3.org/
 

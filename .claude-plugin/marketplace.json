@@ -21,7 +21,7 @@
     },
     {
       "name": "frontend",
-      "description": "Tailwind v4 theming, shadcn/ui, landing pages, design system extraction, autonomous multi-page site building, walkthrough videos, and React patterns.",
+      "description": "Tailwind v4 theming, shadcn/ui, landing pages, design system extraction, autonomous multi-page site building, and React patterns.",
       "source": "./plugins/frontend",
       "category": "design"
     },

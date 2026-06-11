@@ -1,6 +1,6 @@
 ---
 name: roadmap
-description: "Plan and execute entire application builds. Generates phased delivery roadmaps, then executes them autonomously — phase by phase, committing at milestones, deploying, testing, and continuing until done or stuck. Modes: plan (generate roadmap), start (begin executing), resume (continue from where you left off), status (show progress). Triggers: 'roadmap', 'plan the build', 'start building', 'resume the build', 'keep going', 'build the whole thing', 'execute the roadmap', 'what phase are we on'."
+description: "Plan and execute entire application builds. Generates phased delivery roadmaps, then executes them autonomously — phase by phase, committing at milestones, deploying, testing, and continuing until done or stuck. Modes: plan (generate roadmap), start (begin executing), resume (continue from where you left off), status (show progress). Triggers: 'roadmap', 'start building', 'resume the build', 'keep going', 'build the whole thing', 'execute the roadmap', 'what phase are we on'."
 compatibility: claude-code-only
 allowed-tools:
   - Read

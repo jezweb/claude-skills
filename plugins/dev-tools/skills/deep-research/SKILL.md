@@ -1,6 +1,6 @@
 ---
 name: deep-research
-description: "Deep research and discovery before building something new. Explores local projects for reusable code, researches competitors, reads forums and reviews, analyses plugin ecosystems, investigates technical options, and produces a comprehensive research brief. Three depths: focused (30 min), wide (1-2 hours), deep (3-6 hours). Triggers: 'research this', 'deep research', 'discovery', 'explore the space', 'what should I build', 'competitive analysis', 'before I start building', 'research before coding'."
+description: "Deep research and discovery before building something new. Explores local projects for reusable code, researches competitors, reads forums and reviews, analyses plugin ecosystems, investigates technical options, and produces a comprehensive research brief. Three depths: focused (30 min), wide (1-2 hours), deep (3-6 hours). Triggers: 'research this', 'discovery', 'explore the space', 'what should I build', 'competitive analysis', 'before I start building', 'research before coding'. Not for cited fact-checking research reports (a separate harness does those); this is pre-build product discovery."
 compatibility: claude-code-only
 ---
 

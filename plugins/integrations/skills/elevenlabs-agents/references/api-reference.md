@@ -30,7 +30,7 @@ curl -H "xi-api-key: YOUR_API_KEY" https://api.elevenlabs.io/v1/convai/agents
     "agent": {
       "prompt": {
         "prompt": "You are a helpful support agent.",
-        "llm": "gpt-4o",
+        "llm": "<verify current model id in dashboard>",
         "temperature": 0.7,
         "max_tokens": 500,
         "tool_ids": ["tool_123"],

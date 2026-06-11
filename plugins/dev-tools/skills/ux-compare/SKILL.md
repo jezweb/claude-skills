@@ -29,7 +29,6 @@ First, discover what's available. Pattern libraries live at:
 
 - `docs/ux-extracts/<app-name>/pattern-library.md`
 - `.jez/artifacts/ux-extracts/<app-name>/pattern-library.md`
-- `~/Documents/.jez/artifacts/ux-extracts/<app-name>/pattern-library.md`
 
 List everything you find. Show the user the inventory with the extraction date for each so they can spot stale ones:
 

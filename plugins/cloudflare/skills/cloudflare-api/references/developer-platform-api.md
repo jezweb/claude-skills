@@ -398,8 +398,8 @@ Useful when migrating between Jezweb Team and Jez Personal accounts:
 
 ```python
 accounts = {
-    "jezweb": "0460574641fdbb98159c98ebf593e2bd",
-    "personal": "536969bbc1b1baf6558015f64fbd7728",
+    "team": "YOUR_TEAM_ACCOUNT_ID",
+    "personal": "YOUR_PERSONAL_ACCOUNT_ID",
 }
 
 for name, acct_id in accounts.items():

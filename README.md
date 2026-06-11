@@ -4,7 +4,7 @@
 
 Production workflow skills for [Claude Code](https://claude.com/claude-code). Each skill guides Claude through a recipe to produce tangible output — scaffolded projects, generated assets, professional documents, deployed services.
 
-10 plugins. 60 skills. Every one produces something.
+Ten plugins of practical, production-oriented skills. Every one produces something. (The thinking skills — planning, prompt-writing, verification doctrine, brains-trust — live in their own framework: [dotjez](https://github.com/jezweb/dotjez).)
 
 ## Quick Start
 
@@ -49,7 +49,7 @@ Then just ask Claude what you need — installed skills trigger automatically fr
 
 | Plugin | Skills | What it does |
 |--------|--------|-------------|
-| **dev-tools** | project-health, project-docs, app-docs, team-update, github-release, brains-trust, git-workflow, ux-audit, responsiveness-check, agent-browser, deep-research, onboarding-ux, fork-discipline, roadmap, vitest | Project config, doc generation, app user guides, team updates, releases, multi-model second opinions, git workflows, UX dogfooding, responsive testing, browser automation, deep research, in-app onboarding, core/client boundary audit, autonomous phased app delivery, Vitest test setup |
+| **dev-tools** | project-health, project-docs, app-docs, team-update, github-release, codex-review, git-workflow, ux-audit, ux-compare, ux-extract, responsiveness-check, deep-research, onboarding-ux, fork-discipline, roadmap, vitest | Project config, doc generation, app user guides, team updates, releases, Codex second opinions, git workflows, UX dogfooding and pattern extraction, responsive testing, pre-build discovery, in-app onboarding, core/client boundary audit, autonomous phased app delivery, Vitest test setup |
 | **integrations** | gws-setup, gws-install, google-chat-messages, google-apps-script, elevenlabs-agents, mcp-builder, nemoclaw-setup, parcel-tracking, stripe-payments | Google Workspace setup, Google Chat webhooks, Apps Script, ElevenLabs voice agents, MCP servers, NemoClaw, parcel tracking, Stripe payments (checkout, subscriptions, webhooks, billing portal) |
 
 ## All 60 Skills
@@ -94,11 +94,9 @@ Then just ask Claude what you need — installed skills trigger automatically fr
 | `app-docs` | "document the app", "user guide", "screenshot docs" |
 | `team-update` | "team update", "post to chat" |
 | `github-release` | "github release", "cut a release" |
-| `brains-trust` | "second opinion", "brains trust", "ask gemini" |
 | `git-workflow` | "prepare pr", "clean branches" |
 | `ux-audit` | "ux audit", "dogfood the app" |
 | `responsiveness-check` | "check responsiveness", "test viewports" |
-| `agent-browser` | "browser automation", "navigate to" |
 | `deep-research` | "research this", "deep research", "explore the space" |
 | `onboarding-ux` | "onboarding", "empty states", "new user experience" |
 | `fork-discipline` | "fork discipline", "check the boundary", "core or client" |
