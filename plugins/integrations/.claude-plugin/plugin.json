@@ -1,6 +1,6 @@
 {
   "name": "integrations",
-  "description": "Google Workspace CLI setup, Google Chat webhooks, Google Apps Script automation, ElevenLabs voice agents, and MCP server building.",
+  "description": "Google Workspace CLI setup, Google Chat webhooks, Google Apps Script automation, ElevenLabs voice agents, MCP server building, and Hermes Tweet.",
   "author": {
     "name": "Jeremy Dawes / Jezweb",
     "email": "jeremy@jezweb.net"
