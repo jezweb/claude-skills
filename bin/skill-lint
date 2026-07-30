@@ -62,7 +62,7 @@ lint_skill() {
   fi
 
   local frontmatter_end
-  frontmatter_end=$(tail -n +2 "$skill_md" | grep -n '^---$' | head -1 | cut -d: -f1)
+  frontmatter_end=$(tail -n +2 "$skill_md" | grep -n '^---$' | head -1 | cut -d: -f1 || true)
   if [ -z "$frontmatter_end" ]; then
     error "Frontmatter never closed — missing closing '---'"
     return

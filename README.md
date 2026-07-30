@@ -50,7 +50,7 @@ Then just ask Claude what you need — installed skills trigger automatically fr
 | Plugin | Skills | What it does |
 |--------|--------|-------------|
 | **dev-tools** | project-health, project-docs, app-docs, team-update, github-release, codex-review, git-workflow, ux-audit, ux-compare, ux-extract, responsiveness-check, deep-research, onboarding-ux, fork-discipline, roadmap, vitest | Project config, doc generation, app user guides, team updates, releases, Codex second opinions, git workflows, UX dogfooding and pattern extraction, responsive testing, pre-build discovery, in-app onboarding, core/client boundary audit, autonomous phased app delivery, Vitest test setup |
-| **integrations** | gws-setup, gws-install, google-chat-messages, google-apps-script, elevenlabs-agents, mcp-builder, nemoclaw-setup, parcel-tracking, stripe-payments | Google Workspace setup, Google Chat webhooks, Apps Script, ElevenLabs voice agents, MCP servers, NemoClaw, parcel tracking, Stripe payments (checkout, subscriptions, webhooks, billing portal) |
+| **integrations** | gws-setup, gws-install, google-chat-messages, google-apps-script, elevenlabs-agents, mcp-builder, nemoclaw-setup, parcel-tracking, stripe-payments, hermes-tweet | Google Workspace setup, Google Chat webhooks, Apps Script, ElevenLabs voice agents, MCP servers, NemoClaw, parcel tracking, Stripe payments (checkout, subscriptions, webhooks, billing portal), and Xquik tools for Hermes Agent |
 
 ## All 60 Skills
 
@@ -89,6 +89,7 @@ Then just ask Claude what you need — installed skills trigger automatically fr
 | `nemoclaw-setup` | "install nemoclaw", "setup nemoclaw", "nvidia nemoclaw" |
 | `parcel-tracking` | "where's my parcel", "track my order", "tracking number" |
 | `stripe-payments` | "add payments", "stripe checkout", "subscription billing" |
+| `hermes-tweet` | "Hermes Tweet", "Xquik with Hermes", "X/Twitter monitoring", "controlled X actions" |
 | `project-health` | "project health", "audit permissions" |
 | `project-docs` | "generate docs", "document architecture", "api docs" |
 | `app-docs` | "document the app", "user guide", "screenshot docs" |
