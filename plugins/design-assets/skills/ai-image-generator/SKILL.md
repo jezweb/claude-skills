@@ -1,6 +1,6 @@
 ---
 name: ai-image-generator
-description: "Generate AI images using Gemini or GPT APIs directly. Covers model selection (Gemini for scenes; GPT Image 2 for text rendering, batch variations, multi-reference compositing; GPT Image 1.5 for transparent icons), the 5-part prompting framework, API calling patterns, multi-turn editing, and quality assurance. Produces photorealistic scenes, icons, illustrations, OG images, posters, infographics, and product shots. Use when building websites that need images, creating marketing assets, or generating visual content. Triggers: 'generate image', 'ai image', 'create hero image', 'make an icon', 'generate illustration', 'create og image', 'poster', 'infographic', 'image variations', 'gpt-image-2', 'ai art', 'image generation'."
+description: "Generate AI images using Gemini, OpenAI GPT, or Atlas Cloud APIs directly. Covers model selection (Gemini for scenes; GPT Image 2 for text rendering, batch variations, multi-reference compositing; GPT Image 1.5 for transparent icons; Atlas Cloud for schema-verified asynchronous generation), the 5-part prompting framework, API calling patterns, multi-turn editing, and quality assurance. Produces photorealistic scenes, icons, illustrations, OG images, posters, infographics, and product shots. Use when building websites that need images, creating marketing assets, or generating visual content. Triggers: 'generate image', 'ai image', 'create hero image', 'make an icon', 'generate illustration', 'create og image', 'poster', 'infographic', 'image variations', 'gpt-image-2', 'atlas cloud', 'ai art', 'image generation'."
 allowed-tools:
   - Read
   - Write
@@ -12,7 +12,7 @@ compatibility: claude-code-only
 
 # AI Image Generator
 
-Generate images using AI APIs (Google Gemini and OpenAI GPT). This skill teaches the prompting patterns and API mechanics for producing professional images directly from Claude Code.
+Generate images using AI APIs (Google Gemini, OpenAI GPT, and Atlas Cloud). This skill teaches the prompting patterns and API mechanics for producing professional images directly from Claude Code.
 
 > **Managed alternative**: If you don't want to manage API keys, [ImageBot](https://imagebot.au) provides a managed image generation service with album templates and brand kit support.
 
@@ -29,6 +29,7 @@ Choose the right model for the job:
 | **Multi-reference compositing** (product + lifestyle) | GPT Image 2 | Handles lighting, scale, perspective across references |
 | **Transparent icons / logos** | GPT Image 1.5 | Native RGBA alpha — **GPT Image 2 cannot do transparency** |
 | **Quick drafts / iteration** | Gemini 2.5 Flash Image | Free tier (~500/day) |
+| **One key across multiple image families** | Atlas Cloud | Live catalogue and schema-driven asynchronous generation |
 
 **Rule of thumb**: any image with readable text → GPT Image 2 (unless you need transparency, then GPT 1.5). Otherwise → Gemini.
 
@@ -42,10 +43,12 @@ Choose the right model for the job:
 | GPT Image 2 (default) | `gpt-image-2` | OpenAI |
 | GPT Image 2 (ChatGPT-parity output) | `chatgpt-image-latest` | OpenAI |
 | GPT Image 1.5 (transparency-only) | `gpt-image-1.5` | OpenAI |
+| Qwen Image 3.0 (example; verify live) | `qwen-image-3.0/text-to-image` | Atlas Cloud |
 
 **Verify model IDs before use** — they change frequently:
 ```bash
 curl -s "https://generativelanguage.googleapis.com/v1beta/models?key=$GEMINI_API_KEY" | python3 -c "import sys,json; [print(m['name']) for m in json.load(sys.stdin)['models'] if 'image' in m['name'].lower()]"
+curl -s https://api.atlascloud.ai/api/v1/models | python3 -c "import sys,json; [print(m['model']) for m in json.load(sys.stdin)['data'] if m.get('type') == 'Image']"
 ```
 
 ## GPT Image 2 Specifics
@@ -153,6 +156,109 @@ left. Terracotta-toned wall visible in the background. Shot at
 Use the 5-part framework. Refer to `references/prompting-guide.md` for detailed photography parameters.
 
 ### 3. Generate via API
+
+#### Atlas Cloud — Schema-verified Async Generation
+
+Use Atlas when one API key should access multiple image families. Model IDs and input fields can change, so fetch the live catalogue and its linked OpenAPI schema before the single billable `POST`. Poll only with bounded `GET` requests; never retry the generation `POST` automatically.
+
+```python
+python3 << 'PYEOF'
+import json, os, pathlib, sys, time, urllib.parse, urllib.request
+
+key = os.environ.get("ATLASCLOUD_API_KEY")
+if not key:
+    print("Set ATLASCLOUD_API_KEY environment variable"); sys.exit(1)
+
+base = "https://api.atlascloud.ai"
+model_id = "qwen-image-3.0/text-to-image"
+prompt = """A clean editorial illustration of a solar-powered coastal library,
+warm morning light, accessible entrance, native plants, no watermark."""
+headers = {
+    "Authorization": f"Bearer {key}",
+    "Content-Type": "application/json",
+    "User-Agent": "ClaudeImageSkill/1.0",
+}
+
+# Discover the current model and validate payload fields before spending money.
+catalog = urllib.request.Request(
+    f"{base}/api/v1/models", headers={"User-Agent": "ClaudeImageSkill/1.0"},
+)
+with urllib.request.urlopen(catalog, timeout=30) as response:
+    models = json.load(response)["data"]
+model = next((item for item in models if item.get("model") == model_id), None)
+if not model or model.get("type") != "Image" or not model.get("schema"):
+    raise SystemExit(f"Image model unavailable: {model_id}")
+schema_request = urllib.request.Request(
+    model["schema"], headers={"User-Agent": "ClaudeImageSkill/1.0"},
+)
+with urllib.request.urlopen(schema_request, timeout=30) as response:
+    schema = json.load(response)["components"]["schemas"]["Input"]
+
+payload = {
+    "model": model_id,
+    "prompt": prompt,
+    "size": "1024*1024",
+    "n": 1,
+    "negative_prompt": "watermark, logo, illegible text",
+}
+unknown = set(payload) - set(schema["properties"])
+missing = set(schema.get("required", [])) - set(payload)
+if unknown or missing:
+    raise SystemExit(f"Schema mismatch: unknown={sorted(unknown)} missing={sorted(missing)}")
+
+# Submit exactly once. If this call is ambiguous, stop rather than resubmitting.
+request = urllib.request.Request(
+    f"{base}/api/v1/model/generateImage",
+    data=json.dumps(payload).encode(), headers=headers, method="POST",
+)
+with urllib.request.urlopen(request, timeout=60) as response:
+    prediction = json.load(response)
+prediction = prediction.get("data", prediction)
+prediction_id = prediction["id"]
+pathlib.Path(".jez/artifacts").mkdir(parents=True, exist_ok=True)
+pathlib.Path(".jez/artifacts/atlas-prediction.json").write_text(
+    json.dumps({"id": prediction_id, "model": model_id}, indent=2) + "\n"
+)
+
+# Only GET polling is retried, with a fixed upper bound.
+for attempt in range(40):
+    poll = urllib.request.Request(
+        f"{base}/api/v1/model/prediction/{prediction_id}", headers=headers,
+    )
+    try:
+        with urllib.request.urlopen(poll, timeout=30) as response:
+            prediction = json.load(response)
+        prediction = prediction.get("data", prediction)
+    except Exception as error:
+        if attempt == 39: raise
+        print(f"Poll failed ({error}); retrying GET only")
+        time.sleep(min(3 + attempt, 15)); continue
+    status = prediction.get("status")
+    if status == "completed": break
+    if status == "failed": raise SystemExit(prediction)
+    time.sleep(3)
+else:
+    raise SystemExit(f"Timed out; resume with prediction ID {prediction_id}")
+
+output_url = prediction["outputs"][0]
+parsed = urllib.parse.urlparse(output_url)
+if parsed.scheme != "https" or parsed.username or parsed.password:
+    raise SystemExit("Refusing unsafe output URL")
+with urllib.request.urlopen(output_url, timeout=60) as response:  # no API key
+    final_url = urllib.parse.urlparse(response.geturl())
+    if final_url.scheme != "https" or final_url.username or final_url.password:
+        raise SystemExit("Refusing unsafe output redirect")
+    image = response.read()
+suffix = ".png" if image.startswith(b"\x89PNG") else ".jpg" if image.startswith(b"\xff\xd8\xff") else ".webp"
+if suffix == ".webp" and not (image[:4] == b"RIFF" and image[8:12] == b"WEBP"):
+    raise SystemExit("Downloaded output is not PNG, JPEG, or WebP")
+path = pathlib.Path(f".jez/artifacts/atlas-image{suffix}")
+path.write_bytes(image)
+print(f"Saved: {path} ({len(image):,} bytes)")
+PYEOF
+```
+
+Atlas output URLs are temporary (about 24 hours), so download immediately. The prediction file is safe to keep for support or manual polling; it intentionally excludes the API key and prompt.
 
 #### Gemini (Python — handles shell escaping correctly)
 
@@ -368,10 +474,12 @@ BAD: "Now make the wall blue."
 |----------|-----------|-------------|
 | Google Gemini | [aistudio.google.com](https://aistudio.google.com/apikey) | `GEMINI_API_KEY` |
 | OpenAI | [platform.openai.com](https://platform.openai.com/api-keys) | `OPENAI_API_KEY` |
+| Atlas Cloud | [atlascloud.ai/console/api-keys](https://www.atlascloud.ai/console/api-keys) | `ATLASCLOUD_API_KEY` |
 
 ```bash
 export GEMINI_API_KEY="your-key-here"
 export OPENAI_API_KEY="your-key-here"
+export ATLASCLOUD_API_KEY="your-key-here"
 ```
 
 ## Common Mistakes
@@ -385,5 +493,7 @@ export OPENAI_API_KEY="your-key-here"
 | Requesting transparent PNG from GPT Image 2 | GPT Image 2 **cannot do transparency** — fall back to `gpt-image-1.5` for this case only |
 | Using GPT Image 1.5 for text on images | GPT Image 1.5 text rendering is unreliable — use `gpt-image-2` for any readable text |
 | Blocking a request to GPT Image 2 | Generation can take up to 2 min on complex prompts — use 180s timeout, build async UX |
+| Retrying an ambiguous Atlas generation POST | Save the prediction ID and resume bounded GET polling; never auto-submit a second paid job |
+| Sending Atlas credentials to an output URL | Download the HTTPS output without the `Authorization` header |
 | American defaults for AU businesses | Explicitly specify "Australian" + local architecture, vegetation |
 | Generic data for model ID | Verify current model IDs — they change frequently |
