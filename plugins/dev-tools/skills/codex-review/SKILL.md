@@ -59,21 +59,30 @@ OUT=".jez/reviews/codex-${TS}.md"
 SKILL_DIR="$(dirname "$0")"  # or use the skill's absolute path
 
 # Example: uncommitted changes
-cat "${SKILL_DIR}/prompt.md" | codex review --uncommitted - 2>&1 | tee "$OUT"
+codex review --uncommitted 2>&1 | tee "$OUT"
 ```
 
 Other scopes:
 
 ```bash
 # Vs base branch
-cat prompt.md | codex review --base main - 2>&1 | tee "$OUT"
+codex review --base main 2>&1 | tee "$OUT"
 
 # Specific commit
-cat prompt.md | codex review --commit abc123 - 2>&1 | tee "$OUT"
+codex review --commit abc123 2>&1 | tee "$OUT"
 
-# Current HEAD (no scope flag)
-cat prompt.md | codex review - 2>&1 | tee "$OUT"
+# Current HEAD, with the custom prompt (the only form that accepts one)
+cat "${SKILL_DIR}/prompt.md" | codex review - 2>&1 | tee "$OUT"
 ```
+
+**A scope flag and a prompt are mutually exclusive.** On codex-cli 0.149.1,
+`codex review --base main -` fails with
+`error: the argument '--base <BRANCH>' cannot be used with '[PROMPT]'`; the same applies
+to `--uncommitted` and `--commit`. Only the unscoped form accepts `prompt.md`.
+
+This is not much of a loss, and arguably a gain — see the note under Rules about keeping
+the review neutral. `--title "<label>"` names the run in the review summary and works with
+any scope.
 
 `codex review` can take several minutes on a large diff. Let it run.
 
