@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 // Claude Code Custom Status Line — Context Bricks
-// v4.1.0 - Rate limits, git caching, context awareness hook
+// v4.1.1 - Rate limits, git caching, context awareness hook
 //
 // Line 1: [Model:style] repo:branch status | @agent | wt
 // Line 2: [commit] message | +lines/-lines
@@ -183,7 +183,8 @@ function main(data) {
 
   if (usedPctRaw != null) {
     usagePct = Math.floor(usedPctRaw);
-    const remainingPct = Math.floor(remainingPctRaw || 0);
+    // remaining_percentage can be absent while used_percentage is set; derive it rather than showing 0k free
+    const remainingPct = Math.floor(remainingPctRaw != null ? remainingPctRaw : 100 - usedPctRaw);
     freeTokens = Math.floor((totalTokens * remainingPct) / 100);
   } else {
     const cu = data.context_window?.current_usage;

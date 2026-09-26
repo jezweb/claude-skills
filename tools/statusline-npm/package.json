@@ -1,6 +1,6 @@
 {
   "name": "contextbricks",
-  "version": "4.1.0",
+  "version": "4.1.1",
   "description": "Git-aware statusline for Claude Code CLI with context brick visualization",
   "keywords": [
     "claude",
