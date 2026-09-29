@@ -26,7 +26,7 @@ Then just ask Claude what you need — installed skills trigger automatically fr
 
 | Plugin | Skills | What it does |
 |--------|--------|-------------|
-| **cloudflare** | cloudflare-worker-builder, vite-flare-starter, tanstack-start, hono-api-scaffolder, d1-drizzle-schema, d1-migration, db-seed, cloudflare-api | Scaffold and deploy Workers, full-stack Vite+React apps, TanStack Start, Hono APIs, D1/Drizzle schemas, migrations, database seeding, direct REST API for bulk/fleet operations |
+| **cloudflare** | vite-flare-starter | Scaffold and deploy a full-stack Vite + React + Workers app |
 | **shopify** | shopify-setup, shopify-products, shopify-content | Shopify API setup, product creation (single + bulk CSV), content pages, blog posts, SEO metadata |
 | **wordpress** | wordpress-setup, wordpress-content, wordpress-elementor | WordPress WP-CLI/REST API access, content management, Elementor page editing |
 
@@ -52,21 +52,14 @@ Then just ask Claude what you need — installed skills trigger automatically fr
 | **dev-tools** | project-health, project-docs, app-docs, team-update, github-release, codex-review, git-workflow, ux-audit, ux-compare, ux-extract, responsiveness-check, deep-research, onboarding-ux, fork-discipline, roadmap, vitest | Project config, doc generation, app user guides, team updates, releases, Codex second opinions, git workflows, UX dogfooding and pattern extraction, responsive testing, pre-build discovery, in-app onboarding, core/client boundary audit, autonomous phased app delivery, Vitest test setup |
 | **integrations** | gws-setup, gws-install, google-chat-messages, google-apps-script, elevenlabs-agents, mcp-builder, nemoclaw-setup, parcel-tracking, stripe-payments | Google Workspace setup, Google Chat webhooks, Apps Script, ElevenLabs voice agents, MCP servers, NemoClaw, parcel tracking, Stripe payments (checkout, subscriptions, webhooks, billing portal) |
 
-## All 60 Skills
+## All skills
 
 <details>
 <summary>Full skill list with trigger phrases</summary>
 
 | Skill | Triggers on |
 |-------|------------|
-| `cloudflare-worker-builder` | "scaffold a worker", "new cloudflare project" |
 | `vite-flare-starter` | "scaffold a full-stack app", "vite + cloudflare" |
-| `tanstack-start` | "tanstack start", "SSR dashboard" |
-| `hono-api-scaffolder` | "hono api", "api routes" |
-| `d1-drizzle-schema` | "d1 schema", "drizzle schema" |
-| `d1-migration` | "d1 migration", "migrate database" |
-| `db-seed` | "seed database", "sample data", "demo data" |
-| `cloudflare-api` | "cloudflare api", "bulk dns", "custom hostname", "email routing" |
 | `seo-local-business` | "local seo", "json-ld schema" |
 | `tailwind-theme-builder` | "tailwind theme", "set up tailwind" |
 | `shadcn-ui` | "shadcn", "install components" |
@@ -139,7 +132,8 @@ Started as 105 skills — many were reference guides that Claude's training data
 - **v1** (tag: `v1-final`) — 105 skills, flat structure
 - **v2** — restructured into installable plugins, "every skill must produce something"
 - **v12** — 10 plugins, 44 skills
-- **v13** (current) — 11 plugins, 52 skills
+- **v13** — 11 plugins, 52 skills
+- **SKILLCUT, Sep 2026** — seven Cloudflare scaffolders moved to [`archive/`](archive/); `vite-flare-starter` stays
 
 ## License
 

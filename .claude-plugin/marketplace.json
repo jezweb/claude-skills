@@ -9,7 +9,7 @@
   "plugins": [
     {
       "name": "cloudflare",
-      "description": "Scaffold Cloudflare Workers, Hono APIs, D1/Drizzle schemas, D1 migration workflows, full-stack Vite+Workers apps, and TanStack Start SSR dashboards.",
+      "description": "Scaffold a full-stack Vite + React + Cloudflare Workers app from vite-flare-starter.",
       "source": "./plugins/cloudflare",
       "category": "development"
     },

@@ -172,7 +172,7 @@ CMD ["python", "server.py", "--transport", "http", "--port", "8000"]
 ```
 
 **Cloudflare Workers (edge):**
-See the cloudflare-worker-builder skill for Workers-based MCP servers.
+Build it in TypeScript with Cloudflare's `agents` SDK (`McpAgent`); Cloudflare's remote MCP server docs carry the current template.
 
 ---
 

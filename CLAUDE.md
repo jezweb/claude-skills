@@ -17,16 +17,9 @@ Production workflow skills for Claude Code CLI. Each skill guides Claude through
 ```
 claude-skills/
 ├── plugins/                                # one folder per plugin; the folders are the truth, don't keep counts here
-│   ├── cloudflare/                         # Cloudflare Workers, Hono, D1/Drizzle, Vite, TanStack Start
+│   ├── cloudflare/                         # Vite + React + Workers starter
 │   │   └── skills/
-│   │       ├── cloudflare-worker-builder/
-│   │       ├── vite-flare-starter/
-│   │       ├── tanstack-start/
-│   │       ├── hono-api-scaffolder/
-│   │       ├── d1-drizzle-schema/
-│   │       ├── d1-migration/
-│   │       ├── db-seed/
-│   │       └── cloudflare-api/
+│   │       └── vite-flare-starter/
 │   ├── web-design/                         # Local business SEO
 │   │   └── skills/
 │   │       └── seo-local-business/
@@ -218,7 +211,7 @@ Only for version-specific issues. Small typos or obvious mistakes should just be
 
 ## Git History
 
-All 105 skills from the v1 era are preserved:
+Retired skills live in `archive/` (not loaded by any plugin; see `archive/README.md`). All 105 skills from the v1 era are preserved:
 - Tag `v1-final` — the complete 105-skill collection
 - Branch `archive/low-priority-skills` — 13 previously archived skills
 - Full git history available via `git log v1-final`

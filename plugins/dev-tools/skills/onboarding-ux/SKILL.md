@@ -267,7 +267,7 @@ Generate sample records that demonstrate the app's features:
 - A sample record in each state (draft, active, completed, archived)
 - Records that show relationships (client → contact → policy → email)
 
-Use the `db-seed` skill patterns but with **onboarding-quality data** — records that teach the user what good data looks like.
+Write the seed script with **onboarding-quality data** — records that teach the user what good data looks like.
 
 #### 7. Help Page Content
 
@@ -324,6 +324,5 @@ Tell the user which files were generated and where to integrate them. Provide sp
 | If you also run... | This skill adds... |
 |--------------------|--------------------|
 | `ux-audit` (thorough) | Uses the audit findings as input — fixes the problems found |
-| `db-seed` | Generates onboarding-quality seed data instead of generic test data |
 | `app-docs` | The help page content can feed into the user guide |
 | `product-showcase` | Empty states and welcome flow make demo screenshots look better |
