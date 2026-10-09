@@ -44,3 +44,8 @@ SESSION.md
 
 # Packaged skills
 *.skill
+
+# Internal agent notes stay local: public repos ignore all of .jez/ and agent working files
+.jez/
+.claude/scripts/
+.claude/artifacts/

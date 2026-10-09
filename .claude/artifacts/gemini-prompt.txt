@@ -1,1 +1,0 @@
-[Claude Code consulting Gemini] Quick question: In one sentence, what is the V8 isolate model?
