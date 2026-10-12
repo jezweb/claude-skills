@@ -47,7 +47,7 @@ Check for each capability category:
 | **Git** | `git rev-parse --is-inside-work-tree` | Skip commit summaries |
 | **Issues** | MCP tools matching `github`, `linear`, `jira` | Skip or output text list |
 | **Tasks** | MCP tools matching `tasks`, `todos`, `asana` | Skip or output text list |
-| **Knowledge** | Basalt Cortex (`~/Documents/basalt-cortex/`) | Search for related knowledge notes |
+| **Knowledge** | Personal knowledge vault if you keep one (Obsidian, `~/Documents/notes/`, etc.) | Search for related knowledge notes |
 
 ### User Preferences (Ask)
 

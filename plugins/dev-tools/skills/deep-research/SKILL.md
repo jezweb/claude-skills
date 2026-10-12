@@ -52,9 +52,7 @@ For each related project found:
 - Check for reusable code (schemas, components, utilities, configs)
 - Note what worked well and what didn't (from git history, TODO comments)
 
-Also check:
-- Basalt Cortex (`~/Documents/basalt-cortex/`) for related clients, contacts, knowledge facts
-- `grep -rl "KEYWORD" ~/Documents/basalt-cortex/ --include="*.md"`
+Also check any personal knowledge store you maintain — Obsidian vault, `~/Documents/notes/`, a private repo of markdown files. `grep -rl "KEYWORD" <path> --include="*.md"` across it often surfaces client names, contacts, decisions you forgot you'd captured.
 
 ### 3. Web Research
 
@@ -157,7 +155,7 @@ Research the building blocks — what already exists that you can use or learn f
 
 ### 7. Platform Capability Deep-Dive (wide + deep)
 
-**This is critical.** Claude's training data is always behind on platform features. Cloudflare, Vercel, Firebase, Supabase — they all ship new capabilities constantly. A feature you assume doesn't exist might have launched last month. The Basalt Cortex project exists because of capabilities (Workers AI toMarkdown, Vectorize metadata filtering, D1 FTS5) that weren't obvious without actively looking.
+**This is critical.** Claude's training data is always behind on platform features. Cloudflare, Vercel, Firebase, Supabase — they all ship new capabilities constantly. A feature you assume doesn't exist might have launched last month. Whole projects have been unlocked by capabilities (Workers AI `toMarkdown`, Vectorize metadata filtering, D1 FTS5, etc.) that weren't obvious without actively looking.
 
 **Do NOT rely on training data for platform capabilities.** Go read the actual current docs.
 
