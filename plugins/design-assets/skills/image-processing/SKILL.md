@@ -205,12 +205,12 @@ img-process batch ./raw-images --action convert --format webp --quality 85 -o ./
 img-process batch ./photos --action resize --width 800 -o ./thumbnails
 ```
 
-### Pipeline with Gemini Image Gen
+### Pipeline with AI Image Generator
 
-Generate images with the gemini-image-gen skill, then process them:
+Generate images with the ai-image-generator skill, then process them:
 
 ```bash
-# After generating with Gemini (raw PNG output):
+# After generating with ai-image-generator (raw PNG output):
 img-process optimise generated-image.png --max-width 1920 --quality 85
 # Or batch process all generated images:
 img-process batch ./generated --action optimise -o ./production
